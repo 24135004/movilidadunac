@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movilidad UNAC v2.0 - Ventanilla</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #004a99; --secondary: #27ae60; --bg: #f4f7f6; --white: #ffffff; --text: #2c3e50; }
+        body { font-family: 'Poppins', sans-serif; margin: 0; background-color: var(--bg); color: var(--text); display: flex; }
+        .sidebar { width: 250px; height: 100vh; background: var(--primary); color: white; position: fixed; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px; }
+        .logo-unac { font-weight: 600; font-size: 1.2rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
+        .nav-link { color: rgba(255,255,255,0.8); text-decoration: none; padding: 12px 15px; border-radius: 10px; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
+        .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.2); color: white; transform: translateX(5px); }
+        .main-content { margin-left: 250px; padding: 40px; width: 100%; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .card { background: var(--white); padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: 0.3s; border: 1px solid rgba(0,0,0,0.02); }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        .card h3 { margin-top: 0; color: var(--primary); }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-box { background: white; padding: 30px; border-radius: 25px; width: 90%; max-width: 400px; text-align: center; animation: slideUp 0.4s ease; }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .btn-pro { background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 12px; cursor: pointer; font-weight: 600; width: 100%; margin-top: 15px; }
+        @media (max-width: 768px) { .sidebar { display: none; } .main-content { margin-left: 0; padding: 20px; } }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo-unac">MOVILIDAD UNAC</div>
+        <a href="#" class="nav-link active">🏠 Inicio</a>
+        <a href="https://24135004.github.io/movilidad-unac2026/noticias.html" class="nav-link">📍 Ver Web Anterior</a>
+    </div>
+    <div class="main-content">
+        <header>
+            <h1>Panel de Control - Ventanilla</h1>
+            <div style="color: var(--secondary); font-weight: bold;">● Sistema v2.0 Activo</div>
+        </header>
+        <div class="dashboard-grid">
+            <div class="card">
+                <h3>📢 Comunicados</h3>
+                <p>Información oficial sobre paraderos y horarios para el ciclo 2026-A.</p>
+                <button class="btn-pro" onclick="abrirModal('noticias')">Ver Noticias</button>
+            </div>
+            <div class="card">
+                <h3>🔍 Mi Ticket Digital</h3>
+                <p>Consulta tu número de asiento ingresando tu DNI.</p>
+                <button class="btn-pro" onclick="abrirModal('consulta')">Consultar Asiento</button>
+            </div>
+        </div>
+    </div>
+    <div id="modalGral" class="modal-overlay">
+        <div class="modal-box">
+            <h2 id="modalTitulo">Cargando...</h2>
+            <p id="modalTexto"></p>
+            <input type="text" placeholder="Ingresa tu DNI" id="inputDNI" style="display:none; width:90%; padding:10px; margin:10px 0; border-radius:8px; border:1px solid #ccc;">
+            <button class="btn-pro" onclick="cerrarModal()">Entendido</button>
+        </div>
+    </div>
+    <script>
+        function abrirModal(tipo) {
+            const modal = document.getElementById('modalGral');
+            const input = document.getElementById('inputDNI');
+            modal.style.display = 'flex';
+            if(tipo === 'noticias') {
+                document.getElementById('modalTitulo').innerText = 'Noticias de Hoy';
+                document.getElementById('modalTexto').innerText = 'Recuerda portar tu carnet universitario al subir a la unidad.';
+                input.style.display = 'none';
+            } else {
+                document.getElementById('modalTitulo').innerText = 'Consulta de Asiento';
+                document.getElementById('modalTexto').innerText = 'Ingresa tu documento para verificar tu ubicación.';
+                input.style.display = 'block';
+            }
+        }
+        function cerrarModal() { document.getElementById('modalGral').style.display = 'none'; }
+    </script>
+</body>
+</html>
