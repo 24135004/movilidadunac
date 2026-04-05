@@ -19,28 +19,55 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Poppins', sans-serif; color: var(--text-dark); line-height: 1.6; background: var(--bg-light); }
 
-        /* --- NAVEGACIÓN --- */
+        /* --- NAVEGACIÓN DINÁMICA --- */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 8%;
-            background: white;
-            position: sticky;
-            top: 0; z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 25px 8%;
+            position: fixed; /* Cambiado a fixed para que flote sobre el hero */
+            width: 100%;
+            top: 0; 
+            z-index: 1000;
+            transition: all 0.4s ease;
+            background: transparent; /* Transparente al inicio */
         }
+
+        /* Clase que se activa con el scroll */
+        nav.scrolled {
+            background: white;
+            padding: 15px 8%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
         .logo-box { display: flex; align-items: center; gap: 12px; }
         .logo-box img { width: 50px; }
-        .logo-text h2 { font-family: 'Montserrat', sans-serif; font-size: 1rem; color: var(--unac-gold); line-height: 1.2; }
+        
+        .logo-text h2 { 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 1rem; 
+            color: white; /* Blanco al inicio */
+            line-height: 1.2; 
+            transition: 0.3s;
+        }
+        nav.scrolled .logo-text h2 { color: var(--unac-blue); } /* Azul al bajar */
+
         .nav-links { display: flex; gap: 25px; list-style: none; }
-        .nav-links a { text-decoration: none; color: var(--text-dark); font-size: 0.9rem; font-weight: 500; transition: 0.3s; }
-        .nav-links a:hover { color: var(--unac-blue); }
+        .nav-links a { 
+            text-decoration: none; 
+            color: white; /* Blanco al inicio */
+            font-size: 0.9rem; 
+            font-weight: 500; 
+            transition: 0.3s; 
+        }
+        nav.scrolled .nav-links a { color: var(--text-dark); } /* Oscuro al bajar */
+        nav.scrolled .nav-links a:hover { color: var(--unac-blue); }
+
         .btn-register { background: var(--unac-gold); color: white !important; padding: 10px 20px; border-radius: 25px; font-weight: 600 !important; }
 
-        /* --- SECCIÓN 1: HERO (IMAGEN 1) --- */
+        /* --- SECCIÓN 1: HERO --- */
         .hero {
-            height: 85vh;
+            height: 100vh; /* Aumentado a 100 para que llene la pantalla con el menú transparente */
             background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://raw.githubusercontent.com/24135004/movilidad-unac2026/main/DSC07583-768x432j.jpg');
             background-size: cover;
             background-position: center;
@@ -71,7 +98,7 @@
         .stat-item h3 { font-family: 'Montserrat'; font-size: 1.8rem; font-weight: 800; }
         .stat-item p { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; }
 
-        /* --- SECCIÓN 2: SERVICIOS (IMAGEN 2) --- */
+        /* --- SECCIÓN 2: SERVICIOS --- */
         .services { padding: 80px 10%; text-align: center; background: #f9f9f9; }
         .services-header { margin-bottom: 50px; }
         .services-header span { color: var(--unac-gold); font-weight: 700; font-family: 'Montserrat'; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 2px; }
@@ -97,7 +124,7 @@
         .service-card p { color: var(--text-gray); font-size: 0.95rem; margin-bottom: 25px; }
         .link-more { color: var(--unac-gold); text-decoration: none; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 5px; }
 
-        /* --- SECCIÓN 3: CIERRE Y FOOTER (IMAGEN 3) --- */
+        /* --- SECCIÓN 3: CIERRE Y FOOTER --- */
         .cta-section {
             background: #111;
             padding: 100px 10%;
@@ -135,7 +162,6 @@
             color: var(--text-gray);
         }
 
-        /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
             .stats-bar { grid-template-columns: repeat(2, 1fr); gap: 20px; }
@@ -146,12 +172,12 @@
 </head>
 <body>
 
-    <nav>
+    <nav id="mainNav">
         <div class="logo-box">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Escudo_UNAC.svg/1200px-Escudo_UNAC.svg.png" alt="UNAC">
             <div class="logo-text">
                 <h2>UNIVERSIDAD NACIONAL DEL CALLAO</h2>
-                <span style="font-size: 0.7rem; font-weight: 700; color: #666;">MOVILIDAD UNIVERSITARIA</span>
+                <span id="subLabel" style="font-size: 0.7rem; font-weight: 700; color: #ffb400;">MOVILIDAD UNIVERSITARIA</span>
             </div>
         </div>
         <ul class="nav-links">
@@ -255,5 +281,16 @@
         </div>
     </footer>
 
+    <script>
+        // Lógica de Scroll para el menú transparente
+        window.onscroll = function() {
+            var nav = document.getElementById('mainNav');
+            if (window.pageYOffset > 50) {
+                nav.classList.add("scrolled");
+            } else {
+                nav.classList.remove("scrolled");
+            }
+        };
+    </script>
 </body>
 </html>
