@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movilidad UNAC - Ruta Ventanilla | Tech-Dashboard v5.0</title>
+    <title>Movilidad UNAC - Ruta Ventanilla | Tech-Dashboard v5.0 Élite</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         /* --- VARIABLES DE DISEÑO TECH-DASHBOARD --- */
@@ -11,9 +11,9 @@
             --primary: #004a99; /* Azul UNAC Institucional */
             --primary-dark: #002d5f;
             --secondary: #ffb400; /* Naranja/Oro UNAC */
-            --tech-cian: #00f2fe; /* Cian Tecnológico (Acento principal) */
+            --tech-cian: #00f2fe; /* Cian Tecnológico de Imagen 1 (Acento principal) */
             --bg-dark: #050a14; /* Fondo ultra oscuro */
-            --bg-card: rgba(20, 25, 40, 0.5); /* Fondo tarjeta glassmorphism */
+            --bg-card: rgba(20, 25, 40, 0.5); /* Fondo tarjeta glassmorphism oscuro */
             --text-light: #ffffff;
             --text-muted: rgba(255, 255, 255, 0.7);
             
@@ -22,7 +22,7 @@
             --shadow-tech: 0 15px 35px rgba(0,0,0,0.5);
             --glow-cian: 0 0 15px rgba(0, 242, 254, 0.3);
             
-            --sidebar-width: 260px;
+            --sidebar-width: 280px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
@@ -35,11 +35,11 @@
             display: flex;
             min-height: 100vh;
             overflow-x: hidden;
-            /* Fondo con degradado radial para profundidad tech */
+            /* Fondo con degradado radial para profundidad tech de Imagen 1 */
             background: radial-gradient(circle at center, #102040 0%, #050a14 70%);
         }
 
-        /* --- BACKGROUND TECH CON PATRÓN DE RED (De la Imagen 1) --- */
+        /* --- BACKGROUND TECH CON PATRÓN DE RED (De Imagen 1) --- */
         body::before {
             content: '';
             position: fixed;
@@ -52,11 +52,11 @@
             opacity: 0.5;
         }
 
-        /* --- SIDEBAR TECH (Estructura de Imagen 2, Estética de Imagen 1) --- */
+        /* --- SIDEBAR TECH-DASHBOARD (Estructura de Imagen 2, Estética de Imagen 1) --- */
         .sidebar {
             width: var(--sidebar-width);
             background: rgba(10, 15, 30, 0.8);
-            backdrop-filter: blur(15px); /* Efecto Glassmorphism */
+            backdrop-filter: blur(15px); /* Efecto Glassmorphism Pro */
             color: white;
             position: fixed;
             height: 100vh;
@@ -81,7 +81,7 @@
         .logo-unac { width: 60px; height: 60px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.3)); }
 
         .logo-text {
-            font-family: 'Orbitron', sans-serif; /* Fuente Tech */
+            font-family: 'Orbitron', sans-serif; /* Fuente Tech de Imagen 1 */
             font-weight: 700;
             font-size: 1.1rem;
             color: var(--secondary);
@@ -103,7 +103,7 @@
             font-size: 0.95rem;
         }
 
-        /* Efecto de resalte tech */
+        /* Efecto de resalte tech cian */
         .nav-link:hover {
             background: rgba(255,255,255,0.05);
             color: var(--tech-cian);
@@ -177,7 +177,7 @@
             gap: 30px;
         }
 
-        /* Tarjeta Tech-Dashboard con Glassmorphism */
+        /* Tarjeta Tech-Dashboard con Glassmorphism oscuro */
         .card {
             background: var(--bg-card);
             backdrop-filter: blur(10px);
@@ -189,7 +189,7 @@
             position: relative;
         }
 
-        /* Destello tecnológico superior */
+        /* Destello tecnológico superior cian */
         .card::before {
             content: '';
             position: absolute;
@@ -221,7 +221,7 @@
             line-height: 1.6;
         }
 
-        /* Botón Pro con Estética Tech */
+        /* Botón Pro con Estética Tech Institucional */
         .btn-pro {
             background: var(--primary);
             color: white;
@@ -243,7 +243,7 @@
             box-shadow: 0 0 20px rgba(0, 74, 153, 0.5);
         }
 
-        /* Botón Secundario Tech (Cian) */
+        /* Botón Secundario Tech Cian de Imagen 1 */
         .card:nth-child(2) .btn-pro {
             background: rgba(0, 242, 254, 0.05);
             color: var(--tech-cian);
@@ -256,7 +256,7 @@
             box-shadow: 0 0 25px rgba(0, 242, 254, 0.5);
         }
 
-        /* --- VENTANAS FLOTANTES (Modales Tech-Dashboard) --- */
+        /* --- VENTANAS FLOTANTES (Modales Tech-Dashboard, Estilo Imagen 2) --- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -361,7 +361,7 @@
     <div class="sidebar">
         <div class="logo-container">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Escudo_UNAC.svg/1200px-Escudo_UNAC.svg.png" alt="Logo UNAC" class="logo-unac">
-            <div class="logo-text">MOVILIDAD<br><span style="color:white; font-size:0.8rem; font-family:'Poppins'">Ventanilla v5.0</span></div>
+            <div class="logo-text">MOVILIDAD<br><span style="color:white; font-size:0.8rem; font-family:'Poppins'">Ventanilla v5.0 Élite</span></div>
         </div>
         <a href="#" class="nav-link active">🏠 <span>Inicio</span></a>
         <a href="https://24135004.github.io/movilidad-unac2026/noticias.html" class="nav-link">📍 <span>Web Anterior</span></a>
@@ -444,6 +444,7 @@
             document.body.style.overflow = 'auto';
         }
 
+        // Lógica simulada de acción
         function procesarAccion() {
             const dni = document.getElementById('inputDNI').value;
             const titulo = document.getElementById('modalTitulo');
