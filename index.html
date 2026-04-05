@@ -3,76 +3,387 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movilidad UNAC v2.0 - Ventanilla</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Movilidad UNAC - Ruta Ventanilla | Premium v2.1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #004a99; --secondary: #27ae60; --bg: #f4f7f6; --white: #ffffff; --text: #2c3e50; }
-        body { font-family: 'Poppins', sans-serif; margin: 0; background-color: var(--bg); color: var(--text); display: flex; }
-        .sidebar { width: 250px; height: 100vh; background: var(--primary); color: white; position: fixed; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px; }
-        .logo-unac { font-weight: 600; font-size: 1.2rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
-        .nav-link { color: rgba(255,255,255,0.8); text-decoration: none; padding: 12px 15px; border-radius: 10px; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
-        .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.2); color: white; transform: translateX(5px); }
-        .main-content { margin-left: 250px; padding: 40px; width: 100%; }
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
-        .card { background: var(--white); padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: 0.3s; border: 1px solid rgba(0,0,0,0.02); }
-        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
-        .card h3 { margin-top: 0; color: var(--primary); }
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-box { background: white; padding: 30px; border-radius: 25px; width: 90%; max-width: 400px; text-align: center; animation: slideUp 0.4s ease; }
-        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .btn-pro { background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 12px; cursor: pointer; font-weight: 600; width: 100%; margin-top: 15px; }
-        @media (max-width: 768px) { .sidebar { display: none; } .main-content { margin-left: 0; padding: 20px; } }
+        :root {
+            --primary: #004a99; /* Azul UNAC */
+            --primary-dark: #002d5f;
+            --secondary: #ffb400; /* Naranja/Oro */
+            --tech-green: #00f2fe; /* Cian Tecnológico */
+            --bg-dark: #050a14;
+            --text-light: #ffffff;
+            --text-dark: #1a1a1a;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --shadow-pro: 0 15px 35px rgba(0,0,0,0.5);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            background: radial-gradient(circle at center, #102040 0%, #050a14 70%);
+        }
+
+        /* --- BACKGROUND TECH CON MOVIMIENTO --- */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 74, 153, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 74, 153, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* --- NAVBAR ULTRA-MODERNA (Fija y con Blur) --- */
+        .navbar {
+            position: fixed;
+            top: 0; width: 100%;
+            background: rgba(5, 10, 20, 0.7);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .logo-container { display: flex; align-items: center; gap: 15px; }
+        .logo-unac { width: 50px; height: 50px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
+        .logo-text { font-family: 'Orbitron', sans-serif; font-weight: 700; color: var(--secondary); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        .nav-menu { display: flex; gap: 5px; list-style: none; }
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 10px 20px;
+            border-radius: 50px;
+            transition: 0.3s ease;
+        }
+
+        .nav-link:hover { background: rgba(255,255,255,0.05); color: var(--tech-green); }
+        .nav-link.active { background: var(--secondary); color: var(--text-dark); box-shadow: 0 0 15px rgba(255, 180, 0, 0.5); }
+
+        /* --- HERO SECTION (Portada) --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 10%;
+            background: url('https://raw.githubusercontent.com/24135004/movilidad-unac2026/main/DSC07583-768x432j.jpg') no-repeat center center/cover;
+            position: relative;
+        }
+
+        /* Capa de superposición para legibilidad y tono tech */
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, rgba(5,10,20,0.8) 0%, rgba(0,74,153,0.3) 50%, rgba(5,10,20,0.9) 100%);
+            z-index: 1;
+        }
+
+        .hero-content { position: relative; z-index: 2; max-width: 800px; animation: fadeInUp 1s ease; }
+
+        .badge-tech {
+            font-family: 'Orbitron', sans-serif;
+            background: rgba(0, 242, 254, 0.1);
+            color: var(--tech-green);
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            display: inline-block;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff 0%, #a0c0f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.8); margin-bottom: 40px; font-weight: 300; }
+
+        /* --- BOTONES PREMIUM CON EFECTO NEOMÓRFICO/GLOW --- */
+        .btn-group { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+
+        .btn-premium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+            padding: 18px 40px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        /* Botón Primario (Naranja UNAC) */
+        .btn-primary {
+            background: var(--secondary);
+            color: var(--text-dark);
+            border: none;
+            box-shadow: 0 10px 25px rgba(255, 180, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255, 180, 0, 0.5);
+        }
+
+        /* Botón Tecnológico (Cian Outline) */
+        .btn-tech {
+            background: rgba(0, 242, 254, 0.05);
+            color: var(--tech-green);
+            border: 2px solid var(--tech-green);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.1);
+        }
+
+        .btn-tech:hover {
+            background: rgba(0, 242, 254, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.3);
+        }
+
+        /* --- BARRA DE ESTADÍSTICAS (Glassmorphism) --- */
+        .stats-bar {
+            position: absolute;
+            bottom: 30px; left: 5%; width: 90%;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-around;
+            z-index: 2;
+            box-shadow: var(--shadow-pro);
+        }
+
+        .stat-item { text-align: center; color: rgba(255,255,255,0.7); font-size: 0.8rem; }
+        .stat-item strong { display: block; font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: var(--text-light); }
+        .stat-item span { color: var(--tech-green); }
+
+        /* --- MODALES / VENTANAS FLOTANTES (Diseño Elegante y Tech) --- */
+        .modal-overlay {
+            display: none; /* Oculto por defecto */
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(15px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal-overlay.open { display: flex; opacity: 1; }
+
+        .modal-box {
+            background: rgba(10, 20, 40, 0.95);
+            border: 1px solid var(--tech-green);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 242, 254, 0.3);
+            transform: translateY(50px) scale(0.9);
+            transition: transform 0.4s ease;
+        }
+
+        .modal-overlay.open .modal-box { transform: translateY(0) scale(1); }
+
+        .close-modal {
+            position: absolute;
+            top: 20px; right: 20px;
+            color: rgba(255,255,255,0.5);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .close-modal:hover { color: var(--tech-green); transform: rotate(90deg); }
+
+        .modal-header {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--tech-green);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+            padding-bottom: 15px;
+        }
+
+        .modal-body { color: rgba(255,255,255,0.8); font-weight: 300; line-height: 1.6; }
+        
+        .form-group { margin: 25px 0; }
+        .input-tech {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .input-tech:focus {
+            border-color: var(--tech-green);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+        }
+
+        /* --- ANIMACIONES --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- RESPONSIVE (Celular y Tablet) --- */
+        @media (max-width: 1024px) {
+            .hero h1 { font-size: 2.8rem; }
+            .nav-menu { display: none; } /* Ocultamos menú para móvil (necesitaría burger menu) */
+            .navbar { padding: 10px 5%; }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            .hero p { font-size: 1rem; }
+            .btn-premium { width: 100%; justify-content: center; }
+            .stats-bar { flex-wrap: wrap; gap: 15px; bottom: 10px; padding: 15px; }
+            .stat-item { width: 45%; }
+            .stat-item strong { font-size: 1.2rem; }
+            .modal-box { padding: 30px; }
+        }
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="logo-unac">MOVILIDAD UNAC</div>
-        <a href="#" class="nav-link active">🏠 Inicio</a>
-        <a href="https://24135004.github.io/movilidad-unac2026/noticias.html" class="nav-link">📍 Ver Web Anterior</a>
-    </div>
-    <div class="main-content">
-        <header>
-            <h1>Panel de Control - Ventanilla</h1>
-            <div style="color: var(--secondary); font-weight: bold;">● Sistema v2.0 Activo</div>
-        </header>
-        <div class="dashboard-grid">
-            <div class="card">
-                <h3>📢 Comunicados</h3>
-                <p>Información oficial sobre paraderos y horarios para el ciclo 2026-A.</p>
-                <button class="btn-pro" onclick="abrirModal('noticias')">Ver Noticias</button>
-            </div>
-            <div class="card">
-                <h3>🔍 Mi Ticket Digital</h3>
-                <p>Consulta tu número de asiento ingresando tu DNI.</p>
-                <button class="btn-pro" onclick="abrirModal('consulta')">Consultar Asiento</button>
+
+    <nav class="navbar">
+        <div class="logo-container">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Escudo_UNAC.svg/1200px-Escudo_UNAC.svg.png" alt="Logo UNAC" class="logo-unac">
+            <div class="logo-text">MOVILIDAD<br><span style="color:white; font-size:0.8rem; font-family:'Poppins'">Ventanilla v2.1</span></div>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="#" class="nav-link active">Inicio</a></li>
+            <li><a href="#" class="nav-link">Horarios</a></li>
+            <li><a href="#" class="nav-link">Rutas</a></li>
+            <li><a href="#" class="nav-link">Noticias</a></li>
+            <li><a href="#" class="nav-link" onclick="abrirModal('consulta')">Consultas</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="badge-tech">Tecnología y Orden</div>
+            <h1>Movilidad Universitaria UNAC</h1>
+            <p>Ruta Ventanilla | Accede al sistema integrado de gestión de pasajes digitales. Automatización y control para un traslado seguro de la comunidad sanmarquina.</p>
+            
+            <div class="btn-group">
+                <a href="#" class="btn-premium btn-primary">
+                    <span style="font-size:1.3rem">📅</span> Ver Horarios
+                </a>
+                <button class="btn-premium btn-tech" onclick="abrirModal('consulta')">
+                    <span style="font-size:1.3rem">🔍</span> Consultar mi Asiento
+                </button>
             </div>
         </div>
-    </div>
-    <div id="modalGral" class="modal-overlay">
+
+        <div class="stats-bar">
+            <div class="stat-item"><strong>2</strong> Unidades Disponibles</div>
+            <div class="stat-item"><strong>~35 km</strong> Recorrido por viaje</div>
+            <div class="stat-item"><strong>~55 min</strong> Tiempo estimado <span>●</span></div>
+            <div class="stat-item"><strong>+600</strong> Alumnos beneficiados</div>
+        </div>
+    </section>
+
+    <div id="modalConsulta" class="modal-overlay">
         <div class="modal-box">
-            <h2 id="modalTitulo">Cargando...</h2>
-            <p id="modalTexto"></p>
-            <input type="text" placeholder="Ingresa tu DNI" id="inputDNI" style="display:none; width:90%; padding:10px; margin:10px 0; border-radius:8px; border:1px solid #ccc;">
-            <button class="btn-pro" onclick="cerrarModal()">Entendido</button>
+            <span class="close-modal" onclick="cerrarModal()">&times;</span>
+            <div class="modal-header">Portal de Consulta</div>
+            <div class="modal-body">
+                <p>Bienvenido al sistema de verificación. Para validar tu ticket digital y número de asiento para la Ruta Ventanilla, por favor ingresa tu documento de identidad.</p>
+                <div class="form-group">
+                    <input type="text" id="dniEstudiante" class="input-tech" placeholder="Ingresa tu DNI (8 dígitos)">
+                </div>
+                <button class="btn-premium btn-primary" onclick="procesarConsulta()" style="width:100%">
+                    🚀 Verificar mi Estado
+                </button>
+                <p style="font-size:0.8rem; color:rgba(255,255,255,0.5); text-align:center; margin-top:20px;">* Recuerda que el registro es personal y obligatorio.</p>
+            </div>
         </div>
     </div>
+
     <script>
-        function abrirModal(tipo) {
-            const modal = document.getElementById('modalGral');
-            const input = document.getElementById('inputDNI');
-            modal.style.display = 'flex';
-            if(tipo === 'noticias') {
-                document.getElementById('modalTitulo').innerText = 'Noticias de Hoy';
-                document.getElementById('modalTexto').innerText = 'Recuerda portar tu carnet universitario al subir a la unidad.';
-                input.style.display = 'none';
+        function abrirModal(id) {
+            const overlay = document.getElementById('modalConsulta');
+            overlay.classList.add('open');
+            // Bloquear scroll del body
+            document.body.style.overflow = 'hidden';
+        }
+
+        function cerrarModal() {
+            const overlay = document.getElementById('modalConsulta');
+            overlay.classList.remove('open');
+            // Desbloquear scroll del body
+            document.body.style.overflow = 'auto';
+        }
+
+        // Cerrar si hacen clic fuera de la caja del modal
+        document.getElementById('modalConsulta').addEventListener('click', function(event) {
+            if (event.target === this) {
+                cerrarModal();
+            }
+        });
+
+        // Simulación de consulta (lógica profesional)
+        function procesarConsulta() {
+            const dni = document.getElementById('dniEstudiante').value;
+            const btn = event.target;
+            
+            if(dni.length === 8 && /^\d+$/.test(dni)) {
+                btn.innerHTML = '⌛ Procesando en la nube...';
+                btn.style.opacity = '0.7';
+                
+                setTimeout(() => {
+                    alert("✅ Conexión establecida. Los datos para el DNI " + dni + " están siendo procesados. Se te redirigirá al portal de resultados.");
+                    btn.innerHTML = '🚀 Verificar mi Estado';
+                    btn.style.opacity = '1';
+                    cerrarModal();
+                    // Aquí iría la redirección real o la carga de datos
+                }, 1500);
             } else {
-                document.getElementById('modalTitulo').innerText = 'Consulta de Asiento';
-                document.getElementById('modalTexto').innerText = 'Ingresa tu documento para verificar tu ubicación.';
-                input.style.display = 'block';
+                alert("❌ Error: Formato de DNI inválido. Asegúrate de ingresar 8 dígitos numéricos.");
             }
         }
-        function cerrarModal() { document.getElementById('modalGral').style.display = 'none'; }
     </script>
 </body>
 </html>
