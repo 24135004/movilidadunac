@@ -3,464 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movilidad UNAC | Integrated Dashboard v7.0 Élite</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Movilidad UNAC - Plataforma Oficial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        /* --- VARIABLES DE DISEÑO TECH-INTEGRATED --- */
         :root {
-            --primary: #004a99; /* Azul UNAC Institucional */
-            --primary-dark: #002d5f;
-            --secondary: #ffb400; /* Naranja/Oro UNAC */
-            --tech-cian: #00f2fe; /* Cian Tecnológico (Acento principal) */
-            --bg-dark: #050a14; /* Fondo ultra oscuro */
-            --bg-card: rgba(20, 25, 40, 0.5); /* Fondo tarjeta glassmorphism oscuro */
-            --text-light: #ffffff;
-            --text-muted: rgba(255, 255, 255, 0.7);
-            
-            /* Efectos de Cristal y Sombras Tech */
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --shadow-tech: 0 15px 35px rgba(0,0,0,0.5);
-            --glow-cian: 0 0 15px rgba(0, 242, 254, 0.3);
-            
-            --sidebar-width: 280px;
+            --unac-blue: #004a99;
+            --unac-gold: #ffb400;
+            --text-dark: #2d3436;
+            --text-gray: #636e72;
+            --bg-light: #ffffff;
+            --bg-footer: #1a1a1a;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; color: var(--text-dark); line-height: 1.6; background: var(--bg-light); }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            display: flex;
-            min-height: 100vh;
-            overflow-x: hidden;
-            /* Fondo con degradado radial para profundidad tech */
-            background: radial-gradient(circle at center, #102040 0%, #050a14 70%);
-        }
-
-        /* Patrón de red sutil de fondo de Imagen 1 */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
-                linear-gradient(rgba(0, 242, 254, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 242, 254, 0.02) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: -1;
-            opacity: 0.5;
-        }
-
-        /* --- SIDEBAR TECH-INTEGRATED (Estructura de Imagen 2) --- */
-        .sidebar {
-            width: var(--sidebar-width);
-            background: rgba(10, 15, 30, 0.8);
-            backdrop-filter: blur(15px);
-            color: white;
-            position: fixed;
-            height: 100vh;
-            padding: 30px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            border-right: 1px solid var(--glass-border);
-            z-index: 100;
-        }
-
-        .logo-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            padding-bottom: 30px;
-            margin-bottom: 20px;
-        }
-
-        .logo-unac { width: 60px; height: 60px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.3)); }
-
-        .logo-text {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: var(--secondary);
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .nav-menu { list-style: none; }
-        .nav-link {
-            color: var(--text-muted);
-            text-decoration: none;
-            padding: 12px 18px;
-            border-radius: 10px;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-weight: 500;
-            font-size: 0.95rem;
-        }
-
-        .nav-link:hover, .nav-link.active {
-            background: rgba(255,255,255,0.05);
-            color: var(--tech-cian);
-            transform: translateX(5px);
-        }
-
-        /* --- CONTENIDO PRINCIPAL --- */
-        .main-content {
-            margin-left: var(--sidebar-width);
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* === SECCIÓN 1: IMAGEN DE CABECERA (De la Imagen 1) === */
-        .section-1-hero {
-            height: 400px;
-            background: url('https://raw.githubusercontent.com/24135004/movilidad-unac2026/main/DSC07583-768x432j.jpg') no-repeat center center/cover;
-            position: relative;
-            animation: fadeInDown 1s ease-out;
-        }
-
-        .section-1-hero::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(180deg, rgba(5, 10, 20, 0.8) 0%, rgba(0, 74, 153, 0.3) 50%, rgba(5, 10, 20, 0.9) 100%);
-        }
-
-        .hero-content {
-            position: absolute;
-            bottom: 40px; left: 5%; width: 90%;
-            z-index: 10;
+        /* --- NAVEGACIÓN --- */
+        nav {
             display: flex;
             justify-content: space-between;
-            align-items: flex-end;
+            align-items: center;
+            padding: 20px 8%;
+            background: white;
+            position: sticky;
+            top: 0; z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
+        .logo-box { display: flex; align-items: center; gap: 12px; }
+        .logo-box img { width: 50px; }
+        .logo-text h2 { font-family: 'Montserrat', sans-serif; font-size: 1rem; color: var(--unac-gold); line-height: 1.2; }
+        .nav-links { display: flex; gap: 25px; list-style: none; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-size: 0.9rem; font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover { color: var(--unac-blue); }
+        .btn-register { background: var(--unac-gold); color: white !important; padding: 10px 20px; border-radius: 25px; font-weight: 600 !important; }
 
-        .hero-text h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.8rem;
-            font-weight: 700;
-            color: white;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-
-        .hero-text p { color: var(--tech-cian); font-family: 'Orbitron', sans-serif; font-size: 0.95rem; letter-spacing: 1px; }
-
-        /* === SECCIÓN 2: DASHBOARD SECTION (Layout de Imagen 2) === */
-        .section-2-dashboard {
-            padding: 60px 5%;
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-        }
-
-        .card {
-            background: var(--bg-card);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: var(--shadow-tech);
-            border: 1px solid var(--glass-border);
-            position: relative;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 3px;
-            background: linear-gradient(90deg, var(--tech-cian), var(--primary));
-            border-radius: 20px 20px 0 0;
-        }
-
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 50px rgba(0, 242, 254, 0.2);
-            border-color: var(--tech-cian);
-        }
-
-        .card h3 {
-            font-family: 'Orbitron', sans-serif;
-            color: var(--secondary);
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-
-        .card p {
-            color: var(--text-muted);
-            font-weight: 300;
-            font-size: 0.95rem;
-            margin-bottom: 25px;
-            line-height: 1.6;
-        }
-
-        .btn-pro {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            width: 100%;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .btn-pro:hover {
-            background: var(--primary-dark);
-            box-shadow: 0 0 20px rgba(0, 74, 153, 0.5);
-        }
-
-        /* === SECCIÓN 3: PLATAFORMA INTEGRADA (Datos de Imagen 3) === */
-        .section-3-plataforma {
-            background: rgba(10, 15, 30, 0.6);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid var(--glass-border);
-            padding: 60px 5%;
-            margin-top: 30px;
-        }
-
-        .plataforma-content { max-width: 900px; margin: 0 auto; text-align: center; }
-
-        .plataforma-text h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
-            color: white;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-
-        .plataforma-text p { color: var(--text-muted); font-size: 1rem; line-height: 1.7; margin-bottom: 40px; }
-
-        .plataforma-btn-group { display: flex; gap: 20px; justify-content: center; }
-
-        /* Botón Tech Outline para Sección 3 */
-        .btn-tech-outline {
-            background: rgba(0, 242, 254, 0.05);
-            color: var(--tech-cian);
-            border: 1px solid var(--tech-cian);
-            border-radius: 12px;
-            padding: 15px 30px;
-            text-decoration: none;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            transition: 0.3s;
-        }
-
-        .btn-tech-outline:hover {
-            background: rgba(0, 242, 254, 0.1);
-            box-shadow: 0 0 25px rgba(0, 242, 254, 0.4);
-        }
-
-        /* --- MODALES TECH-INTEGRATED --- */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(15px);
-            z-index: 1000;
+        /* --- SECCIÓN 1: HERO (IMAGEN 1) --- */
+        .hero {
+            height: 85vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://raw.githubusercontent.com/24135004/movilidad-unac2026/main/DSC07583-768x432j.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-        }
-
-        .modal-overlay.open { display: flex; }
-
-        .modal-box {
-            background: rgba(10, 20, 40, 0.95);
-            border: 1px solid var(--tech-cian);
-            padding: 40px;
-            border-radius: 25px;
-            width: 90%;
-            max-width: 450px;
             text-align: center;
-            box-shadow: 0 0 50px rgba(0, 242, 254, 0.3);
-            position: relative;
-        }
-
-        .modal-box h2 {
-            font-family: 'Orbitron', sans-serif;
-            color: var(--tech-cian);
-            font-size: 1.6rem;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-
-        .modal-box p { color: var(--text-muted); font-weight: 300; line-height: 1.6; margin-bottom: 25px; }
-
-        .close-modal {
-            position: absolute;
-            top: 20px; right: 20px;
-            color: var(--text-muted);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        .input-tech {
-            width: 100%;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.05);
             color: white;
-            padding: 15px;
-            border-radius: 10px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            margin-bottom: 20px;
+            padding: 0 10%;
+        }
+        .status-pill { background: rgba(255,255,255,0.2); padding: 5px 20px; border-radius: 20px; font-size: 0.8rem; font-family: 'Montserrat'; letter-spacing: 1px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.3); }
+        .hero h1 { font-family: 'Montserrat', sans-serif; font-size: 4rem; font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
+        .hero p { max-width: 700px; font-size: 1.1rem; margin-bottom: 35px; opacity: 0.9; }
+        .hero-btns { display: flex; gap: 20px; }
+        .btn-main { background: var(--unac-gold); border: none; padding: 15px 35px; border-radius: 30px; color: white; font-weight: 700; cursor: pointer; font-size: 1rem; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
+        .btn-sec { background: rgba(255,255,255,0.1); border: 1px solid white; backdrop-filter: blur(5px); }
+        .btn-main:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+
+        .stats-bar {
+            background: var(--unac-gold);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            padding: 30px 10%;
+            width: 100%;
+        }
+        .stat-item { text-align: center; color: var(--text-dark); }
+        .stat-item h3 { font-family: 'Montserrat'; font-size: 1.8rem; font-weight: 800; }
+        .stat-item p { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; }
+
+        /* --- SECCIÓN 2: SERVICIOS (IMAGEN 2) --- */
+        .services { padding: 80px 10%; text-align: center; background: #f9f9f9; }
+        .services-header { margin-bottom: 50px; }
+        .services-header span { color: var(--unac-gold); font-weight: 700; font-family: 'Montserrat'; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 2px; }
+        .services-header h2 { font-family: 'Montserrat'; font-size: 2.5rem; font-weight: 800; margin-top: 10px; }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .service-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            text-align: left;
+            transition: 0.3s;
+            border-bottom: 4px solid transparent;
+        }
+        .service-card:hover { transform: translateY(-10px); border-bottom: 4px solid var(--unac-gold); }
+        .icon-box { width: 60px; height: 60px; border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-bottom: 25px; font-size: 1.5rem; color: white; }
+        .service-card h3 { font-family: 'Montserrat'; margin-bottom: 15px; font-size: 1.3rem; }
+        .service-card p { color: var(--text-gray); font-size: 0.95rem; margin-bottom: 25px; }
+        .link-more { color: var(--unac-gold); text-decoration: none; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 5px; }
+
+        /* --- SECCIÓN 3: CIERRE Y FOOTER (IMAGEN 3) --- */
+        .cta-section {
+            background: #111;
+            padding: 100px 10%;
+            text-align: center;
+            color: white;
+        }
+        .cta-section h2 { font-family: 'Montserrat'; font-size: 3rem; font-weight: 800; margin-bottom: 20px; }
+        .cta-section p { font-size: 1.2rem; opacity: 0.8; margin-bottom: 40px; }
+        .cta-btns { display: flex; justify-content: center; gap: 20px; }
+
+        footer {
+            background: #000;
+            padding: 80px 10% 40px;
+            color: white;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+        .footer-col h4 { font-family: 'Montserrat'; margin-bottom: 25px; color: white; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul li a { color: var(--text-gray); text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
+        .footer-col ul li a:hover { color: var(--unac-gold); }
+        .contact-info li { display: flex; align-items: center; gap: 10px; color: var(--text-gray); font-size: 0.9rem; }
+
+        .copyright {
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-gray);
         }
 
-        /* --- ANIMACIONES --- */
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- RESPONSIVO --- */
-        @media (max-width: 1024px) {
-            .sidebar { width: 80px; padding: 20px 10px; }
-            .logo-unac { width: 40px; height: 40px; }
-            .logo-text, .nav-link span { display: none; }
-            .main-content { margin-left: 80px; }
-            .hero-text h1 { font-size: 2.2rem; }
-        }
-
+        /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
-            body { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; position: static; flex-direction: row; justify-content: center; padding: 10px; border-right: none; border-bottom: 1px solid var(--glass-border); }
-            .logo-container { display: none; }
-            .main-content { margin-left: 0; }
-            .section-1-hero { height: 300px; }
-            .hero-content { flex-direction: column; bottom: 20px; text-align: center; }
-            .hero-text h1 { font-size: 1.8rem; }
-            .modal-box { padding: 30px; }
-            .plataforma-btn-group { flex-direction: column; gap: 15px; }
+            .hero h1 { font-size: 2.5rem; }
+            .stats-bar { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
-        <div class="logo-container">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Escudo_UNAC.svg/1200px-Escudo_UNAC.svg.png" alt="Logo UNAC" class="logo-unac">
-            <div class="logo-text">MOVILIDAD<br><span style="color:white; font-size:0.8rem; font-family:'Poppins'">Ventanilla v7.0</span></div>
+    <nav>
+        <div class="logo-box">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Escudo_UNAC.svg/1200px-Escudo_UNAC.svg.png" alt="UNAC">
+            <div class="logo-text">
+                <h2>UNIVERSIDAD NACIONAL DEL CALLAO</h2>
+                <span style="font-size: 0.7rem; font-weight: 700; color: #666;">MOVILIDAD UNIVERSITARIA</span>
+            </div>
         </div>
-        <ul class="nav-menu">
-            <li><a href="#" class="nav-link active">🏠 <span>Inicio</span></a></li>
-            <li><a href="https://24135004.github.io/movilidad-unac2026/noticias.html" class="nav-link">📍 <span>Web Anterior</span></a></li>
+        <ul class="nav-links">
+            <li><a href="#">Inicio</a></li>
+            <li><a href="#">Horarios</a></li>
+            <li><a href="#">Rutas</a></li>
+            <li><a href="#">Noticias</a></li>
+            <li><a href="#" class="btn-register">Registrarme</a></li>
         </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="status-pill">● SERVICIO ACTIVO · CICLO 2026-A · RUTA VENTANILLA</div>
+        <h1>Movilidad <br> <span style="color: var(--unac-gold);">Universitaria</span></h1>
+        <p>La UNAC pone a disposición de sus estudiantes el servicio de movilidad para el traslado desde Ventanilla hacia el Campus Universitario, con seguridad y puntualidad garantizada.</p>
+        <div class="hero-btns">
+            <button class="btn-main">🕒 Ver Horarios</button>
+            <button class="btn-main btn-sec">👤 Registrarme Ahora</button>
+        </div>
+    </section>
+
+    <div class="stats-bar">
+        <div class="stat-item"><h3>2</h3><p>Unidades Disponibles</p></div>
+        <div class="stat-item"><h3>~35 km</h3><p>Recorrido por viaje</p></div>
+        <div class="stat-item"><h3>~55 min</h3><p>Duración Estimada</p></div>
+        <div class="stat-item"><h3>+600</h3><p>Estudiantes Beneficiados</p></div>
     </div>
 
-    <div class="main-content">
-        
-        <section class="section-1-hero">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1>Portal de Movilidad UNAC</h1>
-                    <p>TECNOLOGÍA Y ORDEN | Gestión Integral Ruta Ventanilla 2026-A</p>
-                </div>
-                <div style="color: var(--secondary); font-weight: 700; font-family: 'Orbitron', sans-serif;">● SISTEMA ACTIVO</div>
+    <section class="services">
+        <div class="services-header">
+            <span>Plataforma Completa</span>
+            <h2>Todo lo que necesitas</h2>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="icon-box" style="background: #ff7f50;">🕒</div>
+                <h3>Horarios Precisos</h3>
+                <p>Consulta los horarios de salida y llegada en tiempo real para planificar tu viaje diario al campus.</p>
+                <a href="#" class="link-more">Ir a Horarios →</a>
             </div>
-        </section>
-
-        <section class="section-2-dashboard">
-            <div class="dashboard-grid">
-                <div class="card">
-                    <h3>📢 Comunicados Oficiales</h3>
-                    <p>Accede a la información centralizada sobre horarios de salida, paraderos autorizados y actualizaciones del servicio para la Ruta Ventanilla.</p>
-                    <button class="btn-pro" onclick="abrirModal('noticias')">
-                        Ver Noticias Recientes
-                    </button>
-                </div>
-
-                <div class="card">
-                    <h3>🔍 Consulta de Pasaje Digital</h3>
-                    <p>Verifica tu número de asiento asignado e imprime tu ticket digital ingresando tu documento de identidad en el sistema.</p>
-                    <button class="btn-pro" onclick="abrirModal('consulta')">
-                        Verificar mi Asiento
-                    </button>
-                </div>
+            <div class="service-card">
+                <div class="icon-box" style="background: #2ecc71;">🗺️</div>
+                <h3>Rutas Detalladas</h3>
+                <p>Visualiza el recorrido completo con todas las paradas autorizadas y el mapa interactivo de la ruta.</p>
+                <a href="#" class="link-more">Ir a Rutas →</a>
             </div>
-        </section>
-
-        <section class="section-3-plataforma">
-            <div class="plataforma-content">
-                <div class="plataforma-text">
-                    <h2>Un Sistema Profesional y Tecnológico</h2>
-                    <p>Este portal integra la gestión de pasajes digitales de la Ruta Ventanilla, ofreciendo a la comunidad sanmarquina automatización, control y orden para un traslado seguro. Un diseño premium y moderno que asegura una experiencia de usuario superior tanto en PC como en dispositivos móviles.</p>
-                </div>
-                <div class="plataforma-btn-group">
-                    <a href="#" class="btn-tech-outline">Ver Horarios</a>
-                    <a href="#" class="btn-tech-outline">Ver Rutas</a>
-                    <a href="#" class="btn-tech-outline">Registros</a>
-                </div>
-            </div>
-        </section>
-
-    </div>
-
-    <div id="modalGral" class="modal-overlay">
-        <div class="modal-box">
-            <span class="close-modal" onclick="cerrarModal()">&times;</span>
-            <h2 id="modalTitulo">Cargando...</h2>
-            <div id="modalBody">
-                <p id="modalTexto"></p>
-                <div id="inputDNIContainer" style="display:none; margin: 20px 0;">
-                    <input type="text" placeholder="Ingresa tu DNI (8 dígitos)" id="inputDNI" class="input-tech">
-                </div>
-                <button class="btn-pro" onclick="procesarAccion()">Confirmar Acción</button>
+            <div class="service-card">
+                <div class="icon-box" style="background: #e84393;">✍️</div>
+                <h3>Registro Fácil</h3>
+                <p>Regístrate en minutos y garantiza tu lugar en el servicio de transporte universitario para este ciclo.</p>
+                <a href="#" class="link-more">Ir a Registro →</a>
             </div>
         </div>
-    </div>
+    </section>
 
-    <script>
-        function abrirModal(tipo) {
-            const modal = document.getElementById('modalGral');
-            const titulo = document.getElementById('modalTitulo');
-            const texto = document.getElementById('modalTexto');
-            const dniContainer = document.getElementById('inputDNIContainer');
+    <section class="cta-section">
+        <h2>¿Listo para unirte?</h2>
+        <p>Regístrate hoy y garantiza tu acceso al servicio de movilidad universitaria UNAC para el Ciclo 2026-A.</p>
+        <div class="cta-btns">
+            <button class="btn-main" style="padding: 18px 45px;">👤 Registrarme Gratis</button>
+            <button class="btn-main btn-sec" style="padding: 18px 45px;">📞 Contactar</button>
+        </div>
+    </section>
 
-            modal.style.display = 'flex';
-            setTimeout(() => { modal.classList.add('open'); }, 10);
-            document.body.style.overflow = 'hidden';
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Escudo_UNAC.svg/1200px-Escudo_UNAC.svg.png" width="40" style="margin-bottom: 20px;">
+                <h4 style="color: var(--unac-gold); margin-bottom: 10px;">UNAC Movilidad</h4>
+                <p style="color: #888; font-size: 0.85rem;">Servicio de transporte universitario para la comunidad UNAC. Ruta Ventanilla – Campus, Ciclo 2026-A.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Servicios</h4>
+                <ul>
+                    <li><a href="#">Horarios</a></li>
+                    <li><a href="#">Rutas</a></li>
+                    <li><a href="#">Registro</a></li>
+                    <li><a href="#">Noticias</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Recursos</h4>
+                <ul>
+                    <li><a href="#">Documentación</a></li>
+                    <li><a href="#">Contacto</a></li>
+                    <li><a href="#">Soporte</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contacto</h4>
+                <ul class="contact-info">
+                    <li>📍 Av. Juan Pablo II s/n, Callao</li>
+                    <li>📞 (01) 613-0000 Anexo 1234</li>
+                    <li>✉️ movilidad@unac.edu.pe</li>
+                    <li>🕒 Lun – Vie: 7:00 am – 9:00 pm</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2026 Universidad Nacional del Callao – Movilidad Universitaria. Todos los derechos reservados.
+        </div>
+    </footer>
 
-            if(tipo === 'noticias') {
-                titulo.innerText = 'Comunicados Oficiales';
-                texto.innerText = 'Recuerda que el registro es personal y obligatorio. Las unidades cumplen con los protocolos de seguridad establecidos.';
-                dniContainer.style.display = 'none';
-            } else if(tipo === 'consulta') {
-                titulo.innerText = ' Portal de Verificación';
-                texto.innerText = 'Por favor, introduce tu número de DNI para validar tu ticket digital de asiento asignado.';
-                dniContainer.style.display = 'block';
-            }
-        }
-
-        function cerrarModal() {
-            const modal = document.getElementById('modalGral');
-            modal.classList.remove('open');
-            setTimeout(() => { modal.style.display = 'none'; }, 400);
-            document.body.style.overflow = 'auto';
-        }
-
-        function procesarAccion() {
-            const dni = document.getElementById('inputDNI').value;
-            if(dni.length === 8 && !isNaN(dni)) {
-                alert("✅ Conexión establecida con la base de datos UNAC. Consultando datos para el DNI: " + dni);
-                cerrarModal();
-            } else { alert("❌ Por favor, ingresa un número de DNI válido de 8 dígitos numéricos."); }
-        }
-    </script>
 </body>
 </html>
