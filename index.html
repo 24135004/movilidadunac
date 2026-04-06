@@ -3,90 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movilidad UNAC - Plataforma Oficial</title>
+    <title>Movilidad UNAC | Plataforma Oficial</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            /* PALETA OFICIAL UNAC REVISADA */
-            --unac-blue-dark: #003366; /* Azul institucional fuerte */
-            --unac-blue-main: #004a99; /* Azul principal */
-            --unac-gold: #ffb400;      /* Dorado para acentos */
-            --unac-gold-hover: #e6a400;
-            
-            /* Colores de texto y fondo para estilo claro */
-            --text-dark: #1a1a1a;
-            --text-gray: #636e72;
-            --bg-light: #ffffff;
-            --bg-section: #f4f7f6; /* Gris muy leve para diferenciar secciones */
-            
-            /* Elementos de UI */
-            --shadow-card: 0 10px 30px rgba(0,74,153,0.07); /* Sombra con toque azul */
-            --transition: all 0.3s ease;
+            /* Paleta Tecnológica Rústica */
+            --deep-navy: #0a192f;       /* Azul muy oscuro rústico */
+            --unac-blue: #003366;       /* Azul institucional */
+            --rustic-gold: #c59d5f;     /* Dorado mate / ocre rústico */
+            --rustic-gold-bright: #ffb400;
+            --soft-white: #f8fafc;
+            --glass-white: rgba(255, 255, 255, 0.03);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body { 
-            font-family: 'Poppins', sans-serif; 
-            color: var(--text-dark); 
-            line-height: 1.6; 
-            background: var(--bg-light); 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--soft-white); 
+            color: var(--deep-navy);
+            scroll-behavior: smooth;
         }
 
-        h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; font-weight: 700; }
-
-        /* --- NAVEGACIÓN (Estilo Limpio) --- */
+        /* --- NAVEGACIÓN --- */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 8%;
-            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 8%;
+            background: rgba(10, 25, 47, 0.95); /* Fondo oscuro desde el inicio */
             backdrop-filter: blur(10px);
             position: fixed;
             width: 100%;
             top: 0; z-index: 1000;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(197, 157, 95, 0.2);
         }
-        
-        .logo-box { display: flex; align-items: center; gap: 12px; }
-        .logo-box img { width: 50px; }
-        .logo-text h2 { font-size: 1rem; color: var(--unac-blue-dark); line-height: 1.2; }
-        
-        .nav-links { display: flex; gap: 25px; list-style: none; align-items: center; }
-        .nav-links a { 
-            text-decoration: none; 
-            color: var(--unac-blue-dark); 
-            font-size: 0.9rem; 
-            font-weight: 600; 
-            transition: var(--transition);
-        }
-        .nav-links a:hover { color: var(--unac-gold); }
-        
-        /* Botón de registro en nav */
-        .btn-nav-register { 
-            background: var(--unac-gold); 
-            color: white !important; 
-            padding: 10px 20px; 
-            border-radius: 25px; 
-            font-weight: 700 !important;
-            box-shadow: 0 4px 10px rgba(255, 180, 0, 0.3);
-        }
-        .btn-nav-register:hover { background: var(--unac-gold-hover); transform: translateY(-2px); }
+        .logo-box { display: flex; align-items: center; gap: 15px; }
+        .logo-box img { width: 45px; filter: drop-shadow(0 0 5px rgba(197, 157, 95, 0.4)); }
+        .logo-text h2 { color: var(--soft-white); font-size: 0.9rem; letter-spacing: 1px; font-family: 'Montserrat'; }
+        .logo-text span { color: var(--rustic-gold); font-size: 0.7rem; font-weight: 800; }
 
-        /* --- SECCIÓN 1: HERO (CON TU IMAGEN DE FONDO) --- */
+        .nav-links { display: flex; gap: 25px; list-style: none; align-items: center; }
+        .nav-links a { text-decoration: none; color: #cbd5e1; font-size: 0.85rem; font-weight: 600; transition: 0.3s; }
+        .nav-links a:hover { color: var(--rustic-gold); }
+        .btn-register-nav { 
+            background: var(--rustic-gold); 
+            color: var(--deep-navy) !important; 
+            padding: 10px 22px; 
+            border-radius: 8px; 
+            font-weight: 800 !important;
+        }
+
+        /* --- HERO (OSCURO Y RÚSTICO) --- */
         .hero {
             height: 100vh;
-            /* SE USA LA IMAGEN DE TU CAMPUS CON UN OVERLAY AZUL PARA EL TEXTO */
-            background: linear-gradient(rgba(0, 51, 102, 0.7), rgba(0, 74, 153, 0.8)), 
+            background: linear-gradient(rgba(10, 25, 47, 0.85), rgba(10, 25, 47, 0.95)), 
                         url('https://raw.githubusercontent.com/24135004/movilidadunac/main/2545456.jpg');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed; /* Efecto Parallax sutil */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -94,240 +70,120 @@
             text-align: center;
             color: white;
             padding: 0 10%;
-            margin-top: 0; /* Ajuste para nav fixed */
         }
-        
-        .status-pill { 
-            background: rgba(255,255,255,0.15); 
-            color: var(--unac-gold);
-            padding: 7px 20px; 
-            border-radius: 20px; 
-            font-size: 0.8rem; 
-            font-weight: 700;
-            margin-bottom: 25px; 
-            border: 1px solid rgba(255,255,255,0.3); 
+
+        .status-pill {
+            background: rgba(197, 157, 95, 0.1);
+            border: 1px solid var(--rustic-gold);
+            color: var(--rustic-gold);
+            padding: 8px 25px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
-        
+
         .hero h1 { 
-            font-size: 4.5rem; 
-            font-weight: 800; 
-            line-height: 1.1; 
-            margin-bottom: 20px; 
-            letter-spacing: -2px;
+            font-family: 'Montserrat';
+            font-size: clamp(3rem, 10vw, 6rem); 
+            line-height: 0.9;
+            margin-bottom: 20px;
         }
-        
-        /* Estilo de texto con borde/outline para "Universitaria" */
         .hero h1 span.outline {
             color: transparent;
-            -webkit-text-stroke: 2px var(--unac-gold);
-            font-family: 'Montserrat', sans-serif;
+            -webkit-text-stroke: 1px var(--rustic-gold);
         }
 
-        .hero p { 
-            max-width: 700px; 
-            font-size: 1.15rem; 
-            margin-bottom: 40px; 
-            opacity: 0.95; 
-            font-weight: 300;
-        }
-        
+        .hero p { max-width: 700px; color: #94a3b8; font-size: 1.1rem; margin-bottom: 40px; font-weight: 300; }
+
         .hero-btns { display: flex; gap: 20px; }
-
-        /* BOTONES MODERNOS */
-        .btn-main { 
-            padding: 15px 35px; 
-            border-radius: 30px; 
-            font-weight: 700; 
-            cursor: pointer; 
-            font-size: 1rem; 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            transition: var(--transition);
-            border: none;
+        .btn-cta {
+            padding: 18px 40px;
+            border-radius: 12px;
+            font-weight: 700;
             text-decoration: none;
+            transition: 0.4s;
+            display: flex; align-items: center; gap: 10px;
         }
-        
-        .btn-primary { 
-            background: var(--unac-gold); 
-            color: var(--unac-blue-dark); 
-        }
-        .btn-primary:hover { 
-            background: white; 
-            transform: translateY(-3px); 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2); 
-        }
-        
-        .btn-secondary { 
-            background: rgba(255,255,255,0.1); 
-            color: white; 
-            border: 1px solid rgba(255,255,255,0.5) !important; 
-            backdrop-filter: blur(5px); 
-        }
-        .btn-secondary:hover { 
-            background: white; 
-            color: var(--unac-blue-dark); 
-        }
+        .primary { background: var(--rustic-gold); color: var(--deep-navy); }
+        .secondary { border: 1px solid rgba(255,255,255,0.3); color: white; backdrop-filter: blur(5px); }
+        .btn-cta:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.4); }
 
-        /* --- BARRA DE ESTADÍSTICAS (Ahora Integrada) --- */
-        .stats-bar {
-            background: white;
+        /* --- STATS (SIN LÍNEA, INTEGRADO AL FONDO OSCURO) --- */
+        .stats-section {
+            background: var(--deep-navy); /* Mantiene el tono oscuro del hero */
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            padding: 40px 10%;
-            width: 100%;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            margin-top: -50px; /* Eleva la barra sobre el hero */
-            position: relative;
-            z-index: 10;
-            border-radius: 15px 15px 0 0;
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
+            padding: 60px 10%;
+            border-bottom: 1px solid rgba(197, 157, 95, 0.1);
         }
-        .stat-item { text-align: center; color: var(--unac-blue-dark); border-right: 1px solid rgba(0,0,0,0.05); }
-        .stat-item:last-child { border-right: none; }
-        .stat-item h3 { font-size: 2.8rem; font-weight: 800; color: var(--unac-blue-main); }
-        .stat-item p { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; color: var(--text-gray); letter-spacing: 1px;}
+        .stat-card { text-align: center; }
+        .stat-card h3 { color: var(--rustic-gold); font-size: 2.5rem; font-family: 'Montserrat'; }
+        .stat-card p { color: #64748b; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; margin-top: 5px; }
 
-        /* --- SECCIÓN 2: SERVICIOS (Estilo Claro y Tecnológico) --- */
-        .services { padding: 100px 10%; text-align: center; background: var(--bg-section); }
-        
-        .services-header { margin-bottom: 60px; }
-        .services-header span { 
-            color: var(--unac-blue-main); 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            font-size: 0.9rem; 
-            letter-spacing: 2px; 
-        }
-        .services-header h2 { font-size: 3rem; color: var(--unac-blue-dark); margin-top: 10px; letter-spacing: -1px; }
-        
+        /* --- SERVICIOS (ESTILO LIMPIO) --- */
+        .services { padding: 100px 10%; background: #fff; }
+        .services-header { text-align: center; margin-bottom: 70px; }
+        .services-header h2 { font-size: 3rem; color: var(--deep-navy); letter-spacing: -1px; }
+
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
         }
-        
-        .service-card {
+        .card {
             background: white;
-            padding: 40px;
+            padding: 45px;
             border-radius: 20px;
-            box-shadow: var(--shadow-card);
-            text-align: left;
-            transition: var(--transition);
-            border: 1px solid rgba(0,74,153,0.05);
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.03);
+            border: 1px solid #f1f5f9;
+            transition: 0.4s;
         }
-        
-        /* Decoración tecnológica en hover */
-        .service-card::after {
-            content: '';
-            position: absolute; bottom: 0; left: 0; width: 100%; height: 5px;
-            background: var(--unac-gold);
-            transform: scaleX(0);
-            transition: var(--transition);
+        .card:hover { transform: translateY(-10px); border-color: var(--rustic-gold); }
+        .icon { 
+            width: 60px; height: 60px; 
+            background: rgba(10, 25, 47, 0.05); 
+            border-radius: 15px;
+            display: grid; place-items: center;
+            font-size: 1.5rem; color: var(--unac-blue);
+            margin-bottom: 30px;
         }
-        
-        .service-card:hover { 
-            transform: translateY(-10px); 
-            border-color: rgba(0,74,153,0.1);
-        }
-        .service-card:hover::after { transform: scaleX(1); }
+        .card h3 { margin-bottom: 15px; font-size: 1.4rem; color: var(--deep-navy); }
+        .card p { color: #64748b; line-height: 1.8; margin-bottom: 25px; font-size: 0.95rem; }
+        .card a { color: var(--rustic-gold); text-decoration: none; font-weight: 700; font-size: 0.9rem; }
 
-        /* Iconos Circulares Azules */
-        .icon-box { 
-            width: 70px; height: 70px; 
-            border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; 
-            margin-bottom: 30px; 
-            font-size: 1.8rem; 
-            color: var(--unac-blue-main); 
-            background: rgba(0, 74, 153, 0.05);
-            border: 1px solid rgba(0, 74, 153, 0.1);
-        }
-        
-        .service-card h3 { color: var(--unac-blue-dark); margin-bottom: 15px; font-size: 1.4rem; }
-        .service-card p { color: var(--text-gray); font-size: 0.95rem; margin-bottom: 30px; font-weight: 300; }
-        
-        .link-more { 
-            color: var(--unac-blue-main); 
-            text-decoration: none; 
-            font-weight: 700; 
-            font-size: 0.9rem; 
-            display: flex; align-items: center; gap: 8px; 
-            transition: var(--transition);
-        }
-        .link-more:hover { color: var(--unac-gold); gap: 12px; }
-
-        /* --- SECCIÓN 3: CTA FINAL (Azul UNAC) --- */
-        .cta-section {
-            background: linear-gradient(135deg, var(--unac-blue-dark), var(--unac-blue-main));
-            padding: 100px 10%;
-            text-align: center;
-            color: white;
-            position: relative;
-        }
-        /* Patrón de puntos decorativo */
-        .cta-section::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-            opacity: 0.5;
-        }
-        
-        .cta-section h2 { font-size: 3.2rem; margin-bottom: 20px; letter-spacing: -1px; position: relative; z-index: 1;}
-        .cta-section p { font-size: 1.2rem; opacity: 0.9; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; font-weight: 300; position: relative; z-index: 1;}
-        .cta-btns { display: flex; justify-content: center; gap: 20px; position: relative; z-index: 1;}
-
-        /* --- FOOTER (Estilo Profesional Oscuro) --- */
+        /* --- FOOTER RÚSTICO --- */
         footer {
-            background: #111;
+            background: #050c16;
             padding: 80px 10% 40px;
-            color: #a0a0a0;
-            border-top: 4px solid var(--unac-gold);
+            color: #94a3b8;
         }
-        
         .footer-grid {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1.5fr;
             gap: 50px;
-            margin-bottom: 50px;
+            margin-bottom: 60px;
         }
-        
-        .footer-col h4 { margin-bottom: 25px; color: white; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 2px; }
+        .footer-col h4 { color: white; margin-bottom: 25px; font-size: 0.9rem; letter-spacing: 1px; }
         .footer-col ul { list-style: none; }
-        .footer-col ul li { margin-bottom: 12px; }
-        .footer-col ul li a { color: #a0a0a0; text-decoration: none; font-size: 0.9rem; transition: var(--transition); }
-        .footer-col ul li a:hover { color: var(--unac-gold); padding-left: 5px; }
-        
-        /* Info de contacto con iconos */
-        .contact-info li { display: flex; align-items: flex-start; gap: 12px; font-size: 0.9rem; margin-bottom: 15px;}
-        .contact-info i { color: var(--unac-gold); margin-top: 4px; }
+        .footer-col li { margin-bottom: 15px; font-size: 0.9rem; }
+        .footer-col a { color: #64748b; text-decoration: none; transition: 0.3s; }
+        .footer-col a:hover { color: var(--rustic-gold); }
 
-        .copyright {
-            padding-top: 30px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            text-align: center;
-            font-size: 0.8rem;
-            color: #666;
+        .social-links { display: flex; gap: 15px; margin-top: 20px; }
+        .social-links a { 
+            width: 40px; height: 40px; 
+            background: rgba(255,255,255,0.05); 
+            display: grid; place-items: center; 
+            border-radius: 50%; color: white; 
         }
 
-        /* --- RESPONSIVE OPTIMIZATION --- */
-        @media (max-width: 1024px) {
-            .hero h1 { font-size: 3.5rem; }
-            .stats-bar { grid-template-columns: repeat(2, 1fr); gap: 30px; }
-            .stat-item { border-right: none; }
-        }
-        
         @media (max-width: 768px) {
-            nav { padding: 15px 5%; }
-            .nav-links { display: none; } /* Implementar menú hamburguesa en JS si es necesario */
-            .hero h1 { font-size: 2.8rem; }
-            .hero p { font-size: 1rem; }
-            .footer-grid { grid-template-columns: 1fr; gap: 40px; }
-            .services-header h2 { font-size: 2.2rem; }
+            .nav-links, .stats-section { display: none; }
+            .hero h1 { font-size: 3.5rem; }
+            .footer-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -337,107 +193,101 @@
         <div class="logo-box">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Escudo_UNAC.svg/1200px-Escudo_UNAC.svg.png" alt="Logo UNAC">
             <div class="logo-text">
-                <h2>UNIVERSIDAD NACIONAL DEL CALLAO</h2>
-                <span style="font-size: 0.7rem; font-weight: 700; color: var(--unac-blue-main);">MOVILIDAD UNIVERSITARIA</span>
+                <h2>UNAC OFICIAL</h2>
+                <span>MOVILIDAD SMART</span>
             </div>
         </div>
         <ul class="nav-links">
-            <li><a href="#inicio">Inicio</a></li>
-            <li><a href="#horarios">Horarios</a></li>
-            <li><a href="#rutas">Rutas</a></li>
-            <li><a href="#registro" class="btn-nav-register"><i class="fas fa-user-circle"></i> Mi Portal</a></li>
+            <li><a href="#">Horarios</a></li>
+            <li><a href="#">Rutas</a></li>
+            <li><a href="#">API</a></li>
+            <li><a href="#" class="btn-register-nav">Registrarme</a></li>
         </ul>
     </nav>
 
-    <section class="hero" id="inicio">
-        <div class="status-pill">● SERVICIO ACTIVO · CICLO 2026-A · RUTA VENTANILLA</div>
-        <h1>Movilidad <br> <span class="outline">Universitaria</span></h1>
-        <p>La UNAC moderniza su servicio de transporte para garantizar el traslado seguro, puntual y cómodo de sus estudiantes desde Ventanilla hacia el Campus Universitario.</p>
+    <section class="hero">
+        <div class="status-pill">● SERVICIO ACTIVO · CICLO 2026-A</div>
+        <h1>Movilidad<br><span class="outline">Universitaria</span></h1>
+        <p>Conectamos Ventanilla con el Campus Universitario a través de un sistema de transporte eficiente, tecnológico y seguro para toda la comunidad UNAC.</p>
         <div class="hero-btns">
-            <a href="#horarios" class="btn-main btn-primary"><i class="fas fa-clock"></i> Ver Horarios</a>
-            <a href="#registro" class="btn-main btn-secondary"><i class="fas fa-edit"></i> Registrarme</a>
+            <a href="#" class="btn-cta primary"><i class="fas fa-calendar-alt"></i> Ver Horarios</a>
+            <a href="#" class="btn-cta secondary"><i class="fas fa-user-plus"></i> Registrarme Ahora</a>
         </div>
     </section>
 
-    <div class="stats-bar">
-        <div class="stat-item"><h3>02</h3><p>Unidades Activas</p></div>
-        <div class="stat-item"><h3>35 km</h3><p>Recorrido / Viaje</p></div>
-        <div class="stat-item"><h3>55 min</h3><p>Tiempo Estimado</p></div>
-        <div class="stat-item"><h3>+600</h3><p>Estudiantes Beneficiados</p></div>
-    </div>
+    <section class="stats-section">
+        <div class="stat-card"><h3>2</h3><p>Unidades</p></div>
+        <div class="stat-card"><h3>35km</h3><p>Recorrido</p></div>
+        <div class="stat-card"><h3>55m</h3><p>Duración</p></div>
+        <div class="stat-card"><h3>600+</h3><p>Estudiantes</p></div>
+    </section>
 
-    <section class="services" id="servicios">
+    <section class="services">
         <div class="services-header">
-            <span>Plataforma Digital</span>
-            <h2>Ecosistema de Movilidad</h2>
+            <p style="color: var(--rustic-gold); font-weight: 800; font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px;">Plataforma Unificada</p>
+            <h2>Todo lo que necesitas</h2>
         </div>
-        <div class="services-grid">
-            <div class="service-card">
-                <div class="icon-box"><i class="fas fa-history"></i></div>
-                <h3>Horarios Precisos</h3>
-                <p>Consulta las frecuencias de salida y llegada actualizadas para planificar tu viaje diario.</p>
-                <a href="#" class="link-more">Ver Panel de Horarios <i class="fas fa-arrow-right"></i></a>
-            </div>
-            <div class="service-card">
-                <div class="icon-box"><i class="fas fa-map-marked-alt"></i></div>
-                <h3>Rutas Detalladas</h3>
-                <p>Visualiza el mapa interactivo con todos los paraderos autorizados en la ruta Ventanilla.</p>
-                <a href="#" class="link-more">Explorar Mapa <i class="fas fa-arrow-right"></i></a>
-            </div>
-            <div class="service-card">
-                <div class="icon-box"><i class="fas fa-qrcode"></i></div>
-                <h3>Registro Digital</h3>
-                <p>Regístrate en línea y gestiona tu acceso al servicio de manera rápida y sencilla.</p>
-                <a href="#" class="link-more">Ir a Registro <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </div>
-    </section>
 
-    <section class="cta-section" id="registro">
-        <h2>¿Listo para viajar?</h2>
-        <p>Regístrate hoy mismo en la plataforma y garantiza tu lugar en el servicio de movilidad UNAC para el Ciclo 2026-A.</p>
-        <div class="cta-btns">
-            <button class="btn-main btn-primary" style="padding: 18px 45px;"><i class="fas fa-user-plus"></i> Iniciar Registro Gratis</button>
-            <button class="btn-main btn-secondary"><i class="fas fa-headset"></i> Soporte</button>
+        <div class="services-grid">
+            <div class="card">
+                <div class="icon"><i class="fas fa-clock"></i></div>
+                <h3>Horarios en Tiempo Real</h3>
+                <p>Planifica tu día con precisión consultando las salidas y llegadas actualizadas minuto a minuto.</p>
+                <a href="#">IR A HORARIOS <i class="fas fa-chevron-right"></i></a>
+            </div>
+            <div class="card">
+                <div class="icon"><i class="fas fa-route"></i></div>
+                <h3>Rutas Inteligentes</h3>
+                <p>Explora el recorrido completo con paradas geolocalizadas para una mejor experiencia de viaje.</p>
+                <a href="#">VER RUTAS <i class="fas fa-chevron-right"></i></a>
+            </div>
+            <div class="card">
+                <div class="icon"><i class="fas fa-id-card"></i></div>
+                <h3>Registro Digital</h3>
+                <p>Proceso 100% digital. Obtén tu pase de movilidad de forma instantánea y sin papeles.</p>
+                <a href="#">INICIAR REGISTRO <i class="fas fa-chevron-right"></i></a>
+            </div>
         </div>
     </section>
 
     <footer>
         <div class="footer-grid">
             <div class="footer-col">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Escudo_UNAC.svg/1200px-Escudo_UNAC.svg.png" width="40" style="margin-bottom: 20px;">
-                <h4 style="color: var(--unac-gold); margin-bottom: 10px;">UNAC Movilidad</h4>
-                <p style="font-size: 0.85rem; line-height: 1.5;">Oficina de Bienestar Universitario. Servicio de transporte para la comunidad UNAC. Ruta Ventanilla – Campus.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Escudo_UNAC.svg/1200px-Escudo_UNAC.svg.png" width="40" style="margin-bottom: 20px">
+                <p>Modernizando el transporte universitario para la excelencia académica en el Callao.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
             </div>
             <div class="footer-col">
-                <h4>Plataforma</h4>
+                <h4>Servicios</h4>
                 <ul>
-                    <li><a href="#">Horarios</a></li>
-                    <li><a href="#">Rutas</a></li>
-                    <li><a href="#">Registro</a></li>
-                    <li><a href="#">Reglamento</a></li>
+                    <li><a href="#">Horarios Semanales</a></li>
+                    <li><a href="#">Mapa de Paraderos</a></li>
+                    <li><a href="#">Noticias UNAC</a></li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h4>Recursos</h4>
+                <h4>Soporte</h4>
                 <ul>
                     <li><a href="#">Preguntas Frecuentes</a></li>
+                    <li><a href="#">Documentación API</a></li>
                     <li><a href="#">Contacto</a></li>
-                    <li><a href="#">Soporte Técnico</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>Contacto Oficial</h4>
-                <ul class="contact-info">
-                    <li><i class="fas fa-map-marker-alt"></i> Av. Juan Pablo II s/n, Bellavista, Callao</li>
-                    <li><i class="fas fa-phone"></i> (01) 613-0000 Anexo 1234</li>
-                    <li><i class="fas fa-envelope"></i> movilidad@unac.edu.pe</li>
-                    <li><i class="fas fa-clock"></i> Lun – Vie: 7:00 am – 9:00 pm</li>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt" style="color:var(--rustic-gold); margin-right: 10px;"></i> Av. Juan Pablo II s/n, Callao</li>
+                    <li><i class="fas fa-envelope" style="color:var(--rustic-gold); margin-right: 10px;"></i> movilidad@unac.edu.pe</li>
+                    <li><i class="fas fa-phone" style="color:var(--rustic-gold); margin-right: 10px;"></i> (01) 613-0000</li>
                 </ul>
             </div>
         </div>
-        <div class="copyright">
-            © 2026 Universidad Nacional del Callao – Todos los derechos reservados.
+        <div style="text-align: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 30px;">
+            <p style="font-size: 0.75rem;">© 2026 Universidad Nacional del Callao. Todos los derechos reservados.</p>
         </div>
     </footer>
 
