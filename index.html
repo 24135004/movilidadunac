@@ -3,246 +3,281 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movilidad Ventanilla - Oficial</title>
+    <title>Movilidad Ventanilla | Registro Oficial</title>
     <style>
         :root {
-            --soft-blue: #f0f4f8;
-            --accent: #3b82f6;
-            --glass: rgba(255, 255, 255, 0.9);
+            --primary: #2563eb;
+            --glass: rgba(255, 255, 255, 0.7);
+            --border: rgba(255, 255, 255, 0.4);
         }
 
         * {
             margin: 0; padding: 0; box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            user-select: none; /* Bloquea selección de texto */
-            -webkit-user-drag: none;
+            font-family: 'Inter', -apple-system, sans-serif;
+            user-select: none; /* Bloqueo total de selección */
         }
 
         body {
-            background: #e2e8f0;
-            height: 100vh;
+            background: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 100%);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            perspective: 1200px;
             overflow: hidden;
+            perspective: 2000px;
         }
 
-        /* Fondo Animado Sutil */
-        .bg-gradient {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #ffffff 0%, #cbd5e1 100%);
+        /* Fondo Animado 3D */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
             z-index: -1;
+            animation: move 20s infinite alternate;
+        }
+        .orb-1 { width: 400px; height: 400px; background: rgba(37, 99, 235, 0.2); top: -10%; left: -10%; }
+        .orb-2 { width: 300px; height: 300px; background: rgba(168, 85, 247, 0.2); bottom: -10%; right: -10%; }
+
+        @keyframes move {
+            from { transform: translate(0, 0) scale(1); }
+            to { transform: translate(100px, 50px) scale(1.2); }
         }
 
-        /* Contenedor 3D Suave */
-        .card-3d {
+        /* Contenedor Principal 3D */
+        .container-3d {
+            width: 100%;
+            max-width: 480px;
+            padding: 20px;
+            transform-style: preserve-3d;
+            animation: entry 1.2s ease-out;
+        }
+
+        @keyframes entry {
+            0% { opacity: 0; transform: translateZ(-500px) rotateX(20deg); }
+            100% { opacity: 1; transform: translateZ(0) rotateX(0); }
+        }
+
+        .glass-card {
             background: var(--glass);
-            backdrop-filter: blur(15px);
-            padding: 30px;
-            border-radius: 25px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-            width: 90%;
-            max-width: 450px;
-            border: 1px solid white;
-            transform: rotateX(5deg);
-            transition: 0.5s ease;
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            padding: 35px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            transform: rotateX(5deg) rotateY(-5deg);
+            transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        .card-3d:hover {
-            transform: rotateX(0deg) translateY(-5px);
+        .glass-card:hover {
+            transform: rotateX(0deg) rotateY(0deg) translateY(-5px);
+            box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.15);
         }
 
-        header { text-align: center; margin-bottom: 20px; }
-        h1 { color: #1e293b; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; }
+        header { text-align: center; margin-bottom: 25px; }
+        h1 { color: #1e293b; font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; }
         
-        .alert-box {
+        .status-badge {
             background: #fff;
-            border-left: 4px solid var(--accent);
-            padding: 10px;
-            margin: 15px 0;
-            font-size: 0.8rem;
+            padding: 8px 15px;
+            border-radius: 12px;
+            font-size: 0.75rem;
             color: #475569;
-            border-radius: 5px;
+            margin-top: 15px;
+            border: 1px solid #e2e8f0;
+            display: inline-block;
         }
 
-        .input-field {
-            margin-bottom: 15px;
-        }
-
+        .form-section { margin-bottom: 18px; }
         label {
             display: block;
-            font-size: 0.75rem;
-            font-weight: bold;
+            font-size: 0.7rem;
+            font-weight: 700;
             color: #64748b;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             text-transform: uppercase;
+            padding-left: 5px;
         }
 
         input, select {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            color: #1e293b;
             outline: none;
-            background: #f8fafc;
-            font-size: 1rem;
             transition: 0.3s;
-            /* Cursor de texto para simular que es normal */
-            cursor: text;
         }
 
-        /* Cambiar color cuando el script quita el readonly */
-        input:focus:not([readonly]) {
-            border-color: var(--accent);
-            background: white;
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.1);
+        input:focus {
+            background: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         }
 
-        .btn-send {
+        /* Botón 3D */
+        .btn-push {
             width: 100%;
-            padding: 15px;
+            padding: 16px;
             background: #1e293b;
             color: white;
             border: none;
-            border-radius: 12px;
-            font-weight: bold;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 1rem;
             cursor: pointer;
-            margin-top: 10px;
             transition: 0.3s;
+            margin-top: 10px;
+            box-shadow: 0 4px 0 #000;
         }
 
-        .btn-send:hover {
-            background: var(--accent);
-            transform: scale(1.02);
+        .btn-push:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #000;
+        }
+
+        .btn-push:hover:not(:disabled) {
+            background: var(--primary);
         }
 
         footer {
+            margin-top: 25px;
             text-align: center;
             font-size: 0.7rem;
             color: #94a3b8;
-            margin-top: 20px;
+            line-height: 1.5;
         }
 
+        /* Bloqueo Visual */
+        .no-copy {
+            pointer-events: all;
+        }
     </style>
 </head>
 <body>
 
-    <div class="bg-gradient"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
 
-    <div class="card-3d">
-        <header>
-            <h1>🚌 MOVILIDAD VENTANILLA</h1>
-            <div class="alert-box">
-                <b>AVISO:</b> Autocompletado y Pegado DESACTIVADOS. <br>
-                Escriba manualmente para validar su identidad.
-            </div>
-        </header>
+    <div class="container-3d">
+        <div class="glass-card">
+            <header>
+                <h1>🚌 MOVILIDAD VENTANILLA</h1>
+                <div class="status-badge">
+                    ⚡ SISTEMA ANTI-AUTOFILL ACTIVO
+                </div>
+            </header>
 
-        <!-- SUSTITUIR POR TU URL DE GOOGLE APPS SCRIPT -->
-        <form id="secureForm" action="TU_URL_DE_APPS_SCRIPT_AQUI" method="POST">
-            
-            <div class="input-field">
-                <label>Nombres Completos</label>
-                <input type="text" name="nombres" id="n_1" 
-                    placeholder="Escriba aquí..."
-                    readonly onfocus="this.removeAttribute('readonly');"
-                    autocomplete="off" required>
-            </div>
+            <form id="proForm" action="TU_URL_DE_APPS_SCRIPT_AQUI" method="POST">
+                
+                <div class="form-section">
+                    <label>Nombres (Mínimo 1)</label>
+                    <input type="text" name="nombres" class="secure-input" 
+                           placeholder="Escriba manualmente..." required>
+                </div>
 
-            <div class="input-field">
-                <label>Apellidos (Ambos)</label>
-                <input type="text" name="apellidos" id="a_2" 
-                    placeholder="Escriba aquí..."
-                    readonly onfocus="this.removeAttribute('readonly');"
-                    autocomplete="off" required>
-            </div>
+                <div class="form-section">
+                    <label>Apellidos (2 Apellidos)</label>
+                    <input type="text" name="apellidos" class="secure-input" 
+                           placeholder="Escriba manualmente..." required>
+                </div>
 
-            <div class="input-field">
-                <label>Código de Estudiante</label>
-                <input type="text" name="codigo" id="c_3" 
-                    placeholder="Escriba aquí..."
-                    readonly onfocus="this.removeAttribute('readonly');"
-                    autocomplete="off" required>
-            </div>
+                <div class="form-section">
+                    <label>Código de Estudiante</label>
+                    <input type="text" name="codigo" class="secure-input" 
+                           placeholder="Código oficial..." required>
+                </div>
 
-            <div class="input-field">
-                <label>Facultad</label>
-                <select name="facultad" required>
-                    <option value="" disabled selected>Seleccione su facultad</option>
-                    <option value="FCC">FCC</option><option value="FCA">FCA</option>
-                    <option value="FCE">FCE</option><option value="FIARN">FIARN</option>
-                    <option value="FIQ">FIQ</option><option value="FCS">FCS</option>
-                    <option value="FCED">FCED</option><option value="FIIS">FIIS</option>
-                    <option value="FIME">FIME</option><option value="FIPA">FIPA</option>
-                    <option value="FCNM">FCNM</option><option value="FIEE">FIEE</option>
-                </select>
-            </div>
+                <div class="form-section">
+                    <label>Facultad</label>
+                    <select name="facultad" required>
+                        <option value="" disabled selected>Seleccione...</option>
+                        <option>FCC</option><option>FCA</option><option>FCE</option>
+                        <option>FIARN</option><option>FIQ</option><option>FCS</option>
+                        <option>FCED</option><option>FIIS</option><option>FIME</option>
+                        <option>FIPA</option><option>FCNM</option><option>FIEE</option>
+                    </select>
+                </div>
 
-            <div class="input-field">
-                <label>DNI / Documento</label>
-                <input type="text" name="dni" id="d_4" 
-                    maxlength="8" placeholder="8 dígitos"
-                    readonly onfocus="this.removeAttribute('readonly');"
-                    autocomplete="off" required>
-            </div>
+                <div class="form-section">
+                    <label>DNI</label>
+                    <input type="text" name="dni" class="secure-input" 
+                           maxlength="8" placeholder="8 dígitos" required>
+                </div>
 
-            <button type="submit" class="btn-send" id="btnSubmit">ENVIAR DATOS</button>
-        </form>
+                <button type="submit" class="btn-push" id="btnSubmit">REGISTRAR AHORA</button>
+            </form>
 
-        <footer>
-            <b>ATT: DELEGADO</b><br>
-            El sistema detectará registros automáticos.
-        </footer>
+            <footer>
+                <b>⚠️ ADVERTENCIA:</b> Para garantizar la equidad, el pegado y autocompletado están bloqueados. Debe digitar sus datos.<br><br>
+                <b>ATT. DELEGADO 🫡</b>
+            </footer>
+        </div>
     </div>
 
     <script>
-        const form = document.getElementById('secureForm');
+        const form = document.getElementById('proForm');
+        const inputs = document.querySelectorAll('.secure-input');
 
-        // 1. BLOQUEO DE PEGADO (PASTE) EN TODOS LOS CAMPOS
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('paste', e => e.preventDefault());
+        // --- BLOQUEO NIVEL DIOS ---
+
+        inputs.forEach(input => {
+            // 1. Bloquear Pegado
+            input.addEventListener('paste', e => {
+                e.preventDefault();
+                alert("❌ Pegado bloqueado. Escribe manualmente.");
+            });
+
+            // 2. Bloquear Drop (arrastrar texto)
             input.addEventListener('drop', e => e.preventDefault());
+
+            // 3. BLOQUEO TOTAL DE AUTOCOMPLETADO
+            // Ponemos el campo en readonly y solo se activa si hay un click humano
+            input.setAttribute('readonly', 'readonly');
+            input.addEventListener('mousedown', () => {
+                input.removeAttribute('readonly');
+            });
+
+            // 4. VERIFICACIÓN DE PULSACIÓN REAL
+            // Si el valor cambia pero no fue por una tecla, lo borramos.
+            let isKeyTyped = false;
+            input.addEventListener('keydown', () => isKeyTyped = true);
             
-            // 2. DETECTOR DE AUTOCOMPLETADO
-            // Si el valor cambia sin que haya una tecla presionada, lo borramos
-            input.addEventListener('input', function(e) {
-                if (e.inputType === 'insertFromPaste' || e.inputType === undefined) {
-                    this.value = '';
+            input.addEventListener('input', (e) => {
+                if (!isKeyTyped) {
+                    input.value = ''; // Borra autocompletado instantáneamente
                 }
+                isKeyTyped = false;
             });
         });
 
-        // 3. BLOQUEO DE CLICK DERECHO Y TECLAS DE ATAJO
+        // 5. Bloquear Clic Derecho y Atajos
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('keydown', e => {
-            if (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'u' || e.key === 'j' || e.key === 's')) {
+            if (e.ctrlKey && (e.key === 'v' || e.key === 'c' || e.key === 'u' || e.key === 's')) {
                 e.preventDefault();
-                alert("Acción bloqueada. Debe escribir manualmente.");
             }
-            if (e.key === "F12") e.preventDefault();
         });
 
-        // 4. ENVÍO SEGURO
-        form.addEventListener('submit', function(e) {
+        // Envío AJAX
+        form.addEventListener('submit', (e) => {
             e.preventDefault();
             const btn = document.getElementById('btnSubmit');
-            btn.innerText = "VERIFICANDO...";
+            btn.innerText = "PROCESANDO...";
             btn.disabled = true;
 
-            const formData = new FormData(form);
             fetch(form.action, {
                 method: 'POST',
-                body: formData,
+                body: new FormData(form),
                 mode: 'no-cors'
             }).then(() => {
-                alert("¡REGISTRO COMPLETADO EXITOSAMENTE!");
+                alert("✅ REGISTRO CORRECTO. Tus datos están en el Excel.");
                 form.reset();
-                btn.innerText = "ENVIAR DATOS";
+                btn.innerText = "REGISTRAR AHORA";
                 btn.disabled = false;
             }).catch(() => {
-                alert("Error de conexión.");
+                alert("Error de conexión");
                 btn.disabled = false;
             });
         });
