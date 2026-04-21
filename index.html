@@ -3,231 +3,252 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movilidad Ventanilla | Acceso</title>
+    <title>Movilidad Ventanilla | Acceso Seguro</title>
+    <!-- Librerías para 3D y Animaciones -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --gold-gradient: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
-            --dark: #0a0a0a;
+            --gold: #d4af37;
+            --bright-gold: #f9e2af;
+            --dark-bg: #050505;
+            --tech-blue: #00d2ff;
         }
 
         * {
             margin: 0; padding: 0; box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Outfit', sans-serif;
+            user-select: none;
         }
 
         body {
-            background-color: var(--dark);
+            background-color: var(--dark-bg);
             height: 100vh;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-            perspective: 1000px;
             color: white;
         }
 
-        /* --- ESTILO DEL ACERTIJO --- */
-        #riddle-screen {
-            text-align: center;
-            z-index: 10;
-            transition: all 0.8s ease;
+        /* --- CONTENEDOR 3D DEL GLOBO --- */
+        #canvas-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
         }
 
-        .riddle-box {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 30px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        h2 { margin-bottom: 20px; font-weight: 300; letter-spacing: 2px; }
-        
-        input#answer {
-            background: transparent;
-            border: none;
-            border-bottom: 2px solid #bf953f;
-            color: white;
-            font-size: 1.5rem;
-            text-align: center;
-            width: 200px;
-            outline: none;
-            margin-bottom: 20px;
-        }
-
-        /* --- ESTILO DE LA TARJETA DORADA 3D --- */
-        #main-card {
-            display: none;
-            width: 90%;
-            max-width: 450px;
-            background: var(--gold-gradient);
-            border-radius: 25px;
-            padding: 35px 25px;
-            color: #1a1a1a;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.5);
+        /* --- INTERFAZ DEL ACERTIJO --- */
+        #riddle-ui {
             position: relative;
-            transform-style: preserve-3d;
-            border: 1px solid #fcf6ba;
+            z-index: 10;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 30px;
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            box-shadow: 0 0 50px rgba(0, 210, 255, 0.1);
         }
 
-        .header-msg { font-weight: 800; font-size: 1.2rem; margin-bottom: 10px; }
-        .date-text { font-size: 0.9rem; margin-bottom: 20px; opacity: 0.8; }
-        
-        .recordar-box {
-            font-weight: bold;
-            margin-bottom: 15px;
+        h2 { 
+            font-size: 0.8rem; letter-spacing: 5px; color: var(--tech-blue);
+            margin-bottom: 20px; text-transform: uppercase;
         }
 
-        .check-list {
-            font-size: 0.85rem;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            font-weight: 600;
+        .riddle-text {
+            font-size: 1.5rem; font-weight: 900; margin-bottom: 20px;
+            background: linear-gradient(to right, #fff, #666);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        .benefit-text {
-            font-size: 0.85rem;
-            margin-bottom: 20px;
+        #riddle-input {
+            background: transparent; border: none;
+            border-bottom: 2px solid var(--tech-blue);
+            color: white; font-size: 1.8rem; text-align: center;
+            width: 250px; outline: none; text-transform: uppercase;
+            letter-spacing: 5px; transition: 0.3s;
         }
 
-        .important-box {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 25px;
-            font-size: 0.85rem;
-            border: 1px solid rgba(255,255,255,0.2);
+        #riddle-input:focus {
+            border-bottom-color: white;
+            filter: drop-shadow(0 0 10px var(--tech-blue));
         }
 
-        /* Botón Estilo Negro de la Imagen */
-        .btn-access {
-            background: black;
-            color: white;
-            padding: 18px 30px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 800;
-            display: inline-block;
-            font-size: 1rem;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            transition: 0.3s;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-            text-transform: uppercase;
+        /* --- TARJETA DORADA PROFESIONAL --- */
+        #gold-card {
+            display: none;
+            position: relative;
+            z-index: 20;
+            width: 90%;
+            max-width: 420px;
+            background: linear-gradient(145deg, #bf953f, #fcf6ba, #b38728);
+            border-radius: 30px;
+            padding: 40px 30px;
+            color: #1a1a1a;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 0 30px rgba(255,255,255,0.4);
+            transform: scale(0.8); opacity: 0;
+            text-align: center;
         }
 
-        .btn-access:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 15px 25px rgba(0,0,0,0.4);
+        .card-header { font-weight: 900; font-size: 1.4rem; margin-bottom: 5px; }
+        .card-subtitle { font-size: 0.85rem; font-weight: 500; opacity: 0.8; margin-bottom: 25px; }
+
+        .info-grid {
+            display: grid; grid-template-columns: 1fr; gap: 10px;
+            background: rgba(0,0,0,0.05); padding: 20px;
+            border-radius: 20px; margin-bottom: 25px;
+            text-align: left;
         }
 
-        .footer-att {
-            margin-top: 20px;
-            font-size: 0.8rem;
-            font-weight: 700;
+        .info-item {
+            display: flex; align-items: center; font-size: 0.85rem; font-weight: 700;
         }
 
-        /* Animación de entrada */
-        .show-card {
-            display: block !important;
-            animation: cardIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        .info-item span { 
+            background: #000; color: #fff; width: 22px; height: 22px;
+            border-radius: 50%; display: flex; justify-content: center;
+            align-items: center; margin-right: 10px; font-size: 12px;
         }
 
-        @keyframes cardIn {
-            from { transform: rotateY(-90deg) scale(0.5); opacity: 0; }
-            to { transform: rotateY(0deg) scale(1); opacity: 1; }
+        .important-section {
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding-top: 20px; margin-bottom: 30px;
         }
+
+        .important-label { color: #cc0000; font-weight: 900; font-size: 0.8rem; margin-bottom: 5px; }
+        .important-text { font-size: 0.9rem; font-weight: 600; line-height: 1.4; }
+
+        .access-btn {
+            background: #000; color: #fff;
+            padding: 20px; width: 100%; border-radius: 15px;
+            text-decoration: none; font-weight: 900; font-size: 1rem;
+            display: block; transition: 0.4s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .access-btn:hover { background: #222; transform: translateY(-5px); }
+
+        .att-text { margin-top: 25px; font-size: 0.75rem; font-weight: 800; opacity: 0.7; }
 
     </style>
 </head>
 <body>
 
-    <!-- PANTALLA 1: ACERTIJO -->
-    <div id="riddle-screen">
-        <div class="riddle-box">
-            <h2>ACERTIJO</h2>
-            <p style="margin-bottom: 15px; color: #aaa;">Para acceder, escribe el nombre del destino:</p>
-            <p style="font-weight: bold; margin-bottom: 10px; color: #bf953f;">V E N T _ _ _ _ _ A</p>
-            <input type="text" id="answer" placeholder="..." autocomplete="off">
-            <p id="error" style="color: #ff4d4d; font-size: 0.8rem; display: none;">Respuesta incorrecta, intenta de nuevo.</p>
-        </div>
+    <!-- 3D GLOBE BACKGROUND -->
+    <div id="canvas-container"></div>
+
+    <!-- PANTALLA DE ACERTIJO -->
+    <div id="riddle-ui">
+        <h2>System Authentication</h2>
+        <div class="riddle-text">Identifique el Destino</div>
+        <input type="text" id="riddle-input" placeholder="_____" maxlength="10">
+        <p style="margin-top: 20px; font-size: 0.7rem; color: #555;">PISTA: COMIENZA CON 'V'</p>
     </div>
 
-    <!-- PANTALLA 2: TARJETA DORADA 3D (Oculta al inicio) -->
-    <div id="main-card">
-        <div class="header-msg">‼️ BUENAS TARDES CON TODOS ‼️</div>
-        <div class="date-text">Se envía el formulario del día de hoy 15/04/2026</div>
+    <!-- TARJETA DORADA REDISEÑADA -->
+    <div id="gold-card">
+        <div class="card-header">‼️ BUENAS TARDES ‼️</div>
+        <div class="card-subtitle">Formulario de Movilidad | 21/04/2026</div>
 
-        <div class="recordar-box">❕ RECORDAR: ❕</div>
-        
-        <div class="check-list">
-            ✅ CORREO INSTITUCIONAL | ✅ DATOS CORRECTOS<br>
-            ✅ CAPACIDAD: 40 PERSONAS
+        <div class="info-grid">
+            <div class="info-item"><span>✓</span> CORREO INSTITUCIONAL OBLIGATORIO</div>
+            <div class="info-item"><span>✓</span> VERIFICACIÓN DE DATOS CORRECTOS</div>
+            <div class="info-item"><span>✓</span> CAPACIDAD MÁXIMA: 40 PERSONAS</div>
         </div>
 
-        <div class="benefit-text">
-            Si recibes el correo, tienes el <b>BENEFICIO DE ASIENTO</b> según orden de llenado.
+        <div class="important-section">
+            <div class="important-label">‼️ AVISO IMPORTANTE ‼️</div>
+            <div class="important-text">
+                Ordenamiento: 5:15 PM.<br>
+                Si no está presente <b>PIERDE SU CUPO</b>.
+            </div>
         </div>
 
-        <div class="important-box">
-            <div style="color: #cc0000; font-weight: 800; margin-bottom: 5px;">‼️ IMPORTANTE ‼️</div>
-            Ordenamiento: 5:15 PM. De no estar presente <b>PIERDE SU CUPO</b> sin reclamo alguno.
-        </div>
+        <a href="https://forms.gle/WaVSftiLKBydPo5K8" class="access-btn">Acceder al Formulario</a>
 
-        <a href="https://forms.gle/WaVSftiLKBydPo5K8" class="btn-access">ACCEDER AL FORMULARIO</a>
-
-        <div class="footer-att">ATT. DELEGADO 🫡</div>
+        <div class="att-text">ATT. DELEGADO 🫡</div>
     </div>
 
     <script>
-        const answerInput = document.getElementById('answer');
-        const riddleScreen = document.getElementById('riddle-screen');
-        const mainCard = document.getElementById('main-card');
-        const errorMsg = document.getElementById('error');
+        // --- CONFIGURACIÓN THREE.JS (GLOBO 3D) ---
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        container.appendChild(renderer.domElement);
 
-        // Validar Acertijo
-        answerInput.addEventListener('input', (e) => {
-            const val = e.target.value.toLowerCase().trim();
-            
-            if (val === 'ventanilla') {
-                // Efecto de salida
-                gsap.to(riddleScreen, { duration: 0.5, opacity: 0, scale: 0.8, onComplete: showCard });
+        // Crear Esfera (Globo Wireframe)
+        const geometry = new THREE.IcosahedronGeometry(2, 2);
+        const material = new THREE.MeshBasicMaterial({ 
+            color: 0x00d2ff, 
+            wireframe: true, 
+            transparent: true, 
+            opacity: 0.2 
+        });
+        const sphere = new THREE.Mesh(geometry, material);
+        scene.add(sphere);
+
+        // Partículas alrededor
+        const particlesGeom = new THREE.BufferGeometry();
+        const particlesCount = 500;
+        const posArray = new Float32Array(particlesCount * 3);
+        for(let i=0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 10;
+        }
+        particlesGeom.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const particlesMat = new THREE.PointsMaterial({ size: 0.02, color: 0xffffff });
+        const particlesMesh = new THREE.Points(particlesGeom, particlesMat);
+        scene.add(particlesMesh);
+
+        camera.position.z = 5;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            sphere.rotation.y += 0.005;
+            particlesMesh.rotation.y -= 0.002;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // --- LÓGICA DE INTERACCIÓN ---
+        const riddleInput = document.getElementById('riddle-input');
+        const riddleUI = document.getElementById('riddle-ui');
+        const goldCard = document.getElementById('gold-card');
+
+        riddleInput.addEventListener('input', (e) => {
+            if (e.target.value.toLowerCase() === 'ventanilla') {
+                // Animación de salida 3D
+                gsap.to(camera.position, { z: 2, duration: 1.5, ease: "power2.inOut" });
+                gsap.to(riddleUI, { opacity: 0, scale: 0.5, duration: 0.8, onComplete: () => {
+                    riddleUI.style.display = 'none';
+                    showGoldCard();
+                }});
             }
         });
 
-        function showCard() {
-            riddleScreen.style.display = 'none';
-            mainCard.classList.add('show-card');
+        function showGoldCard() {
+            goldCard.style.display = 'block';
+            gsap.to(goldCard, { opacity: 1, scale: 1, duration: 1, ease: "elastic.out(1, 0.7)" });
             
-            // Iniciar efecto de flotación 3D suave
+            // Efecto de movimiento 3D con el mouse
             document.addEventListener('mousemove', (e) => {
-                let x = (window.innerWidth / 2 - e.pageX) / 20;
-                let y = (window.innerHeight / 2 - e.pageY) / 20;
-                mainCard.style.transform = `rotateY(${-x}deg) rotateX(${y}deg)`;
+                const x = (window.innerWidth / 2 - e.pageX) / 25;
+                const y = (window.innerHeight / 2 - e.pageY) / 25;
+                gsap.to(goldCard, { rotateY: -x, rotateX: y, duration: 0.5 });
             });
-
-            // Para móvil (Giroscopio)
-            if (window.DeviceOrientationEvent) {
-                window.addEventListener('deviceorientation', (e) => {
-                    let y = e.gamma / 2;
-                    let x = (e.beta - 45) / 2;
-                    mainCard.style.transform = `rotateY(${y}deg) rotateX(${x}deg)`;
-                });
-            }
         }
 
-        // Manejo de errores simple
-        answerInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                if (answerInput.value.toLowerCase() !== 'ventanilla') {
-                    errorMsg.style.display = 'block';
-                    gsap.fromTo(riddleScreen, {x: -10}, {x: 10, repeat: 5, duration: 0.05, yoyo: true});
-                }
-            }
+        // Ajuste de pantalla
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
         });
     </script>
 </body>
