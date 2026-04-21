@@ -3,254 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movilidad de Ventanilla - Registro</title>
+    <title>Movilidad Ventanilla - Oficial</title>
     <style>
         :root {
-            --soft-blue: #e0eafc;
-            --main-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            --glass: rgba(255, 255, 255, 0.8);
+            --soft-blue: #f0f4f8;
+            --accent: #3b82f6;
+            --glass: rgba(255, 255, 255, 0.9);
         }
 
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
-            user-select: none; /* Evita selección de texto */
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            user-select: none; /* Bloquea selección de texto */
+            -webkit-user-drag: none;
         }
 
         body {
-            background: #f0f2f5;
-            min-height: 100vh;
+            background: #e2e8f0;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow-x: hidden;
-            perspective: 1000px;
+            perspective: 1200px;
+            overflow: hidden;
         }
 
-        /* Fondo animado suave */
-        .bg-circles {
+        /* Fondo Animado Sutil */
+        .bg-gradient {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #ffffff 0%, #cbd5e1 100%);
             z-index: -1;
-            background: linear-gradient(120deg, #e0f2fe 0%, #f0f9ff 100%);
         }
 
-        .circle {
-            position: absolute;
-            background: rgba(37, 117, 252, 0.1);
-            border-radius: 50%;
-            animation: float 15s infinite ease-in-out;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-50px) rotate(20deg); }
-        }
-
-        /* Contenedor 3D Estilo Glassmorphism */
+        /* Contenedor 3D Suave */
         .card-3d {
             background: var(--glass);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
             padding: 30px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            width: 95%;
-            max-width: 500px;
-            transform-style: preserve-3d;
-            transition: transform 0.5s ease;
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 450px;
+            border: 1px solid white;
+            transform: rotateX(5deg);
+            transition: 0.5s ease;
         }
 
         .card-3d:hover {
-            transform: rotateX(2deg) rotateY(-2deg);
+            transform: rotateX(0deg) translateY(-5px);
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        h1 { font-size: 1.4rem; color: #1e3a8a; margin-bottom: 10px; }
-        .info-box {
+        header { text-align: center; margin-bottom: 20px; }
+        h1 { color: #1e293b; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .alert-box {
             background: #fff;
-            padding: 15px;
-            border-radius: 12px;
-            font-size: 0.85rem;
+            border-left: 4px solid var(--accent);
+            padding: 10px;
+            margin: 15px 0;
+            font-size: 0.8rem;
             color: #475569;
-            border-left: 5px solid #2575fc;
-            margin-bottom: 20px;
+            border-radius: 5px;
         }
 
-        .input-group {
+        .input-field {
             margin-bottom: 15px;
-            transform: translateZ(20px);
         }
 
         label {
             display: block;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #334155;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #64748b;
             margin-bottom: 5px;
+            text-transform: uppercase;
         }
 
         input, select {
             width: 100%;
             padding: 12px;
             border: 2px solid #e2e8f0;
-            border-radius: 10px;
+            border-radius: 12px;
             outline: none;
+            background: #f8fafc;
+            font-size: 1rem;
             transition: 0.3s;
-            background: #ffffff;
+            /* Cursor de texto para simular que es normal */
+            cursor: text;
         }
 
-        input:focus {
-            border-color: #2575fc;
-            box-shadow: 0 0 10px rgba(37, 117, 252, 0.1);
+        /* Cambiar color cuando el script quita el readonly */
+        input:focus:not([readonly]) {
+            border-color: var(--accent);
+            background: white;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.1);
         }
 
-        .btn-submit {
+        .btn-send {
             width: 100%;
             padding: 15px;
-            background: var(--main-gradient);
+            background: #1e293b;
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(37, 117, 252, 0.2);
-            transition: 0.3s;
             margin-top: 10px;
+            transition: 0.3s;
         }
 
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.1);
+        .btn-send:hover {
+            background: var(--accent);
+            transform: scale(1.02);
         }
 
         footer {
-            margin-top: 20px;
-            font-size: 0.75rem;
-            color: #64748b;
             text-align: center;
-            line-height: 1.4;
+            font-size: 0.7rem;
+            color: #94a3b8;
+            margin-top: 20px;
         }
 
-        /* Notificación de bloqueo */
-        #block-msg {
-            position: fixed;
-            bottom: 20px;
-            background: #ef4444;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            display: none;
-            z-index: 100;
-        }
     </style>
 </head>
 <body>
 
-    <div class="bg-circles">
-        <div class="circle" style="width:100px; height:100px; top:10%; left:10%;"></div>
-        <div class="circle" style="width:150px; height:150px; bottom:10%; right:10%;"></div>
-    </div>
-
-    <div id="block-msg">Acción bloqueada para garantizar transparencia.</div>
+    <div class="bg-gradient"></div>
 
     <div class="card-3d">
         <header>
-            <h1>🚌 MOVILIDAD DE VENTANILLA 🚌</h1>
-            <div class="info-box">
-                ‼️ LES MANDO MI SALUDO A TODOS USTEDES ‼️<br>
-                Plazo para rellenar: <b>10 MINUTOS</b>.<br>
-                Capacidad: 40 personas.
+            <h1>🚌 MOVILIDAD VENTANILLA</h1>
+            <div class="alert-box">
+                <b>AVISO:</b> Autocompletado y Pegado DESACTIVADOS. <br>
+                Escriba manualmente para validar su identidad.
             </div>
         </header>
 
-        <!-- PEGA TU URL DE APPS SCRIPT AQUÍ -->
-        <form id="formVentanilla" action="TU_URL_DE_APPS_SCRIPT_AQUI" method="POST">
+        <!-- SUSTITUIR POR TU URL DE GOOGLE APPS SCRIPT -->
+        <form id="secureForm" action="TU_URL_DE_APPS_SCRIPT_AQUI" method="POST">
             
-            <div class="input-group">
-                <label>Nombres: (MÍNIMO 1 NOMBRE) *</label>
-                <input type="text" name="nombres" required autocomplete="off" onpaste="return false;" ondrop="return false;">
+            <div class="input-field">
+                <label>Nombres Completos</label>
+                <input type="text" name="nombres" id="n_1" 
+                    placeholder="Escriba aquí..."
+                    readonly onfocus="this.removeAttribute('readonly');"
+                    autocomplete="off" required>
             </div>
 
-            <div class="input-group">
-                <label>Apellidos: (SON 2 APELLIDOS) *</label>
-                <input type="text" name="apellidos" required autocomplete="off" onpaste="return false;">
+            <div class="input-field">
+                <label>Apellidos (Ambos)</label>
+                <input type="text" name="apellidos" id="a_2" 
+                    placeholder="Escriba aquí..."
+                    readonly onfocus="this.removeAttribute('readonly');"
+                    autocomplete="off" required>
             </div>
 
-            <div class="input-group">
-                <label>CÓDIGO DE ESTUDIANTE *</label>
-                <input type="text" name="codigo" required autocomplete="off" onpaste="return false;">
+            <div class="input-field">
+                <label>Código de Estudiante</label>
+                <input type="text" name="codigo" id="c_3" 
+                    placeholder="Escriba aquí..."
+                    readonly onfocus="this.removeAttribute('readonly');"
+                    autocomplete="off" required>
             </div>
 
-            <div class="input-group">
-                <label>FACULTAD: *</label>
+            <div class="input-field">
+                <label>Facultad</label>
                 <select name="facultad" required>
-                    <option value="">Seleccione...</option>
-                    <option value="FCC">FCC</option>
-                    <option value="FCA">FCA</option>
-                    <option value="FCE">FCE</option>
-                    <option value="FIARN">FIARN</option>
-                    <option value="FIQ">FIQ</option>
-                    <option value="FCS">FCS</option>
-                    <option value="FCED">FCED</option>
-                    <option value="FIIS">FIIS</option>
-                    <option value="FIME">FIME</option>
-                    <option value="FIPA">FIPA</option>
-                    <option value="FCNM">FCNM</option>
-                    <option value="FIEE">FIEE</option>
+                    <option value="" disabled selected>Seleccione su facultad</option>
+                    <option value="FCC">FCC</option><option value="FCA">FCA</option>
+                    <option value="FCE">FCE</option><option value="FIARN">FIARN</option>
+                    <option value="FIQ">FIQ</option><option value="FCS">FCS</option>
+                    <option value="FCED">FCED</option><option value="FIIS">FIIS</option>
+                    <option value="FIME">FIME</option><option value="FIPA">FIPA</option>
+                    <option value="FCNM">FCNM</option><option value="FIEE">FIEE</option>
                 </select>
             </div>
 
-            <div class="input-group">
-                <label>DNI: *</label>
-                <input type="text" name="dni" maxlength="8" required autocomplete="off" onpaste="return false;">
+            <div class="input-field">
+                <label>DNI / Documento</label>
+                <input type="text" name="dni" id="d_4" 
+                    maxlength="8" placeholder="8 dígitos"
+                    readonly onfocus="this.removeAttribute('readonly');"
+                    autocomplete="off" required>
             </div>
 
-            <button type="submit" class="btn-submit" id="btnEnvio">ENVIAR REGISTRO</button>
+            <button type="submit" class="btn-send" id="btnSubmit">ENVIAR DATOS</button>
         </form>
 
         <footer>
-            Estimados, el número de lista será enviado a su correo institucional. 
-            ¡Sigamos mejorando! 🚀<br>
-            <b>ATT. DELEGADO 🫡</b>
+            <b>ATT: DELEGADO</b><br>
+            El sistema detectará registros automáticos.
         </footer>
     </div>
 
     <script>
-        const form = document.getElementById('formVentanilla');
-        const blockMsg = document.getElementById('block-msg');
+        const form = document.getElementById('secureForm');
 
-        // BLOQUEOS DE SEGURIDAD
-        function showBlock() {
-            blockMsg.style.display = 'block';
-            setTimeout(() => blockMsg.style.display = 'none', 2000);
-        }
-
-        // Bloquear clic derecho
-        document.addEventListener('contextmenu', e => {
-            e.preventDefault();
-            showBlock();
+        // 1. BLOQUEO DE PEGADO (PASTE) EN TODOS LOS CAMPOS
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('paste', e => e.preventDefault());
+            input.addEventListener('drop', e => e.preventDefault());
+            
+            // 2. DETECTOR DE AUTOCOMPLETADO
+            // Si el valor cambia sin que haya una tecla presionada, lo borramos
+            input.addEventListener('input', function(e) {
+                if (e.inputType === 'insertFromPaste' || e.inputType === undefined) {
+                    this.value = '';
+                }
+            });
         });
 
-        // Bloquear atajos de teclado (Ctrl+C, Ctrl+V, Ctrl+U, F12)
+        // 3. BLOQUEO DE CLICK DERECHO Y TECLAS DE ATAJO
+        document.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('keydown', e => {
-            if (e.ctrlKey || e.keyCode === 123) {
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'u' || e.key === 'j' || e.key === 's')) {
                 e.preventDefault();
-                showBlock();
+                alert("Acción bloqueada. Debe escribir manualmente.");
             }
+            if (e.key === "F12") e.preventDefault();
         });
 
-        // Envío de datos por AJAX (Sin recargar)
+        // 4. ENVÍO SEGURO
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-            const btn = document.getElementById('btnEnvio');
-            btn.innerText = "ENVIANDO...";
+            const btn = document.getElementById('btnSubmit');
+            btn.innerText = "VERIFICANDO...";
             btn.disabled = true;
 
             const formData = new FormData(form);
@@ -259,12 +237,12 @@
                 body: formData,
                 mode: 'no-cors'
             }).then(() => {
-                alert("✅ Registro exitoso. Tu puesto ha sido reservado.");
+                alert("¡REGISTRO COMPLETADO EXITOSAMENTE!");
                 form.reset();
-                btn.innerText = "ENVIAR REGISTRO";
+                btn.innerText = "ENVIAR DATOS";
                 btn.disabled = false;
             }).catch(() => {
-                alert("Error al conectar con el servidor.");
+                alert("Error de conexión.");
                 btn.disabled = false;
             });
         });
