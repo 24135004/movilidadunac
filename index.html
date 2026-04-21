@@ -2,285 +2,246 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movilidad Ventanilla | Registro Oficial</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Movilidad Ventanilla Pro</title>
     <style>
         :root {
-            --primary: #2563eb;
-            --glass: rgba(255, 255, 255, 0.7);
-            --border: rgba(255, 255, 255, 0.4);
+            --blue: #3b82f6;
+            --purple: #8b5cf6;
+            --white: rgba(255, 255, 255, 0.9);
         }
 
         * {
             margin: 0; padding: 0; box-sizing: border-box;
-            font-family: 'Inter', -apple-system, sans-serif;
-            user-select: none; /* Bloqueo total de selección */
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            user-select: none; -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 100%);
+            background: #0f172a;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-            perspective: 2000px;
+            overflow-x: hidden;
+            color: #1e293b;
         }
 
-        /* Fondo Animado 3D */
-        .orb {
-            position: absolute;
+        /* Fondo Animado de Esferas 3D */
+        .area {
+            position: fixed; width: 100%; height: 100vh;
+            z-index: -1; overflow: hidden;
+            background: linear-gradient(to bottom, #1e293b, #0f172a);
+        }
+
+        .circles {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        }
+
+        .circles li {
+            position: absolute; list-style: none; display: block;
+            background: rgba(255, 255, 255, 0.1);
+            animation: animate 25s linear infinite; bottom: -150px;
             border-radius: 50%;
-            filter: blur(80px);
-            z-index: -1;
-            animation: move 20s infinite alternate;
-        }
-        .orb-1 { width: 400px; height: 400px; background: rgba(37, 99, 235, 0.2); top: -10%; left: -10%; }
-        .orb-2 { width: 300px; height: 300px; background: rgba(168, 85, 247, 0.2); bottom: -10%; right: -10%; }
-
-        @keyframes move {
-            from { transform: translate(0, 0) scale(1); }
-            to { transform: translate(100px, 50px) scale(1.2); }
         }
 
-        /* Contenedor Principal 3D */
-        .container-3d {
-            width: 100%;
-            max-width: 480px;
-            padding: 20px;
+        @keyframes animate {
+            0%{ transform: translateY(0) rotate(0deg); opacity: 1; }
+            100%{ transform: translateY(-1000px) rotate(720deg); opacity: 0; }
+        }
+
+        /* Tarjeta 3D Glassmorphism */
+        .card-3d {
+            width: 92%;
+            max-width: 450px;
+            background: var(--white);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 25px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.3);
             transform-style: preserve-3d;
-            animation: entry 1.2s ease-out;
+            transition: transform 0.1s;
         }
 
-        @keyframes entry {
-            0% { opacity: 0; transform: translateZ(-500px) rotateX(20deg); }
-            100% { opacity: 1; transform: translateZ(0) rotateX(0); }
-        }
-
-        .glass-card {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            border: 1px solid var(--border);
-            padding: 35px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
-            transform: rotateX(5deg) rotateY(-5deg);
-            transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        .glass-card:hover {
-            transform: rotateX(0deg) rotateY(0deg) translateY(-5px);
-            box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.15);
-        }
-
-        header { text-align: center; margin-bottom: 25px; }
-        h1 { color: #1e293b; font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; }
+        header { text-align: center; margin-bottom: 20px; }
+        h1 { font-size: 1.3rem; font-weight: 800; color: #1e293b; letter-spacing: -0.5px; }
         
-        .status-badge {
-            background: #fff;
-            padding: 8px 15px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            color: #475569;
-            margin-top: 15px;
-            border: 1px solid #e2e8f0;
-            display: inline-block;
+        .warning {
+            background: #fee2e2; color: #ef4444;
+            padding: 10px; border-radius: 12px;
+            font-size: 0.75rem; margin-top: 10px;
+            border: 1px solid #fecaca; font-weight: 600;
         }
 
-        .form-section { margin-bottom: 18px; }
-        label {
-            display: block;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: #64748b;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            padding-left: 5px;
+        .field { margin-bottom: 15px; position: relative; }
+        label { 
+            display: block; font-size: 0.75rem; font-weight: 700; 
+            color: #64748b; margin: 0 0 5px 10px;
         }
 
         input, select {
-            width: 100%;
-            padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.6);
-            border: 1.5px solid #e2e8f0;
-            border-radius: 14px;
-            font-size: 0.95rem;
+            width: 100%; padding: 14px 18px;
+            border-radius: 15px; border: 2px solid #e2e8f0;
+            background: #fff; font-size: 1rem;
+            outline: none; transition: 0.3s ease;
             color: #1e293b;
-            outline: none;
-            transition: 0.3s;
         }
 
-        input:focus {
-            background: #fff;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-        }
+        input:focus { border-color: var(--blue); box-shadow: 0 0 15px rgba(59,130,246,0.1); }
 
-        /* Botón 3D */
-        .btn-push {
-            width: 100%;
-            padding: 16px;
-            background: #1e293b;
-            color: white;
-            border: none;
-            border-radius: 14px;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.3s;
+        /* Botón Mobile Pro */
+        .btn {
+            width: 100%; padding: 16px;
+            background: linear-gradient(135deg, var(--blue), var(--purple));
+            color: white; border: none; border-radius: 18px;
+            font-size: 1.1rem; font-weight: 700;
+            cursor: pointer; transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(59,130,246,0.3);
             margin-top: 10px;
-            box-shadow: 0 4px 0 #000;
         }
 
-        .btn-push:active {
-            transform: translateY(3px);
-            box-shadow: 0 1px 0 #000;
-        }
-
-        .btn-push:hover:not(:disabled) {
-            background: var(--primary);
-        }
+        .btn:active { transform: scale(0.96); }
 
         footer {
-            margin-top: 25px;
-            text-align: center;
-            font-size: 0.7rem;
-            color: #94a3b8;
-            line-height: 1.5;
+            margin-top: 20px; text-align: center;
+            font-size: 0.7rem; color: #94a3b8; line-height: 1.4;
         }
 
-        /* Bloqueo Visual */
-        .no-copy {
-            pointer-events: all;
-        }
+        /* Estilos de los círculos de fondo */
+        .circles li:nth-child(1){ left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
+        .circles li:nth-child(2){ left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
+        .circles li:nth-child(3){ left: 70%; width: 20px; height: 20px; animation-delay: 4s; }
     </style>
 </head>
 <body>
 
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
+<div class="area">
+    <ul class="circles">
+        <li></li><li></li><li></li><li></li><li></li>
+    </ul>
+</div>
 
-    <div class="container-3d">
-        <div class="glass-card">
-            <header>
-                <h1>🚌 MOVILIDAD VENTANILLA</h1>
-                <div class="status-badge">
-                    ⚡ SISTEMA ANTI-AUTOFILL ACTIVO
-                </div>
-            </header>
+<div class="card-3d" id="card">
+    <header>
+        <h1>🚌 MOVILIDAD VENTANILLA</h1>
+        <div class="warning">⚠️ ESCRIBA MANUALMENTE. PEGAR ESTÁ BLOQUEADO.</div>
+    </header>
 
-            <form id="proForm" action="TU_URL_DE_APPS_SCRIPT_AQUI" method="POST">
-                
-                <div class="form-section">
-                    <label>Nombres (Mínimo 1)</label>
-                    <input type="text" name="nombres" class="secure-input" 
-                           placeholder="Escriba manualmente..." required>
-                </div>
-
-                <div class="form-section">
-                    <label>Apellidos (2 Apellidos)</label>
-                    <input type="text" name="apellidos" class="secure-input" 
-                           placeholder="Escriba manualmente..." required>
-                </div>
-
-                <div class="form-section">
-                    <label>Código de Estudiante</label>
-                    <input type="text" name="codigo" class="secure-input" 
-                           placeholder="Código oficial..." required>
-                </div>
-
-                <div class="form-section">
-                    <label>Facultad</label>
-                    <select name="facultad" required>
-                        <option value="" disabled selected>Seleccione...</option>
-                        <option>FCC</option><option>FCA</option><option>FCE</option>
-                        <option>FIARN</option><option>FIQ</option><option>FCS</option>
-                        <option>FCED</option><option>FIIS</option><option>FIME</option>
-                        <option>FIPA</option><option>FCNM</option><option>FIEE</option>
-                    </select>
-                </div>
-
-                <div class="form-section">
-                    <label>DNI</label>
-                    <input type="text" name="dni" class="secure-input" 
-                           maxlength="8" placeholder="8 dígitos" required>
-                </div>
-
-                <button type="submit" class="btn-push" id="btnSubmit">REGISTRAR AHORA</button>
-            </form>
-
-            <footer>
-                <b>⚠️ ADVERTENCIA:</b> Para garantizar la equidad, el pegado y autocompletado están bloqueados. Debe digitar sus datos.<br><br>
-                <b>ATT. DELEGADO 🫡</b>
-            </footer>
+    <form id="secureForm" action="TU_URL_DE_APPS_SCRIPT_AQUI" method="POST">
+        <div class="field">
+            <label>Nombres (Mínimo 1)</label>
+            <input type="text" name="nombres" class="no-entry" placeholder="Escriba aquí..." required>
         </div>
-    </div>
 
-    <script>
-        const form = document.getElementById('proForm');
-        const inputs = document.querySelectorAll('.secure-input');
+        <div class="field">
+            <label>Apellidos (Son 2 Apellidos)</label>
+            <input type="text" name="apellidos" class="no-entry" placeholder="Escriba aquí..." required>
+        </div>
 
-        // --- BLOQUEO NIVEL DIOS ---
+        <div class="field">
+            <label>Código de Estudiante</label>
+            <input type="text" name="codigo" class="no-entry" placeholder="Su código..." required>
+        </div>
 
-        inputs.forEach(input => {
-            // 1. Bloquear Pegado
-            input.addEventListener('paste', e => {
-                e.preventDefault();
-                alert("❌ Pegado bloqueado. Escribe manualmente.");
-            });
+        <div class="field">
+            <label>Facultad</label>
+            <select name="facultad" required>
+                <option value="" disabled selected>Seleccione...</option>
+                <option>FCC</option><option>FCA</option><option>FCE</option><option>FIARN</option>
+                <option>FIQ</option><option>FCS</option><option>FCED</option><option>FIIS</option>
+                <option>FIME</option><option>FIPA</option><option>FCNM</option><option>FIEE</option>
+            </select>
+        </div>
 
-            // 2. Bloquear Drop (arrastrar texto)
-            input.addEventListener('drop', e => e.preventDefault());
+        <div class="field">
+            <label>DNI</label>
+            <input type="text" name="dni" class="no-entry" maxlength="8" placeholder="8 dígitos" required>
+        </div>
 
-            // 3. BLOQUEO TOTAL DE AUTOCOMPLETADO
-            // Ponemos el campo en readonly y solo se activa si hay un click humano
-            input.setAttribute('readonly', 'readonly');
-            input.addEventListener('mousedown', () => {
-                input.removeAttribute('readonly');
-            });
+        <button type="submit" class="btn" id="submitBtn">ENVIAR REGISTRO</button>
+    </form>
 
-            // 4. VERIFICACIÓN DE PULSACIÓN REAL
-            // Si el valor cambia pero no fue por una tecla, lo borramos.
-            let isKeyTyped = false;
-            input.addEventListener('keydown', () => isKeyTyped = true);
-            
-            input.addEventListener('input', (e) => {
-                if (!isKeyTyped) {
-                    input.value = ''; // Borra autocompletado instantáneamente
-                }
-                isKeyTyped = false;
-            });
-        });
+    <footer>
+        Muchas gracias por completar el registro.<br>
+        <b>ATT. DELEGADO 🫡</b>
+    </footer>
+</div>
 
-        // 5. Bloquear Clic Derecho y Atajos
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('keydown', e => {
-            if (e.ctrlKey && (e.key === 'v' || e.key === 'c' || e.key === 'u' || e.key === 's')) {
-                e.preventDefault();
+<script>
+    const form = document.getElementById('secureForm');
+    const inputs = document.querySelectorAll('.no-entry');
+    const card = document.getElementById('card');
+
+    // --- SEGURIDAD NIVEL ACORAZADO ---
+
+    inputs.forEach(input => {
+        // 1. Bloqueo de Pegado y Arrastre
+        input.addEventListener('paste', e => e.preventDefault());
+        input.addEventListener('drop', e => e.preventDefault());
+
+        // 2. Bloqueo de Autocompletado (Técnica del Evento Humano)
+        // Solo permitimos cambios si vienen de una tecla física detectada
+        let lastKeyTime = 0;
+        input.addEventListener('keydown', () => { lastKeyTime = Date.now(); });
+
+        input.addEventListener('input', function(e) {
+            const now = Date.now();
+            // Si el texto cambia y no hubo una tecla presionada hace menos de 50ms,
+            // o si el texto cambió demasiado rápido (pegar), lo borramos.
+            if (now - lastKeyTime > 100 || e.inputType === 'insertFromPaste') {
+                this.value = '';
+                alert("Por favor, escriba manualmente letra por letra.");
             }
         });
+    });
 
-        // Envío AJAX
-        form.addEventListener('submit', (e) => {
+    // 3. Bloqueo de Clic Derecho y Atajos (Incluso en Móvil)
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
+        if (e.ctrlKey && (e.key === 'v' || e.key === 'c' || e.key === 'u')) {
             e.preventDefault();
-            const btn = document.getElementById('btnSubmit');
-            btn.innerText = "PROCESANDO...";
-            btn.disabled = true;
+        }
+    });
 
-            fetch(form.action, {
-                method: 'POST',
-                body: new FormData(form),
-                mode: 'no-cors'
-            }).then(() => {
-                alert("✅ REGISTRO CORRECTO. Tus datos están en el Excel.");
-                form.reset();
-                btn.innerText = "REGISTRAR AHORA";
-                btn.disabled = false;
-            }).catch(() => {
-                alert("Error de conexión");
-                btn.disabled = false;
-            });
+    // --- EFECTO 3D (GIROSCOPIO PARA MÓVIL) ---
+    if (window.DeviceOrientationEvent) {
+        window.addEventListener('deviceorientation', (e) => {
+            let xAxis = (e.beta - 45) / 2; // Inclinación adelante/atrás
+            let yAxis = e.gamma / 2;       // Inclinación izquierda/derecha
+            card.style.transform = `rotateX(${xAxis}deg) rotateY(${yAxis}deg)`;
         });
-    </script>
+    }
+
+    // Efecto 3D para Mouse (PC)
+    document.addEventListener('mousemove', (e) => {
+        let xAxis = (window.innerHeight / 2 - e.pageY) / 25;
+        let yAxis = (window.innerWidth / 2 - e.pageX) / 25;
+        card.style.transform = `rotateX(${xAxis}deg) rotateY(${yAxis}deg)`;
+    });
+
+    // Envío Directo al Excel
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        btn.innerText = "REGISTRANDO...";
+        btn.disabled = true;
+
+        fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            mode: 'no-cors'
+        }).then(() => {
+            alert("✅ REGISTRO EXITOSO");
+            form.reset();
+            btn.innerText = "ENVIAR REGISTRO";
+            btn.disabled = false;
+        }).catch(() => {
+            alert("Error al enviar");
+            btn.disabled = false;
+        });
+    });
+</script>
+
 </body>
 </html>
