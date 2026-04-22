@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SISTEMA DE VALIDACIÓN - RUTA VENTANILLA</title>
-    <!-- Librerías -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
@@ -13,16 +12,11 @@
         :root {
             --neon-blue: #00f2ff;
             --neon-purple: #bc13fe;
-            --bg-dark: #05050a;
-            --card-bg: rgba(10, 10, 20, 0.8);
-            --text-light: #e0e0ff;
-            --error-red: #ff3e3e;
+            --bg-dark: #020205;
+            --card-bg: rgba(5, 5, 15, 0.7);
         }
 
-        * {
-            margin: 0; padding: 0; box-sizing: border-box;
-            font-family: 'Space Grotesk', sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
 
         body {
             background-color: var(--bg-dark);
@@ -31,147 +25,78 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            color: var(--text-light);
+            color: #e0e0ff;
         }
 
-        /* FONDO TECNOLÓGICO */
+        /* CONTENEDOR DEL MUNDO 3D (SIEMPRE AL FONDO) */
         #canvas-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1;
+            z-index: 1; /* Al fondo */
         }
 
-        /* PANTALLA DE BLOQUEO / CRONÓMETRO */
+        /* PANTALLA DE BLOQUEO (TRANSPARENTE PARA VER EL GLOBO) */
         #lock-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-dark);
             z-index: 100;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
+            background: radial-gradient(circle, rgba(2,2,5,0.2) 0%, rgba(2,2,5,0.8) 100%);
+            backdrop-filter: blur(2px); /* Un ligero desenfoque para que resalte el texto */
         }
 
         .timer-display {
             font-family: 'Syncopate', sans-serif;
-            font-size: 4rem;
+            font-size: clamp(3rem, 10vw, 6rem);
             color: var(--neon-blue);
-            text-shadow: 0 0 20px var(--neon-blue);
+            text-shadow: 0 0 30px var(--neon-blue);
             margin: 20px 0;
         }
 
-        /* CONTENEDOR PRINCIPAL */
         #main-container {
             position: relative;
-            z-index: 10;
-            width: 95%;
-            max-width: 500px;
-            display: none; /* Se activa con el cronómetro */
+            z-index: 200;
+            width: 90%;
+            max-width: 450px;
+            display: none; /* Se activa al terminar el tiempo */
         }
 
         .card {
             background: var(--card-bg);
             backdrop-filter: blur(20px);
-            padding: 40px;
+            padding: 35px;
             border-radius: 20px;
             border: 1px solid rgba(0, 242, 255, 0.3);
-            box-shadow: 0 0 40px rgba(0, 242, 255, 0.1);
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
         }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 2px;
-            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
-            animation: scan 3s linear infinite;
-        }
-
-        @keyframes scan {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        h2 { 
-            font-family: 'Syncopate', sans-serif;
-            font-size: 1.1rem;
-            color: var(--neon-blue);
-            margin-bottom: 30px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        /* BOTONES TECNOLÓGICOS */
-        .options-container {
-            display: grid;
-            gap: 15px;
-        }
+        h2 { font-family: 'Syncopate', sans-serif; font-size: 1rem; color: var(--neon-blue); margin-bottom: 25px; }
 
         .option-btn {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 18px;
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px;
+            margin-bottom: 10px;
             border-radius: 10px;
+            color: white;
             cursor: pointer;
-            color: var(--text-light);
-            font-size: 1rem;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             text-align: left;
-            position: relative;
+            transition: 0.3s;
         }
 
         .option-btn:hover {
-            background: rgba(0, 242, 255, 0.1);
+            background: rgba(0, 242, 255, 0.15);
             border-color: var(--neon-blue);
             transform: translateX(10px);
-            box-shadow: -5px 0 15px rgba(0, 242, 255, 0.2);
         }
 
-        /* PASOS */
         .step { display: none; }
-        .step.active { display: block; animation: slideIn 0.5s ease forwards; }
-
-        @keyframes slideIn {
-            from { opacity: 0; filter: blur(10px); transform: translateY(20px); }
-            to { opacity: 1; filter: blur(0); transform: translateY(0); }
-        }
-
-        /* ÉXITO FINAL */
-        #success-card {
-            display: none;
-            border-color: var(--neon-purple);
-        }
-
-        .status-badge {
-            background: rgba(188, 19, 254, 0.2);
-            color: var(--neon-purple);
-            padding: 5px 15px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 15px;
-        }
-
-        .details-grid {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 12px;
-            padding: 20px;
-            margin: 20px 0;
-            border: 1px dashed rgba(255,255,255,0.1);
-        }
-
-        .detail-item {
-            margin-bottom: 12px;
-            font-size: 0.9rem;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .detail-item span { color: var(--neon-blue); font-weight: bold; }
+        .step.active { display: block; }
 
         .final-link {
             display: block;
@@ -179,19 +104,10 @@
             color: white;
             text-decoration: none;
             text-align: center;
-            padding: 20px;
-            border-radius: 12px;
+            padding: 18px;
+            border-radius: 10px;
             font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
             margin-top: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            transition: 0.3s;
-        }
-
-        .final-link:hover {
-            filter: brightness(1.2);
-            transform: scale(1.02);
         }
     </style>
 </head>
@@ -199,98 +115,41 @@
 
     <div id="canvas-container"></div>
 
-    <!-- CRONÓMETRO INICIAL -->
+    <!-- CRONÓMETRO (Visible al inicio) -->
     <div id="lock-screen">
-        <h2 style="color: white;">El registro se habilitará en:</h2>
-        <div class="timer-display" id="countdown">11:50:00</div>
-        <p style="color: var(--neon-blue); opacity: 0.7;">RUTA VENTANILLA - ACCESO RESTRINGIDO</p>
+        <p style="letter-spacing: 5px; color: white; opacity: 0.8;">SISTEMA DE ACCESO</p>
+        <div class="timer-display" id="countdown">00:00:00</div>
+        <p style="color: var(--neon-blue); font-weight: bold;">AGUARDE A LA HORA DE APERTURA</p>
     </div>
 
-    <!-- CUESTIONARIO -->
+    <!-- CUESTIONARIO (Oculto hasta que el tiempo termine) -->
     <div id="main-container">
-        <div class="card" id="quiz-card">
-            
+        <div class="card">
             <div class="step active" id="step1">
-                <div class="status-badge">SEGURIDAD NIVEL 1</div>
-                <h2>¿Hacia dónde se dirige esta unidad de transporte?</h2>
-                <div class="options-container">
-                    <button class="option-btn" onclick="next(2)">SISTEMA DE RUTA: VENTANILLA</button>
-                    <button class="option-btn" onclick="fail()">SISTEMA DE RUTA: LIMA CENTRO</button>
-                    <button class="option-btn" onclick="fail()">SISTEMA DE RUTA: SURCO</button>
-                </div>
+                <h2>1. ¿Destino de la unidad?</h2>
+                <button class="option-btn" onclick="next(2)">VENTANILLA</button>
+                <button class="option-btn" onclick="fail()">CENTRO DE LIMA</button>
             </div>
-
             <div class="step" id="step2">
-                <div class="status-badge">SEGURIDAD NIVEL 2</div>
-                <h2>Autenticación: ¿Qué credencial es obligatoria?</h2>
-                <div class="options-container">
-                    <button class="option-btn" onclick="fail()">CORREO PERSONAL GMAIL/OUTLOOK</button>
-                    <button class="option-btn" onclick="next(3)">CORREO INSTITUCIONAL @TECSUP.EDU.PE</button>
-                    <button class="option-btn" onclick="fail()">DNI FÍSICO ÚNICAMENTE</button>
-                </div>
+                <h2>2. ¿Correo institucional?</h2>
+                <button class="option-btn" onclick="next(3)">@TECSUP.EDU.PE</button>
+                <button class="option-btn" onclick="fail()">@GMAIL.COM</button>
             </div>
-
-            <div class="step" id="step3">
-                <div class="status-badge">SEGURIDAD NIVEL 3</div>
-                <h2>Protocolo: ¿Hora exacta de inicio de abordaje?</h2>
-                <div class="options-container">
-                    <button class="option-btn" onclick="fail()">MODO FLEXIBLE (5:30 PM)</button>
-                    <button class="option-btn" onclick="next(4)">MODO PUNTUAL (5:15 PM)</button>
-                    <button class="option-btn" onclick="fail()">CUANDO LLEGUE EL DELEGADO</button>
-                </div>
+            <div id="success-step" style="display:none; text-align:center;">
+                <h2 style="color: #00ff88;">✓ ACCESO VALIDADO</h2>
+                <p>Ya puedes registrar tu asistencia en el formulario oficial.</p>
+                <a href="https://forms.gle/WaVSftiLKBydPo5K8" class="final-link">IR AL FORMULARIO</a>
             </div>
-
-            <div class="step" id="step4">
-                <div class="status-badge">SEGURIDAD NIVEL 4</div>
-                <h2>¿Qué ocurre si el usuario llega después de las 5:15 PM?</h2>
-                <div class="options-container">
-                    <button class="option-btn" onclick="next(5)">ANULACIÓN DE CUPO AUTOMÁTICA</button>
-                    <button class="option-btn" onclick="fail()">RESERVA DE ASIENTO GARANTIZADA</button>
-                    <button class="option-btn" onclick="fail()">INGRESO POR PUERTA POSTERIOR</button>
-                </div>
-            </div>
-
-            <div class="step" id="step5">
-                <div class="status-badge">ÚLTIMO PASO</div>
-                <h2>¿Aceptas que el carnet físico es indispensable?</h2>
-                <div class="options-container">
-                    <button class="option-btn" onclick="fail()">NO, NO LO LLEVARÉ</button>
-                    <button class="option-btn" onclick="finishQuiz()">SÍ, CONFIRMO PORTAR IDENTIFICACIÓN</button>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- RESULTADO FINAL DETALLADO -->
-        <div class="card" id="success-card">
-            <div class="status-badge" style="background: var(--neon-blue); color: black;">ACCESO CONCEDIDO</div>
-            <h2 style="color: white;">VALIDACIÓN EXITOSA</h2>
-            
-            <p>Has superado las pruebas de seguridad. Tu perfil está listo para el registro oficial.</p>
-
-            <div class="details-grid">
-                <div class="detail-item">ESTADO: <span>VERIFICADO</span></div>
-                <div class="detail-item">DESTINO: <span>VENTANILLA</span></div>
-                <div class="detail-item">HORARIO: <span>17:15 HRS</span></div>
-                <div class="detail-item">DOCUMENTO: <span>CARNET REQUERIDO</span></div>
-            </div>
-
-            <div style="font-size: 0.85rem; line-height: 1.6; color: #aaa;">
-                <p><b>Nota importante:</b> El siguiente enlace te llevará al formulario de Google. Los cupos se asignan por orden de llegada en el formulario. No compartas este enlace con personas ajenas a la ruta.</p>
-            </div>
-
-            <a href="https://forms.gle/WaVSftiLKBydPo5K8" class="final-link">ABRIR FORMULARIO OFICIAL</a>
-            
-            <p style="text-align:center; font-size: 0.7rem; margin-top: 15px; color: var(--neon-blue);">SISTEMA DE GESTIÓN DE MOVILIDAD V.2.0</p>
         </div>
     </div>
 
     <script>
-        // ==========================================
-        // CONFIGURACIÓN DEL CRONÓMETRO (MODIFICABLE)
-        // ==========================================
-        const HORA_APERTURA = 17; // 17 significa 5:00 PM
-        const MINUTO_APERTURA = 0;
+        // ======================================================
+        // 1. CONFIGURACIÓN DE LA HORA (MODIFICA AQUÍ)
+        // ======================================================
+        const HORA_APERTURA = 11;   // Hora (en formato 24h, ej: 17 es 5 PM)
+        const MINUTO_APERTURA = 53;  // Minuto
+        // ======================================================
 
         function updateTimer() {
             const now = new Date();
@@ -308,84 +167,84 @@
             const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
             const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
             const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
-
             document.getElementById('countdown').innerText = `${h}:${m}:${s}`;
         }
-
         setInterval(updateTimer, 1000);
         updateTimer();
 
-        // --- ANIMACIÓN 3D TECNOLÓGICA ---
+        // ======================================================
+        // 2. GLOBO TERRÁQUEO TECNOLÓGICO 3D
+        // ======================================================
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-        // Estructura de red digital
-        const geometry = new THREE.IcosahedronGeometry(2, 1);
-        const material = new THREE.MeshBasicMaterial({ color: 0x00f2ff, wireframe: true, transparent: true, opacity: 0.2 });
-        const mesh = new THREE.Mesh(geometry, material);
-        scene.add(mesh);
+        const globeGroup = new THREE.Group();
+        scene.add(globeGroup);
 
-        // Partículas (Estrellas tecnológicas)
-        const pGeom = new THREE.BufferGeometry();
-        const pCoords = new Float32Array(1500 * 3);
-        for(let i=0; i<1500*3; i++) pCoords[i] = (Math.random() - 0.5) * 15;
-        pGeom.setAttribute('position', new THREE.BufferAttribute(pCoords, 3));
-        const pMat = new THREE.PointsMaterial({ size: 0.02, color: 0xbc13fe });
-        const particles = new THREE.Points(pGeom, pMat);
-        scene.add(particles);
+        // Esfera de Red (Wireframe)
+        const sphereGeo = new THREE.IcosahedronGeometry(2, 2);
+        const sphereMat = new THREE.MeshBasicMaterial({ 
+            color: 0x00f2ff, wireframe: true, transparent: true, opacity: 0.3 
+        });
+        const globe = new THREE.Mesh(sphereGeo, sphereMat);
+        globeGroup.add(globe);
+
+        // Nube de puntos (Nodos de datos)
+        const dotsGeo = new THREE.SphereGeometry(2.1, 35, 35);
+        const dotsMat = new THREE.PointsMaterial({ size: 0.04, color: 0xbc13fe, transparent: true, opacity: 0.8 });
+        const dots = new THREE.Points(dotsGeo, dotsMat);
+        globeGroup.add(dots);
+
+        // Anillo de escaneo
+        const ringGeo = new THREE.TorusGeometry(2.5, 0.02, 16, 100);
+        const ringMat = new THREE.MeshBasicMaterial({ color: 0x00f2ff, transparent: true, opacity: 0.5 });
+        const scanRing = new THREE.Mesh(ringGeo, ringMat);
+        scanRing.rotation.x = Math.PI / 2;
+        globeGroup.add(scanRing);
 
         camera.position.z = 5;
 
         function animate() {
             requestAnimationFrame(animate);
-            mesh.rotation.y += 0.001;
-            mesh.rotation.x += 0.001;
-            particles.rotation.y -= 0.0005;
+            globeGroup.rotation.y += 0.003;
+            dots.rotation.y -= 0.001;
+            scanRing.position.y = Math.sin(Date.now() * 0.002) * 1.5; // El anillo sube y baja
             renderer.render(scene, camera);
         }
         animate();
 
-        // --- LÓGICA DEL QUIZ ---
-        function next(step) {
-            const current = document.querySelector('.step.active');
-            const nextStep = document.getElementById(`step${step}`);
-            
-            gsap.to(current, { opacity: 0, y: -20, duration: 0.3, onComplete: () => {
-                current.classList.remove('active');
-                nextStep.classList.add('active');
-            }});
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // ======================================================
+        // 3. LÓGICA DEL CUESTIONARIO
+        // ======================================================
+        function next(stepId) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + stepId).classList.add('active');
         }
 
         function fail() {
-            alert("⚠️ ERROR DE VALIDACIÓN\n\nRespuesta incorrecta. El sistema se reiniciará por seguridad.");
-            const current = document.querySelector('.step.active');
-            const first = document.getElementById('step1');
-            
-            gsap.to(current, { opacity: 0, scale: 0.8, duration: 0.3, onComplete: () => {
-                current.classList.remove('active');
-                first.classList.add('active');
-                gsap.fromTo(first, { opacity: 0, scale: 1.2 }, { opacity: 1, scale: 1, duration: 0.3 });
-            }});
+            alert("ERROR DE VALIDACIÓN: El sistema se reiniciará.");
+            location.reload();
         }
 
         function finishQuiz() {
-            gsap.to("#quiz-card", { scale: 0.9, opacity: 0, duration: 0.5, onComplete: () => {
-                document.getElementById('quiz-card').style.display = 'none';
-                const success = document.getElementById('success-card');
-                success.style.display = 'block';
-                gsap.from(success, { y: 50, opacity: 0, duration: 0.6 });
-            }});
+            document.querySelectorAll('.step').forEach(s => s.style.display = 'none');
+            document.getElementById('success-step').style.display = 'block';
         }
+        // Ajuste para el último botón
+        document.querySelector('#step2 .option-btn').onclick = function() {
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('success-step').style.display = 'block';
+        };
 
-        // Mouse Move Effect
-        document.addEventListener('mousemove', (e) => {
-            const x = (window.innerWidth / 2 - e.pageX) / 70;
-            const y = (window.innerHeight / 2 - e.pageY) / 70;
-            gsap.to("#main-container", { rotateY: -x, rotateX: y, duration: 0.5 });
-        });
     </script>
 </body>
 </html>
