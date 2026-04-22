@@ -170,51 +170,61 @@
                 <p style="font-size: 0.6rem; color: var(--accent); margin-bottom: 10px; letter-spacing: 2px;">VERIFICACIÓN 01/04</p>
                 <h2>¿A qué destino se dirige esta unidad de movilidad?</h2>
                 <button class="btn-opt" onclick="next(2)">A) RUTA VENTANILLA</button>
-                <button class="btn-opt" onclick="fail()">B) RUTA LIMA CENTRO</button>
+                <button class="btn-opt" onclick="fail()">B) RUTA TUPAC</button>
                 <button class="btn-opt" onclick="fail()">C) RUTA SURCO</button>
             </div>
 
             <!-- PREGUNTA 2 -->
             <div class="step" id="step2">
                 <p style="font-size: 0.6rem; color: var(--accent); margin-bottom: 10px; letter-spacing: 2px;">VERIFICACIÓN 02/04</p>
-                <h2>¿Cuál es el correo válido para el registro institucional?</h2>
-                <button class="btn-opt" onclick="fail()">A) CORREO PERSONAL @GMAIL.COM</button>
-                <button class="btn-opt" onclick="next(3)">B) CORREO UNAC @UNAC.EDU.PE</button>
-                <button class="btn-opt" onclick="fail()">C) CORREO DE TECSUP</button>
+                <h2>¿En qué departamento se encuentra ubicada la ciudadela de Machu Picchu?</h2>
+                <button class="btn-opt" onclick="fail()">A) AREQUIPA</button>
+                <button class="btn-opt" onclick="next(3)">B) CUSCO</button>
+                <button class="btn-opt" onclick="fail()">C) CUSC0</button>
             </div>
 
             <!-- PREGUNTA 3 -->
             <div class="step" id="step3">
                 <p style="font-size: 0.6rem; color: var(--accent); margin-bottom: 10px; letter-spacing: 2px;">VERIFICACIÓN 03/04</p>
-                <h2>¿Qué documento físico es obligatorio presentar al subir?</h2>
-                <button class="btn-opt" onclick="next(4)">A) CARNET UNIVERSITARIO / ID UNAC</button>
-                <button class="btn-opt" onclick="fail()">B) DNI (SOLAMENTE)</button>
-                <button class="btn-opt" onclick="fail()">C) RECIBO DE MATRÍCULA</button>
+                <h2>¿En qué fecha se celebra la Proclamación de la Independencia del Perú?</h2>
+                <button class="btn-opt" onclick="next(4)">A) 28 DE JULIO</button>
+                <button class="btn-opt" onclick="fail()">B) 28 DE JUNIO</button>
+                <button class="btn-opt" onclick="fail()">C) 25 DE DICIEMBRE</button>
             </div>
 
             <!-- PREGUNTA 4 -->
             <div class="step" id="step4">
                 <p style="font-size: 0.6rem; color: var(--accent); margin-bottom: 10px; letter-spacing: 2px;">VERIFICACIÓN 04/04</p>
-                <h2>¿A qué hora se cierra el abordaje de la unidad?</h2>
-                <button class="btn-opt" onclick="fail()">A) 17:45 HRS (TOLERANCIA)</button>
-                <button class="btn-opt" onclick="fail()">B) 18:00 HRS</button>
-                <button class="btn-opt" onclick="finish()">C) 17:15 HRS (PUNTUAL)</button>
+                <h2>¿A qué hora es la salida OFICIAL de la unidad?</h2>
+                <button class="btn-opt" onclick="fail()">A) 17:45 HRS (SALIDA)</button>
+                <button class="btn-opt" onclick="fail()">B) 18:01 HRS (SALIDA)</button>
+                <button class="btn-opt" onclick="finish()">C) 18:00 HRS (SALIDA)</button>
             </div>
 
-            <!-- RESULTADO FINAL -->
+          <!-- RESULTADO FINAL DETALLADO -->
             <div id="success-view" style="display: none;">
-                <h2 style="color: #fff;">SISTEMA VALIDADO</h2>
-                <p style="font-size: 0.8rem; opacity: 0.8;">Has completado el protocolo. Acceso al formulario habilitado.</p>
-                <div class="success-data">
-                    <div class="data-item">ESTADO: <span>VERIFICADO</span></div>
-                    <div class="data-item">DESTINO: <span>VENTANILLA</span></div>
-                    <div class="data-item">HORA: <span>17:15 HRS</span></div>
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <span style="background: var(--accent); color: #000; padding: 4px 12px; font-weight: bold; border-radius: 2px; font-size: 0.7rem; letter-spacing: 2px;">ACCESO CONCEDIDO</span>
                 </div>
-                <a href="https://forms.gle/WaVSftiLKBydPo5K8" class="final-btn">ABRIR FORMULARIO OFICIAL</a>
-            </div>
-        </div>
-    </div>
+                
+                <h2 style="color: #fff; text-align: center; margin-bottom: 10px;">VALIDACIÓN EXITOSA</h2>
+                <p style="font-size: 0.85rem; text-align: center; opacity: 0.8; margin-bottom: 20px;">Has superado las pruebas de seguridad. Tu perfil ha sido verificado para el abordaje.</p>
 
+                <div class="success-data" style="background: rgba(0,0,0,0.3); border: 1px dashed rgba(76, 201, 240, 0.3); padding: 20px; border-radius: 4px;">
+                    <div class="data-item">ESTADO: <span style="color: #00ff88; font-weight: bold;">VERIFICADO</span></div>
+                    <div class="data-item">DESTINO: <span style="color: var(--accent);">VENTANILLA</span></div>
+                    <div class="data-item">HORARIO ABORDAJE: <span style="color: var(--accent);">17:30 HRS</span></div>
+                    <div class="data-item">REQUISITO ID: <span style="color: var(--accent);">CARNET FÍSICO/CONSTANCIA DE MATRICULA</span></div>
+                </div>
+
+                <div style="font-size: 0.75rem; line-height: 1.6; color: #adb5bd; margin-top: 20px; padding: 10px; border-left: 2px solid var(--accent);">
+                    <p><b>NOTA IMPORTANTE:</b> El siguiente enlace le dirigirá al formulario oficial de Google. Los cupos se asignan estrictamente por orden de registro. No comparta este acceso con usuarios ajenos a la ruta.</p>
+                </div>
+
+                <a href="https://forms.gle/WaVSftiLKBydPo5K8" class="final-btn" style="letter-spacing: 2px;">ABRIR FORMULARIO OFICIAL</a>
+                
+                <p style="text-align:center; font-size: 0.6rem; margin-top: 20px; color: var(--accent); opacity: 0.6; font-family: 'Syncopate';">SISTEMA DE GESTIÓN DE MOVILIDAD V.2.6</p>
+            </div>
     <footer>
         SISTEMA CREADO POR <b>SEBASTIAN</b><br>
         © 2026 UNAC - Movilidad Universitaria. Todos los derechos reservados.
@@ -223,7 +233,7 @@
     <script>
         // --- CONFIGURACIÓN DE TIEMPO ---
         const HORA_APERTURA = 12; 
-        const MINUTO_APERTURA = 09;
+        const MINUTO_APERTURA = 19;
 
         function updateTimer() {
             const now = new Date();
