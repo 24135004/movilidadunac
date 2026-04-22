@@ -3,164 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SISTEMA DE VALIDACIÓN - RUTA VENTANILLA</title>
+    <title>MOVILIDAD VENTANILLA - UNAC</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --neon-blue: #00f2ff;
-            --neon-purple: #bc13fe;
-            --bg-dark: #020205;
-            --card-bg: rgba(5, 5, 15, 0.7);
+            --accent: #4cc9f0;
+            --bg-slate: #161b22;
+            --glass: rgba(22, 27, 34, 0.85);
+            --text: #e6edf3;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
 
         body {
-            background-color: var(--bg-dark);
+            background-color: #0d1117;
             height: 100vh;
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #e0e0ff;
-        }
-
-        /* CONTENEDOR DEL MUNDO 3D (SIEMPRE AL FONDO) */
-        #canvas-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1; /* Al fondo */
-        }
-
-        /* PANTALLA DE BLOQUEO (TRANSPARENTE PARA VER EL GLOBO) */
-        #lock-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 100;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            color: var(--text);
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+        }
+
+        /* PANTALLA INICIAL */
+        #lock-screen {
+            position: relative;
+            z-index: 10;
             text-align: center;
-            background: radial-gradient(circle, rgba(2,2,5,0.2) 0%, rgba(2,2,5,0.8) 100%);
-            backdrop-filter: blur(2px); /* Un ligero desenfoque para que resalte el texto */
         }
 
-        .timer-display {
+        h1.main-title {
             font-family: 'Syncopate', sans-serif;
-            font-size: clamp(3rem, 10vw, 6rem);
-            color: var(--neon-blue);
-            text-shadow: 0 0 30px var(--neon-blue);
-            margin: 20px 0;
+            font-size: clamp(1.5rem, 6vw, 3rem);
+            letter-spacing: 8px;
+            color: #fff;
+            margin-bottom: 5px;
+            text-transform: uppercase;
         }
 
+        .status-msg {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 0.75rem;
+            color: var(--accent);
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+            opacity: 0.8;
+        }
+
+        .timer-box {
+            font-family: 'Syncopate', sans-serif;
+            font-size: clamp(3.5rem, 15vw, 7rem);
+            font-weight: 700;
+            line-height: 1;
+            margin: 20px 0;
+            text-shadow: 0 0 40px rgba(76, 201, 240, 0.4);
+        }
+
+        /* CONTENEDOR DE PREGUNTAS */
         #main-container {
             position: relative;
-            z-index: 200;
+            z-index: 20;
             width: 90%;
-            max-width: 450px;
-            display: none; /* Se activa al terminar el tiempo */
+            max-width: 500px;
+            display: none;
         }
 
         .card {
-            background: var(--card-bg);
+            background: var(--glass);
             backdrop-filter: blur(20px);
-            padding: 35px;
-            border-radius: 20px;
-            border: 1px solid rgba(0, 242, 255, 0.3);
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-        }
-
-        h2 { font-family: 'Syncopate', sans-serif; font-size: 1rem; color: var(--neon-blue); margin-bottom: 25px; }
-
-        .option-btn {
-            width: 100%;
-            background: rgba(255,255,255,0.05);
+            padding: 40px;
+            border-radius: 4px;
             border: 1px solid rgba(255,255,255,0.1);
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            color: white;
-            cursor: pointer;
-            text-align: left;
-            transition: 0.3s;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
         }
 
-        .option-btn:hover {
-            background: rgba(0, 242, 255, 0.15);
-            border-color: var(--neon-blue);
-            transform: translateX(10px);
+        h2 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            color: var(--accent);
+            text-transform: uppercase;
         }
+
+        .btn-opt {
+            width: 100%;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 16px;
+            margin-bottom: 12px;
+            color: #fff;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .btn-opt:hover {
+            background: rgba(76, 201, 240, 0.1);
+            border-color: var(--accent);
+            padding-left: 25px;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 30px;
+            z-index: 100;
+            text-align: center;
+            width: 100%;
+            font-size: 0.7rem;
+            line-height: 1.8;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.4);
+            text-transform: uppercase;
+        }
+
+        footer b { color: var(--accent); }
 
         .step { display: none; }
         .step.active { display: block; }
 
-        .final-link {
-            display: block;
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
-            color: white;
-            text-decoration: none;
-            text-align: center;
-            padding: 18px;
-            border-radius: 10px;
-            font-weight: bold;
-            margin-top: 20px;
+        /* ÉXITO */
+        .success-data {
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 3px solid var(--accent);
         }
+        .data-item { display: flex; justify-content: space-between; font-size: 0.8rem; margin: 5px 0; }
+        .final-btn {
+            display: block; background: var(--accent); color: #000; text-align: center;
+            padding: 20px; text-decoration: none; font-weight: bold; font-family: 'Syncopate', sans-serif;
+            font-size: 0.8rem; margin-top: 20px;
+        }
+
     </style>
 </head>
 <body>
 
     <div id="canvas-container"></div>
 
-    <!-- CRONÓMETRO (Visible al inicio) -->
+    <!-- PANTALLA INICIAL -->
     <div id="lock-screen">
-        <p style="letter-spacing: 5px; color: white; opacity: 0.8;">SISTEMA DE ACCESO</p>
-        <div class="timer-display" id="countdown">00:00:00</div>
-        <p style="color: var(--neon-blue); font-weight: bold;">AGUARDE A LA HORA DE APERTURA</p>
+        <h1 class="main-title">MOVILIDAD VENTANILLA</h1>
+        <p class="status-msg">FORMULARIO EN ESPERA DE ACTIVACIÓN</p>
+        <div class="timer-box" id="countdown">00:00:00</div>
     </div>
 
-    <!-- CUESTIONARIO (Oculto hasta que el tiempo termine) -->
+    <!-- CUESTIONARIO -->
     <div id="main-container">
-        <div class="card">
+        <div class="card" id="quiz-card">
+            
+            <!-- PREGUNTA 1 -->
             <div class="step active" id="step1">
-                <h2>1. ¿Destino de la unidad?</h2>
-                <button class="option-btn" onclick="next(2)">VENTANILLA</button>
-                <button class="option-btn" onclick="fail()">CENTRO DE LIMA</button>
+                <p style="font-size: 0.6rem; color: var(--accent); margin-bottom: 10px; letter-spacing: 2px;">VERIFICACIÓN 01/04</p>
+                <h2>¿A qué destino se dirige esta unidad de movilidad?</h2>
+                <button class="btn-opt" onclick="next(2)">A) RUTA VENTANILLA</button>
+                <button class="btn-opt" onclick="fail()">B) RUTA LIMA CENTRO</button>
+                <button class="btn-opt" onclick="fail()">C) RUTA SURCO</button>
             </div>
+
+            <!-- PREGUNTA 2 -->
             <div class="step" id="step2">
-                <h2>2. ¿Correo institucional?</h2>
-                <button class="option-btn" onclick="next(3)">@TECSUP.EDU.PE</button>
-                <button class="option-btn" onclick="fail()">@GMAIL.COM</button>
+                <p style="font-size: 0.6rem; color: var(--accent); margin-bottom: 10px; letter-spacing: 2px;">VERIFICACIÓN 02/04</p>
+                <h2>¿Cuál es el correo válido para el registro institucional?</h2>
+                <button class="btn-opt" onclick="fail()">A) CORREO PERSONAL @GMAIL.COM</button>
+                <button class="btn-opt" onclick="next(3)">B) CORREO UNAC @UNAC.EDU.PE</button>
+                <button class="btn-opt" onclick="fail()">C) CORREO DE TECSUP</button>
             </div>
-            <div id="success-step" style="display:none; text-align:center;">
-                <h2 style="color: #00ff88;">✓ ACCESO VALIDADO</h2>
-                <p>Ya puedes registrar tu asistencia en el formulario oficial.</p>
-                <a href="https://forms.gle/WaVSftiLKBydPo5K8" class="final-link">IR AL FORMULARIO</a>
+
+            <!-- PREGUNTA 3 -->
+            <div class="step" id="step3">
+                <p style="font-size: 0.6rem; color: var(--accent); margin-bottom: 10px; letter-spacing: 2px;">VERIFICACIÓN 03/04</p>
+                <h2>¿Qué documento físico es obligatorio presentar al subir?</h2>
+                <button class="btn-opt" onclick="next(4)">A) CARNET UNIVERSITARIO / ID UNAC</button>
+                <button class="btn-opt" onclick="fail()">B) DNI (SOLAMENTE)</button>
+                <button class="btn-opt" onclick="fail()">C) RECIBO DE MATRÍCULA</button>
+            </div>
+
+            <!-- PREGUNTA 4 -->
+            <div class="step" id="step4">
+                <p style="font-size: 0.6rem; color: var(--accent); margin-bottom: 10px; letter-spacing: 2px;">VERIFICACIÓN 04/04</p>
+                <h2>¿A qué hora se cierra el abordaje de la unidad?</h2>
+                <button class="btn-opt" onclick="fail()">A) 17:45 HRS (TOLERANCIA)</button>
+                <button class="btn-opt" onclick="fail()">B) 18:00 HRS</button>
+                <button class="btn-opt" onclick="finish()">C) 17:15 HRS (PUNTUAL)</button>
+            </div>
+
+            <!-- RESULTADO FINAL -->
+            <div id="success-view" style="display: none;">
+                <h2 style="color: #fff;">SISTEMA VALIDADO</h2>
+                <p style="font-size: 0.8rem; opacity: 0.8;">Has completado el protocolo. Acceso al formulario habilitado.</p>
+                <div class="success-data">
+                    <div class="data-item">ESTADO: <span>VERIFICADO</span></div>
+                    <div class="data-item">DESTINO: <span>VENTANILLA</span></div>
+                    <div class="data-item">HORA: <span>17:15 HRS</span></div>
+                </div>
+                <a href="https://forms.gle/WaVSftiLKBydPo5K8" class="final-btn">ABRIR FORMULARIO OFICIAL</a>
             </div>
         </div>
     </div>
 
+    <footer>
+        SISTEMA CREADO POR <b>SEBASTIAN</b><br>
+        © 2026 UNAC - Movilidad Universitaria. Todos los derechos reservados.
+    </footer>
+
     <script>
-        // ======================================================
-        // 1. CONFIGURACIÓN DE LA HORA (MODIFICA AQUÍ)
-        // ======================================================
-        const HORA_APERTURA = 11;   // Hora (en formato 24h, ej: 17 es 5 PM)
-        const MINUTO_APERTURA = 53;  // Minuto
-        // ======================================================
+        // --- CONFIGURACIÓN DE TIEMPO ---
+        const HORA_APERTURA = 17; 
+        const MINUTO_APERTURA = 0;
 
         function updateTimer() {
             const now = new Date();
             const target = new Date();
             target.setHours(HORA_APERTURA, MINUTO_APERTURA, 0);
-
             const diff = target - now;
 
             if (diff <= 0) {
-                document.getElementById('lock-screen').style.display = 'none';
-                document.getElementById('main-container').style.display = 'block';
+                gsap.to("#lock-screen", { opacity: 0, duration: 1, onComplete: () => {
+                    document.getElementById('lock-screen').style.display = 'none';
+                    document.getElementById('main-container').style.display = 'block';
+                    gsap.from("#main-container", { y: 30, opacity: 0, duration: 0.8 });
+                }});
                 return;
             }
 
@@ -172,9 +248,7 @@
         setInterval(updateTimer, 1000);
         updateTimer();
 
-        // ======================================================
-        // 2. GLOBO TERRÁQUEO TECNOLÓGICO 3D
-        // ======================================================
+        // --- GLOBO TERRÁQUEO 3D ---
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -184,34 +258,26 @@
         const globeGroup = new THREE.Group();
         scene.add(globeGroup);
 
-        // Esfera de Red (Wireframe)
-        const sphereGeo = new THREE.IcosahedronGeometry(2, 2);
-        const sphereMat = new THREE.MeshBasicMaterial({ 
-            color: 0x00f2ff, wireframe: true, transparent: true, opacity: 0.3 
-        });
-        const globe = new THREE.Mesh(sphereGeo, sphereMat);
-        globeGroup.add(globe);
+        const createLayer = (size, detail, color, op, wire) => {
+            const geo = new THREE.IcosahedronGeometry(size, detail);
+            const mat = new THREE.MeshBasicMaterial({ color: color, wireframe: wire, transparent: true, opacity: op });
+            return new THREE.Mesh(geo, mat);
+        };
 
-        // Nube de puntos (Nodos de datos)
-        const dotsGeo = new THREE.SphereGeometry(2.1, 35, 35);
-        const dotsMat = new THREE.PointsMaterial({ size: 0.04, color: 0xbc13fe, transparent: true, opacity: 0.8 });
-        const dots = new THREE.Points(dotsGeo, dotsMat);
-        globeGroup.add(dots);
+        const core = createLayer(2.2, 2, 0x1a2a3a, 0.5, false);
+        const grid = createLayer(2.3, 2, 0x4cc9f0, 0.15, true);
+        const dots = new THREE.Points(
+            new THREE.SphereGeometry(2.35, 35, 35),
+            new THREE.PointsMaterial({ size: 0.03, color: 0xffffff, transparent: true, opacity: 0.6 })
+        );
 
-        // Anillo de escaneo
-        const ringGeo = new THREE.TorusGeometry(2.5, 0.02, 16, 100);
-        const ringMat = new THREE.MeshBasicMaterial({ color: 0x00f2ff, transparent: true, opacity: 0.5 });
-        const scanRing = new THREE.Mesh(ringGeo, ringMat);
-        scanRing.rotation.x = Math.PI / 2;
-        globeGroup.add(scanRing);
-
-        camera.position.z = 5;
+        globeGroup.add(core, grid, dots);
+        camera.position.z = 6;
 
         function animate() {
             requestAnimationFrame(animate);
-            globeGroup.rotation.y += 0.003;
-            dots.rotation.y -= 0.001;
-            scanRing.position.y = Math.sin(Date.now() * 0.002) * 1.5; // El anillo sube y baja
+            globeGroup.rotation.y += 0.0015;
+            globeGroup.rotation.x += 0.0005;
             renderer.render(scene, camera);
         }
         animate();
@@ -222,29 +288,37 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        // ======================================================
-        // 3. LÓGICA DEL CUESTIONARIO
-        // ======================================================
-        function next(stepId) {
-            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-            document.getElementById('step' + stepId).classList.add('active');
+        // --- LÓGICA DE NAVEGACIÓN ---
+        function next(id) {
+            const current = document.querySelector('.step.active');
+            gsap.to(current, { opacity: 0, x: -20, duration: 0.3, onComplete: () => {
+                current.classList.remove('active');
+                const nextStep = document.getElementById('step' + id);
+                nextStep.classList.add('active');
+                gsap.fromTo(nextStep, { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.4 });
+            }});
         }
 
         function fail() {
-            alert("ERROR DE VALIDACIÓN: El sistema se reiniciará.");
-            location.reload();
+            alert("⚠️ RESPUESTA INCORRECTA\n\nEl sistema de seguridad requiere que reinicies la validación desde el paso 1.");
+            
+            const current = document.querySelector('.step.active');
+            gsap.to(current, { opacity: 0, scale: 0.9, duration: 0.3, onComplete: () => {
+                current.classList.remove('active');
+                const step1 = document.getElementById('step1');
+                step1.classList.add('active');
+                gsap.fromTo(step1, { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, duration: 0.4 });
+            }});
         }
 
-        function finishQuiz() {
-            document.querySelectorAll('.step').forEach(s => s.style.display = 'none');
-            document.getElementById('success-step').style.display = 'block';
+        function finish() {
+            const current = document.querySelector('.step.active');
+            gsap.to(current, { opacity: 0, y: -20, duration: 0.4, onComplete: () => {
+                current.classList.remove('active');
+                document.getElementById('success-view').style.display = 'block';
+                gsap.from("#success-view", { opacity: 0, scale: 0.9, duration: 0.5 });
+            }});
         }
-        // Ajuste para el último botón
-        document.querySelector('#step2 .option-btn').onclick = function() {
-            document.getElementById('step2').classList.remove('active');
-            document.getElementById('success-step').style.display = 'block';
-        };
-
     </script>
 </body>
 </html>
