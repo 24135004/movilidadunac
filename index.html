@@ -3,252 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movilidad Ventanilla | Acceso Seguro</title>
-    <!-- Librerías para 3D y Animaciones -->
+    <title>Registro Movilidad Ventanilla</title>
+    <!-- Librerías -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --gold: #d4af37;
-            --bright-gold: #f9e2af;
-            --dark-bg: #050505;
-            --tech-blue: #00d2ff;
+            --warm-orange: #ff9a3c;
+            --warm-amber: #ff6b35;
+            --soft-yellow: #fff4e6;
+            --gold-gradient: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            --text-dark: #4a3728;
         }
 
         * {
             margin: 0; padding: 0; box-sizing: border-box;
             font-family: 'Outfit', sans-serif;
-            user-select: none;
         }
 
         body {
-            background-color: var(--dark-bg);
+            background-color: var(--soft-yellow);
             height: 100vh;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: white;
+            color: var(--text-dark);
         }
 
-        /* --- CONTENEDOR 3D DEL GLOBO --- */
+        /* FONDO 3D */
         #canvas-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1;
+            background: radial-gradient(circle, #fff4e6 0%, #ffd8a8 100%);
         }
 
-        /* --- INTERFAZ DEL ACERTIJO --- */
-        #riddle-ui {
+        /* CONTENEDOR PRINCIPAL */
+        #main-container {
             position: relative;
             z-index: 10;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-            padding: 40px;
-            border-radius: 30px;
-            border: 1px solid rgba(0, 210, 255, 0.3);
-            box-shadow: 0 0 50px rgba(0, 210, 255, 0.1);
-        }
-
-        h2 { 
-            font-size: 0.8rem; letter-spacing: 5px; color: var(--tech-blue);
-            margin-bottom: 20px; text-transform: uppercase;
-        }
-
-        .riddle-text {
-            font-size: 1.5rem; font-weight: 900; margin-bottom: 20px;
-            background: linear-gradient(to right, #fff, #666);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
-        #riddle-input {
-            background: transparent; border: none;
-            border-bottom: 2px solid var(--tech-blue);
-            color: white; font-size: 1.8rem; text-align: center;
-            width: 250px; outline: none; text-transform: uppercase;
-            letter-spacing: 5px; transition: 0.3s;
-        }
-
-        #riddle-input:focus {
-            border-bottom-color: white;
-            filter: drop-shadow(0 0 10px var(--tech-blue));
-        }
-
-        /* --- TARJETA DORADA PROFESIONAL --- */
-        #gold-card {
-            display: none;
-            position: relative;
-            z-index: 20;
             width: 90%;
-            max-width: 420px;
-            background: linear-gradient(145deg, #bf953f, #fcf6ba, #b38728);
+            max-width: 450px;
+            perspective: 1000px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            padding: 35px;
             border-radius: 30px;
-            padding: 40px 30px;
-            color: #1a1a1a;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 0 30px rgba(255,255,255,0.4);
-            transform: scale(0.8); opacity: 0;
+            border: 2px solid white;
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.15);
             text-align: center;
         }
 
-        .card-header { font-weight: 900; font-size: 1.4rem; margin-bottom: 5px; }
-        .card-subtitle { font-size: 0.85rem; font-weight: 500; opacity: 0.8; margin-bottom: 25px; }
+        /* SISTEMA DE PASOS */
+        .step {
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+        }
 
-        .info-grid {
-            display: grid; grid-template-columns: 1fr; gap: 10px;
-            background: rgba(0,0,0,0.05); padding: 20px;
-            border-radius: 20px; margin-bottom: 25px;
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 { font-weight: 800; color: var(--warm-amber); margin-bottom: 20px; font-size: 1.4rem; }
+
+        /* INPUTS Y BOTONES */
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid #ffd8a8;
+            background: white;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            outline: none;
+            text-align: center;
+            color: var(--text-dark);
+        }
+
+        .options-container {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #ffd8a8;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .option-btn:hover {
+            background: var(--warm-orange);
+            color: white;
+            border-color: var(--warm-orange);
+        }
+
+        .next-btn {
+            background: var(--gold-gradient);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(253, 160, 133, 0.4);
+        }
+
+        /* TARJETA FINAL */
+        #success-card {
+            display: none;
+            background: var(--gold-gradient);
+            color: white;
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 15px;
+            margin: 15px 0;
+            font-size: 0.9rem;
             text-align: left;
         }
-
-        .info-item {
-            display: flex; align-items: center; font-size: 0.85rem; font-weight: 700;
-        }
-
-        .info-item span { 
-            background: #000; color: #fff; width: 22px; height: 22px;
-            border-radius: 50%; display: flex; justify-content: center;
-            align-items: center; margin-right: 10px; font-size: 12px;
-        }
-
-        .important-section {
-            border-top: 1px solid rgba(0,0,0,0.1);
-            padding-top: 20px; margin-bottom: 30px;
-        }
-
-        .important-label { color: #cc0000; font-weight: 900; font-size: 0.8rem; margin-bottom: 5px; }
-        .important-text { font-size: 0.9rem; font-weight: 600; line-height: 1.4; }
-
-        .access-btn {
-            background: #000; color: #fff;
-            padding: 20px; width: 100%; border-radius: 15px;
-            text-decoration: none; font-weight: 900; font-size: 1rem;
-            display: block; transition: 0.4s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-
-        .access-btn:hover { background: #222; transform: translateY(-5px); }
-
-        .att-text { margin-top: 25px; font-size: 0.75rem; font-weight: 800; opacity: 0.7; }
-
     </style>
 </head>
 <body>
 
-    <!-- 3D GLOBE BACKGROUND -->
     <div id="canvas-container"></div>
 
-    <!-- PANTALLA DE ACERTIJO -->
-    <div id="riddle-ui">
-        <h2>System Authentication</h2>
-        <div class="riddle-text">Identifique el Destino</div>
-        <input type="text" id="riddle-input" placeholder="_____" maxlength="10">
-        <p style="margin-top: 20px; font-size: 0.7rem; color: #555;">PISTA: COMIENZA CON 'V'</p>
-    </div>
-
-    <!-- TARJETA DORADA REDISEÑADA -->
-    <div id="gold-card">
-        <div class="card-header">‼️ BUENAS TARDES ‼️</div>
-        <div class="card-subtitle">Formulario de Movilidad | 21/04/2026</div>
-
-        <div class="info-grid">
-            <div class="info-item"><span>✓</span> CORREO INSTITUCIONAL OBLIGATORIO</div>
-            <div class="info-item"><span>✓</span> VERIFICACIÓN DE DATOS CORRECTOS</div>
-            <div class="info-item"><span>✓</span> CAPACIDAD MÁXIMA: 40 PERSONAS</div>
-        </div>
-
-        <div class="important-section">
-            <div class="important-label">‼️ AVISO IMPORTANTE ‼️</div>
-            <div class="important-text">
-                Ordenamiento: 5:15 PM.<br>
-                Si no está presente <b>PIERDE SU CUPO</b>.
+    <div id="main-container">
+        <div class="card" id="quiz-card">
+            
+            <!-- PREGUNTA 1: ESCRIBIR -->
+            <div class="step active" id="step1">
+                <h2>¿Hacia qué distrito se dirige la movilidad?</h2>
+                <input type="text" id="ans1" placeholder="Escribe el destino...">
+                <button class="next-btn" onclick="checkStep(1, 'ventanilla')">Siguiente</button>
             </div>
+
+            <!-- PREGUNTA 2: ALTERNATIVAS -->
+            <div class="step" id="step2">
+                <h2>¿Cuál es el correo obligatorio?</h2>
+                <div class="options-container">
+                    <button class="option-btn" onclick="checkStep(2, 'institucional')">Correo Personal (@gmail)</button>
+                    <button class="option-btn" onclick="checkStep(2, 'ok')">Correo Institucional</button>
+                    <button class="option-btn" onclick="checkStep(2, 'institucional')">Cualquier correo</button>
+                </div>
+            </div>
+
+            <!-- PREGUNTA 3: ESCRIBIR -->
+            <div class="step" id="step3">
+                <h2>¿A qué hora comienza el ordenamiento?</h2>
+                <input type="text" id="ans3" placeholder="Ej: 5:15 PM">
+                <button class="next-btn" onclick="checkStep(3, '5:15')">Verificar Hora</button>
+            </div>
+
+            <!-- PREGUNTA 4: ALTERNATIVAS -->
+            <div class="step" id="step4">
+                <h2>¿Qué sucede si llegas tarde?</h2>
+                <div class="options-container">
+                    <button class="option-btn" onclick="checkStep(4, 'ok')">Pierdo mi cupo</button>
+                    <button class="option-btn" onclick="checkStep(4, 'error')">La movilidad me espera</button>
+                    <button class="option-btn" onclick="checkStep(4, 'error')">Llamo al delegado</button>
+                </div>
+            </div>
+
+            <!-- PREGUNTA 5: ESCRIBIR -->
+            <div class="step" id="step5">
+                <h2>Escribe tu Nombre y Apellido</h2>
+                <input type="text" id="ans5" placeholder="Nombre completo">
+                <button class="next-btn" onclick="finishQuiz()">Finalizar Registro</button>
+            </div>
+
         </div>
 
-        <a href="https://forms.gle/WaVSftiLKBydPo5K8" class="access-btn">Acceder al Formulario</a>
-
-        <div class="att-text">ATT. DELEGADO 🫡</div>
+        <!-- MENSAJE FINAL -->
+        <div class="card" id="success-card">
+            <h2 style="color: white;">¡REGISTRO EXITOSO! 🫡</h2>
+            <p>Tus datos han sido validados correctamente.</p>
+            <div class="info-box">
+                📍 <b>Destino:</b> Ventanilla<br>
+                ⏰ <b>Hora:</b> 5:15 PM (Puntual)<br>
+                📧 <b>Requisito:</b> Carnet / Correo Inst.
+            </div>
+            <a href="https://forms.gle/WaVSftiLKBydPo5K8" style="color: white; font-weight: 800; text-decoration: none; background: rgba(0,0,0,0.2); padding: 10px 20px; border-radius: 10px; display: inline-block; margin-top: 10px;">IR AL FORMULARIO OFICIAL</a>
+        </div>
     </div>
 
     <script>
-        // --- CONFIGURACIÓN THREE.JS (GLOBO 3D) ---
-        const container = document.getElementById('canvas-container');
+        // --- ANIMACIÓN 3D DE FONDO (CÁLIDA) ---
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        
         renderer.setSize(window.innerWidth, window.innerHeight);
-        container.appendChild(renderer.domElement);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-        // Crear Esfera (Globo Wireframe)
-        const geometry = new THREE.IcosahedronGeometry(2, 2);
-        const material = new THREE.MeshBasicMaterial({ 
-            color: 0x00d2ff, 
-            wireframe: true, 
-            transparent: true, 
-            opacity: 0.2 
-        });
+        // Esfera de partículas cálidas
+        const geometry = new THREE.SphereGeometry(2, 32, 32);
+        const material = new THREE.MeshBasicMaterial({ color: 0xff9a3c, wireframe: true, transparent: true, opacity: 0.1 });
         const sphere = new THREE.Mesh(geometry, material);
         scene.add(sphere);
 
-        // Partículas alrededor
         const particlesGeom = new THREE.BufferGeometry();
-        const particlesCount = 500;
-        const posArray = new Float32Array(particlesCount * 3);
-        for(let i=0; i < particlesCount * 3; i++) {
-            posArray[i] = (Math.random() - 0.5) * 10;
-        }
-        particlesGeom.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        const particlesMat = new THREE.PointsMaterial({ size: 0.02, color: 0xffffff });
-        const particlesMesh = new THREE.Points(particlesGeom, particlesMat);
-        scene.add(particlesMesh);
+        const pCount = 800;
+        const coords = new Float32Array(pCount * 3);
+        for(let i=0; i<pCount*3; i++) coords[i] = (Math.random() - 0.5) * 12;
+        particlesGeom.setAttribute('position', new THREE.BufferAttribute(coords, 3));
+        const particlesMat = new THREE.PointsMaterial({ size: 0.03, color: 0xff6b35 });
+        const particles = new THREE.Points(particlesGeom, particlesMat);
+        scene.add(particles);
 
         camera.position.z = 5;
 
         function animate() {
             requestAnimationFrame(animate);
-            sphere.rotation.y += 0.005;
-            particlesMesh.rotation.y -= 0.002;
+            sphere.rotation.y += 0.002;
+            particles.rotation.x += 0.001;
             renderer.render(scene, camera);
         }
         animate();
 
-        // --- LÓGICA DE INTERACCIÓN ---
-        const riddleInput = document.getElementById('riddle-input');
-        const riddleUI = document.getElementById('riddle-ui');
-        const goldCard = document.getElementById('gold-card');
+        // --- LÓGICA DEL FORMULARIO ---
+        function checkStep(step, correctAns) {
+            let userAns = "";
+            let isValid = false;
 
-        riddleInput.addEventListener('input', (e) => {
-            if (e.target.value.toLowerCase() === 'ventanilla') {
-                // Animación de salida 3D
-                gsap.to(camera.position, { z: 2, duration: 1.5, ease: "power2.inOut" });
-                gsap.to(riddleUI, { opacity: 0, scale: 0.5, duration: 0.8, onComplete: () => {
-                    riddleUI.style.display = 'none';
-                    showGoldCard();
-                }});
+            if (step === 1) {
+                userAns = document.getElementById('ans1').value.toLowerCase();
+                if(userAns.includes('ventanilla')) isValid = true;
+            } else if (step === 2) {
+                if(correctAns === 'ok') isValid = true;
+            } else if (step === 3) {
+                userAns = document.getElementById('ans3').value;
+                if(userAns.includes('5:15')) isValid = true;
+            } else if (step === 4) {
+                if(correctAns === 'ok') isValid = true;
             }
-        });
 
-        function showGoldCard() {
-            goldCard.style.display = 'block';
-            gsap.to(goldCard, { opacity: 1, scale: 1, duration: 1, ease: "elastic.out(1, 0.7)" });
-            
-            // Efecto de movimiento 3D con el mouse
-            document.addEventListener('mousemove', (e) => {
-                const x = (window.innerWidth / 2 - e.pageX) / 25;
-                const y = (window.innerHeight / 2 - e.pageY) / 25;
-                gsap.to(goldCard, { rotateY: -x, rotateX: y, duration: 0.5 });
-            });
+            if (isValid) {
+                gsap.to(`#step${step}`, { opacity: 0, x: -20, duration: 0.3, onComplete: () => {
+                    document.getElementById(`step${step}`).classList.remove('active');
+                    document.getElementById(`step${step+1}`).classList.add('active');
+                    gsap.from(`#step${step+1}`, { opacity: 0, x: 20, duration: 0.3 });
+                }});
+            } else {
+                alert("Respuesta incorrecta o incompleta. Revisa los datos de movilidad.");
+            }
         }
 
-        // Ajuste de pantalla
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+        function finishQuiz() {
+            const nombre = document.getElementById('ans5').value;
+            if(nombre.length < 3) {
+                alert("Por favor ingresa tu nombre completo");
+                return;
+            }
+
+            gsap.to("#quiz-card", { rotationY: 90, opacity: 0, duration: 0.6, onComplete: () => {
+                document.getElementById('quiz-card').style.display = 'none';
+                const successCard = document.getElementById('success-card');
+                successCard.style.display = 'block';
+                gsap.from(successCard, { rotationY: -90, opacity: 0, duration: 0.6 });
+            }});
+        }
+
+        // Mouse Move 3D Effect
+        document.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth / 2 - e.pageX) / 50;
+            const y = (window.innerHeight / 2 - e.pageY) / 50;
+            gsap.to("#main-container", { rotateY: -x, rotateX: y, duration: 0.5 });
         });
     </script>
 </body>
