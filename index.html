@@ -3,187 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MOVILIDAD VENTANILLA - UNAC</title>
+    <title>SISTEMA DE ACCESO - UNAC</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;500;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --accent: #4cc9f0;
-            --bg-slate: #161b22;
-            --glass: rgba(13, 17, 23, 0.85);
-            --text: #e6edf3;
+            --accent: #00f2ff;
+            --accent-dim: rgba(0, 242, 255, 0.2);
+            --bg: #03070a;
+            --glass: rgba(10, 20, 30, 0.8);
+            --text: #e0f7fa;
+            --error: #ff4d4d;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background-color: #0d1117;
+            background-color: var(--bg);
             min-height: 100vh;
+            min-height: -webkit-fill-available;
             width: 100%;
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
             color: var(--text);
+            font-family: 'JetBrains+Mono', monospace;
         }
 
         #canvas-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1;
+            pointer-events: none;
         }
 
-        /* PANTALLA INICIAL */
-        #lock-screen {
+        /* --- LAYOUT PRINCIPAL --- */
+        main {
             position: relative;
             z-index: 10;
-            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             padding: 20px;
             width: 100%;
         }
 
-        h1.main-title {
+        /* --- PANTALLA DE BLOQUEO --- */
+        #lock-screen {
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .main-title {
             font-family: 'Syncopate', sans-serif;
-            font-size: clamp(1.2rem, 5vw, 2.5rem);
-            letter-spacing: 4px;
+            font-size: clamp(1rem, 6vw, 1.8rem);
+            letter-spacing: 6px;
             color: #fff;
-            margin-bottom: 8px;
-            text-transform: uppercase;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px var(--accent-dim);
         }
 
         .status-msg {
-            font-family: 'Syncopate', sans-serif;
-            font-size: clamp(0.6rem, 2vw, 0.75rem);
+            font-size: 0.7rem;
             color: var(--accent);
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-            opacity: 0.9;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
         }
 
         .timer-box {
             font-family: 'Syncopate', sans-serif;
-            font-size: clamp(2.5rem, 12vw, 6rem);
+            font-size: clamp(2.5rem, 15vw, 5rem);
             font-weight: 700;
-            line-height: 1;
-            margin: 15px 0;
-            text-shadow: 0 0 30px rgba(76, 201, 240, 0.4);
+            background: linear-gradient(to bottom, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 20px 0;
         }
 
-        /* CONTENEDOR DE PREGUNTAS */
+        /* --- CONTENEDOR DE CUESTIONARIO --- */
         #main-container {
-            position: relative;
-            z-index: 20;
-            width: 92%;
-            max-width: 450px;
             display: none;
-            margin: 20px auto;
+            width: 100%;
+            max-width: 420px;
+            perspective: 1000px;
         }
 
         .card {
             background: var(--glass);
-            backdrop-filter: blur(15px);
-            padding: clamp(20px, 5vw, 40px);
-            border-radius: 12px;
-            border: 1px solid rgba(76, 201, 240, 0.2);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            width: 100%;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 30px 25px;
+            border-radius: 4px;
+            border: 1px solid var(--accent-dim);
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        }
+
+        .step-indicator {
+            font-size: 0.6rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+            font-weight: bold;
         }
 
         h2 {
-            font-family: 'Syncopate', sans-serif;
-            font-size: clamp(0.8rem, 3vw, 0.9rem);
-            margin-bottom: 20px;
-            line-height: 1.5;
-            color: var(--accent);
-            text-transform: uppercase;
+            font-size: 1rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        /* --- BOTONES --- */
+        .options-grid {
+            display: grid;
+            gap: 12px;
         }
 
         .btn-opt {
             width: 100%;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.03);
             border: 1px solid rgba(255,255,255,0.1);
-            padding: 14px 18px;
-            margin-bottom: 10px;
+            padding: 16px;
             color: #fff;
             text-align: left;
             cursor: pointer;
-            transition: background 0.3s, transform 0.2s;
+            transition: all 0.3s ease;
             font-size: 0.9rem;
-            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .btn-opt:active { transform: scale(0.98); }
-
-        .btn-opt:hover {
-            background: rgba(76, 201, 240, 0.15);
+        .btn-opt:hover, .btn-opt:active {
+            background: var(--accent-dim);
             border-color: var(--accent);
+            padding-left: 20px;
         }
 
-        /* FOOTER ADAPTADO */
-        footer {
-            position: relative;
-            z-index: 100;
-            text-align: center;
-            width: 100%;
-            padding: 25px 10px;
-            font-size: 0.65rem;
-            line-height: 1.5;
-            letter-spacing: 1px;
-            color: rgba(255,255,255,0.5);
-            text-transform: uppercase;
-            margin-top: auto;
+        .btn-opt::after {
+            content: "→";
+            opacity: 0.5;
         }
 
-        footer b { color: var(--accent); }
-
-        .step { display: none; }
-        .step.active { display: block; }
-
-        /* ÉXITO */
+        /* --- VISTA DE ÉXITO --- */
         .success-data {
-            background: rgba(0,0,0,0.3);
-            padding: 15px;
-            margin: 15px 0;
-            border-left: 3px solid var(--accent);
-            border-radius: 4px;
+            background: rgba(0, 242, 255, 0.05);
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 2px solid var(--accent);
         }
+
         .data-item { 
             display: flex; 
             justify-content: space-between; 
             font-size: 0.75rem; 
-            margin: 8px 0;
-            gap: 10px;
+            margin: 10px 0;
+            text-transform: uppercase;
         }
-        .data-item span { text-align: right; }
 
         .final-btn {
             display: block; 
             background: var(--accent); 
             color: #000; 
             text-align: center;
-            padding: 18px; 
+            padding: 20px; 
             text-decoration: none; 
-            font-weight: bold; 
+            font-weight: 800; 
             font-family: 'Syncopate', sans-serif;
             font-size: 0.8rem; 
-            margin-top: 15px;
-            border-radius: 6px;
-            transition: filter 0.3s;
+            margin-top: 20px;
+            clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
+            transition: transform 0.3s;
         }
 
-        /* QUITADO EL PARPADEO: Animación suave */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .step.active { animation: fadeIn 0.4s ease-out forwards; }
+        .final-btn:active { transform: scale(0.95); }
 
-        @media (max-height: 600px) {
-            body { justify-content: flex-start; padding-top: 20px; }
-            footer { position: relative; bottom: 0; padding: 15px; }
+        /* --- FOOTER --- */
+        footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 30px 10px;
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.3);
+            letter-spacing: 1px;
+        }
+
+        footer b { color: var(--accent); }
+
+        .step { display: none; }
+        .step.active { display: block; animation: slideIn 0.4s ease-out; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @media (max-width: 480px) {
+            .card { padding: 25px 15px; }
+            h2 { font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -191,87 +224,93 @@
 
     <div id="canvas-container"></div>
 
-    <!-- PANTALLA INICIAL -->
-    <div id="lock-screen">
-        <h1 class="main-title">MOVILIDAD VENTANILLA</h1>
-        <p class="status-msg">ESPERANDO ACTIVACIÓN DEL FORMULARIO</p>
-        <div class="timer-box" id="countdown">00:00:00</div>
-    </div>
+    <main>
+        <!-- PANTALLA INICIAL -->
+        <div id="lock-screen">
+            <h1 class="main-title">UNAC TRANSPORT</h1>
+            <p class="status-msg">Sistema de Verificación Matemática</p>
+            <div class="timer-box" id="countdown">00:00:00</div>
+            <p style="font-size: 0.6rem; opacity: 0.5;">AGUARDE LA HORA DE APERTURA</p>
+        </div>
 
-    <!-- CUESTIONARIO -->
-    <div id="main-container">
-        <div class="card" id="quiz-card">
-            
-            <!-- PREGUNTA 1 -->
-            <div class="step active" id="step1">
-                <p style="font-size: 0.6rem; color: var(--accent); margin-bottom: 10px; letter-spacing: 2px;">VERIFICACIÓN 01/04</p>
-                <h2>¿Cuál es el destino de esta unidad de transporte?</h2>
-                <button class="btn-opt" onclick="next(2)">A) RUTA VENTANILLA</button>
-                <button class="btn-opt" onclick="fail()">B) RUTA TUPAC</button>
-                <button class="btn-opt" onclick="fail()">C) RUTA SURCO</button>
-            </div>
-
-            <!-- PREGUNTA 2 -->
-            <div class="step" id="step2">
-                <p style="font-size: 0.6rem; color: var(--accent); margin-bottom: 10px; letter-spacing: 2px;">VERIFICACIÓN 02/04</p>
-                <h2>¿En qué departamento se ubica Machu Picchu?</h2>
-                <button class="btn-opt" onclick="fail()">A) AREQUIPA</button>
-                <button class="btn-opt" onclick="next(3)">B) CUSCO</button>
-                <button class="btn-opt" onclick="fail()">C) COSCO</button>
-            </div>
-
-            <!-- PREGUNTA 3 -->
-            <div class="step" id="step3">
-                <p style="font-size: 0.6rem; color: var(--accent); margin-bottom: 10px; letter-spacing: 2px;">VERIFICACIÓN 03/04</p>
-                <h2>Fecha de la Independencia del Perú:</h2>
-                <button class="btn-opt" onclick="next(4)">A) 28 DE JULIO</button>
-                <button class="btn-opt" onclick="fail()">B) 28 DE JUNIO</button>
-                <button class="btn-opt" onclick="fail()">C) 30 DE AGOSTO</button>
-            </div>
-
-            <!-- PREGUNTA 4 -->
-            <div class="step" id="step4">
-                <p style="font-size: 0.6rem; color: var(--accent); margin-bottom: 10px; letter-spacing: 2px;">VERIFICACIÓN 04/04</p>
-                <h2>¿Hora oficial de salida de la unidad?</h2>
-                <button class="btn-opt" onclick="fail()">A) 17:45 HRS</button>
-                <button class="btn-opt" onclick="fail()">B) 18:15 HRS</button>
-                <button class="btn-opt" onclick="finish()">C) 18:00 HRS</button>
-            </div>
-
-            <!-- RESULTADO FINAL DETALLADO -->
-            <div id="success-view" style="display: none;">
-                <div style="text-align: center; margin-bottom: 15px;">
-                    <span style="background: var(--accent); color: #000; padding: 4px 12px; font-weight: bold; border-radius: 2px; font-size: 0.65rem; letter-spacing: 2px;">ACCESO CONCEDIDO</span>
-                </div>
+        <!-- CUESTIONARIO MATEMÁTICO -->
+        <div id="main-container">
+            <div class="card">
                 
-                <h2 style="color: #fff; text-align: center; margin-bottom: 8px;">VALIDACIÓN EXITOSA</h2>
-                <p style="font-size: 0.75rem; text-align: center; opacity: 0.8; margin-bottom: 15px;">Protocolo completado. Su perfil ha sido verificado.</p>
-
-                <div class="success-data">
-                    <div class="data-item">ESTADO: <span style="color: #00ff88; font-weight: bold;">VERIFICADO</span></div>
-                    <div class="data-item">DESTINO: <span style="color: var(--accent);">VENTANILLA</span></div>
-                    <div class="data-item">ABORDAJE: <span style="color: var(--accent);">17:30 HRS</span></div>
-                    <div class="data-item">DOCUMENTO: <span style="color: var(--accent);">CARNET / MATRÍCULA</span></div>
+                <!-- PREGUNTA 1 -->
+                <div class="step active" id="step1">
+                    <p class="step-indicator">CHALLENGE 01/04</p>
+                    <h2>Resuelve: <br><strong>(12 x 4) + 2</strong></h2>
+                    <div class="options-grid">
+                        <button class="btn-opt" onclick="fail()">48</button>
+                        <button class="btn-opt" onclick="next(2)">50</button>
+                        <button class="btn-opt" onclick="fail()">52</button>
+                    </div>
                 </div>
 
-                <div style="font-size: 0.7rem; line-height: 1.5; color: #adb5bd; margin: 15px 0; padding-left: 10px; border-left: 2px solid var(--accent);">
-                    <p><b>AVISO:</b> El registro se realiza por orden de llegada en el formulario. No comparta este enlace.</p>
+                <!-- PREGUNTA 2 -->
+                <div class="step" id="step2">
+                    <p class="step-indicator">CHALLENGE 02/04</p>
+                    <h2>Si un bus recorre 60km en 1 hora, ¿cuánto recorre en 15 min?</h2>
+                    <div class="options-grid">
+                        <button class="btn-opt" onclick="next(3)">15 KM</button>
+                        <button class="btn-opt" onclick="fail()">10 KM</button>
+                        <button class="btn-opt" onclick="fail()">20 KM</button>
+                    </div>
                 </div>
 
-                <a href="https://forms.gle/VvnpcRgUgbMzNduJ8" class="final-btn">ABRIR FORMULARIO</a>
-                
-                <p style="text-align:center; font-size: 0.55rem; margin-top: 15px; color: var(--accent); opacity: 0.6; font-family: 'Syncopate';">V.2.6 AUTH SYSTEM</p>
+                <!-- PREGUNTA 3 -->
+                <div class="step" id="step3">
+                    <p class="step-indicator">CHALLENGE 03/04</p>
+                    <h2>Calcula la raíz cuadrada de: <br><strong>144</strong></h2>
+                    <div class="options-grid">
+                        <button class="btn-opt" onclick="fail()">14</button>
+                        <button class="btn-opt" onclick="next(4)">12</button>
+                        <button class="btn-opt" onclick="fail()">11</button>
+                    </div>
+                </div>
+
+                <!-- PREGUNTA 4 -->
+                <div class="step" id="step4">
+                    <p class="step-indicator">CHALLENGE 04/04</p>
+                    <h2>Si el aforo es de 45 y hay 38 personas, ¿asientos libres?</h2>
+                    <div class="options-grid">
+                        <button class="btn-opt" onclick="fail()">9</button>
+                        <button class="btn-opt" onclick="fail()">6</button>
+                        <button class="btn-opt" onclick="finish()">7</button>
+                    </div>
+                </div>
+
+                <!-- RESULTADO FINAL -->
+                <div id="success-view" style="display: none; text-align: center;">
+                    <div style="margin-bottom: 20px;">
+                        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <h2 style="color: #fff; margin-bottom: 5px;">ACCESO AUTORIZADO</h2>
+                    <p style="font-size: 0.7rem; opacity: 0.6;">TOKEN DE VERIFICACIÓN GENERADO</p>
+
+                    <div class="success-data">
+                        <div class="data-item">ESTADO: <span style="color: #00ff88;">VALIDADO</span></div>
+                        <div class="data-item">RUTA: <span>VENTANILLA</span></div>
+                        <div class="data-item">SISTEMA: <span>V.3.0 PRO</span></div>
+                    </div>
+
+                    <a href="https://forms.gle/VvnpcRgUgbMzNduJ8" class="final-btn">INGRESAR AL FORMULARIO</a>
+                </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <footer>
-        SISTEMA CREADO POR <b>SEBASTIAN</b><br>
-        © 2026 UNAC - Movilidad Universitaria. Todos los derechos reservados.
+        <p>TERMINAL CONTROL SYSTEM BY <b>SEBASTIAN</b></p>
+        <p>© 2026 UNAC - CALLAO, PERÚ</p>
     </footer>
 
     <script>
-        // --- CONFIGURACIÓN DE TIEMPO (AJUSTABLE) ---
+        // --- CONFIGURACIÓN DE TIEMPO ---
         const HORA_APERTURA = 17; 
         const MINUTO_APERTURA = 00;
 
@@ -279,15 +318,12 @@
             const now = new Date();
             const target = new Date();
             target.setHours(HORA_APERTURA, MINUTO_APERTURA, 0);
+            
             const diff = target - now;
 
             if (diff <= 0) {
                 if (document.getElementById('lock-screen').style.display !== 'none') {
-                    gsap.to("#lock-screen", { opacity: 0, duration: 0.8, onComplete: () => {
-                        document.getElementById('lock-screen').style.display = 'none';
-                        document.getElementById('main-container').style.display = 'block';
-                        gsap.from("#main-container", { y: 20, opacity: 0, duration: 0.6 });
-                    }});
+                    showQuiz();
                 }
                 return;
             }
@@ -297,39 +333,45 @@
             const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
             document.getElementById('countdown').innerText = `${h}:${m}:${s}`;
         }
+
+        function showQuiz() {
+            gsap.to("#lock-screen", { opacity: 0, y: -20, duration: 0.8, onComplete: () => {
+                document.getElementById('lock-screen').style.display = 'none';
+                document.getElementById('main-container').style.display = 'block';
+                gsap.from("#main-container", { scale: 0.9, opacity: 0, duration: 0.6, ease: "back.out(1.7)" });
+            }});
+        }
+
         setInterval(updateTimer, 1000);
         updateTimer();
 
-        // --- GLOBO TERRÁQUEO 3D (OPTIMIZADO) ---
+        // --- FONDO 3D TECH ---
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-        const globeGroup = new THREE.Group();
-        scene.add(globeGroup);
+        const geo = new THREE.IcosahedronGeometry(2, 1);
+        const mat = new THREE.MeshBasicMaterial({ color: 0x00f2ff, wireframe: true, transparent: true, opacity: 0.1 });
+        const mesh = new THREE.Mesh(geo, mat);
+        scene.add(mesh);
 
-        const core = new THREE.Mesh(
-            new THREE.IcosahedronGeometry(2.2, 2),
-            new THREE.MeshBasicMaterial({ color: 0x1a2a3a, transparent: true, opacity: 0.4 })
-        );
-        const grid = new THREE.Mesh(
-            new THREE.IcosahedronGeometry(2.3, 2),
-            new THREE.MeshBasicMaterial({ color: 0x4cc9f0, wireframe: true, transparent: true, opacity: 0.15 })
-        );
-        const points = new THREE.Points(
-            new THREE.SphereGeometry(2.35, 30, 30),
-            new THREE.PointsMaterial({ size: 0.03, color: 0xffffff, transparent: true, opacity: 0.5 })
-        );
+        const particlesGeo = new THREE.BufferGeometry();
+        const particlesCount = 500;
+        const posArray = new Float32Array(particlesCount * 3);
+        for(let i=0; i<particlesCount * 3; i++) posArray[i] = (Math.random() - 0.5) * 10;
+        particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const particlesMat = new THREE.PointsMaterial({ size: 0.005, color: 0x00f2ff });
+        const particlesMesh = new THREE.Points(particlesGeo, particlesMat);
+        scene.add(particlesMesh);
 
-        globeGroup.add(core, grid, points);
-        camera.position.z = 6;
+        camera.position.z = 5;
 
         function animate() {
             requestAnimationFrame(animate);
-            globeGroup.rotation.y += 0.0012;
+            mesh.rotation.y += 0.001;
+            particlesMesh.rotation.y -= 0.0005;
             renderer.render(scene, camera);
         }
         animate();
@@ -340,33 +382,29 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        // --- LÓGICA DE NAVEGACIÓN (SIN PARPADEO) ---
+        // --- LÓGICA DE NAVEGACIÓN ---
         function next(id) {
             const current = document.querySelector('.step.active');
-            gsap.to(current, { opacity: 0, duration: 0.2, onComplete: () => {
+            gsap.to(current, { opacity: 0, x: -20, duration: 0.3, onComplete: () => {
                 current.classList.remove('active');
                 const nextStep = document.getElementById('step' + id);
                 nextStep.classList.add('active');
-                gsap.fromTo(nextStep, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+                gsap.fromTo(nextStep, { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.3 });
             }});
         }
 
         function fail() {
-            alert("⚠️ RESPUESTA INCORRECTA\n\nEl sistema requiere reiniciar la validación.");
-            const current = document.querySelector('.step.active');
-            current.classList.remove('active');
-            const step1 = document.getElementById('step1');
-            step1.classList.add('active');
-            gsap.fromTo(step1, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+            alert("❌ ERROR DE CÁLCULO\n\nEl sistema se ha bloqueado por seguridad. Intente de nuevo.");
+            location.reload();
         }
 
         function finish() {
             const current = document.querySelector('.step.active');
-            gsap.to(current, { opacity: 0, duration: 0.3, onComplete: () => {
+            gsap.to(current, { opacity: 0, scale: 0.8, duration: 0.4, onComplete: () => {
                 current.classList.remove('active');
                 const success = document.getElementById('success-view');
                 success.style.display = 'block';
-                gsap.fromTo(success, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 });
+                gsap.from(success, { opacity: 0, y: 30, duration: 0.6, ease: "power2.out" });
             }});
         }
     </script>
