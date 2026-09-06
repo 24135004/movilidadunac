@@ -3,24 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Calendar - High Performance</title>
+    <title>Quantum Calendar - Voice AI</title>
     <style>
         :root {
-            --bg-color: #0b0f19;
-            --panel-bg: rgba(20, 25, 40, 0.8);
+            --bg-color: #05080f;
+            --panel-bg: rgba(15, 20, 35, 0.85);
             --accent-cyan: #00f0ff;
             --accent-purple: #8a2be2;
+            --accent-red: #ff2a6d;
             --text-main: #e2e8f0;
-            --text-muted: #94a3b8;
+            --text-muted: #64748b;
             --font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: var(--font-family);
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-family); }
 
         body {
             background-color: var(--bg-color);
@@ -29,38 +25,40 @@
             height: 100vh;
             overflow: hidden;
             background-image: 
-                radial-gradient(circle at 15% 50%, rgba(0, 240, 255, 0.05), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(138, 43, 226, 0.05), transparent 25%);
+                radial-gradient(circle at 10% 20%, rgba(0, 240, 255, 0.03), transparent 30%),
+                radial-gradient(circle at 90% 80%, rgba(138, 43, 226, 0.03), transparent 30%);
         }
 
         /* Sidebar */
         .sidebar {
-            width: 300px;
+            width: 340px;
             background: var(--panel-bg);
-            border-right: 1px solid rgba(0, 240, 255, 0.2);
-            padding: 20px;
+            border-right: 1px solid rgba(0, 240, 255, 0.1);
+            padding: 25px;
             display: flex;
             flex-direction: column;
             gap: 20px;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            z-index: 10;
+            box-shadow: 5px 0 20px rgba(0,0,0,0.5);
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 1.6rem;
+            font-weight: 900;
             color: var(--accent-cyan);
             text-transform: uppercase;
             letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
-            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+            margin-bottom: 10px;
         }
 
         button {
-            background: transparent;
+            background: rgba(0, 240, 255, 0.05);
             color: var(--accent-cyan);
             border: 1px solid var(--accent-cyan);
-            padding: 12px;
-            border-radius: 8px;
+            padding: 14px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
             transition: all 0.3s ease;
@@ -71,42 +69,99 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+            width: 100%;
         }
 
         button:hover {
             background: var(--accent-cyan);
             color: var(--bg-color);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
         }
 
         .btn-purple {
             border-color: var(--accent-purple);
             color: var(--accent-purple);
+            background: rgba(138, 43, 226, 0.05);
         }
         .btn-purple:hover {
             background: var(--accent-purple);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
             color: white;
-            box-shadow: 0 0 15px rgba(138, 43, 226, 0.4);
         }
 
-        .file-upload-wrapper {
-            position: relative;
+        /* Voice Dictation Area */
+        .dictation-box {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255, 42, 109, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
-        .file-upload-wrapper input[type="file"] {
-            position: absolute;
+
+        .dictation-box h4 {
+            color: var(--accent-red);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pulse-indicator {
+            width: 10px;
+            height: 10px;
+            background-color: var(--accent-red);
+            border-radius: 50%;
+            display: none; /* Hidden by default */
+        }
+
+        .pulse-indicator.active {
+            display: block;
+            animation: pulse 1.2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 42, 109, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 42, 109, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 42, 109, 0); }
+        }
+
+        #liveTranscript {
             width: 100%;
-            height: 100%;
-            opacity: 0;
-            cursor: pointer;
+            height: 80px;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            resize: none;
+            outline: none;
+        }
+
+        .btn-record {
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+        }
+        .btn-record:hover, .btn-record.recording {
+            background: var(--accent-red);
+            color: white;
+            box-shadow: 0 0 20px rgba(255, 42, 109, 0.4);
+        }
+
+        .btn-process {
+            background: var(--accent-cyan);
+            color: var(--bg-color);
+            margin-top: 5px;
         }
 
         /* Main Calendar Area */
         .main-content {
             flex: 1;
-            padding: 30px;
+            padding: 40px;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
+            position: relative;
         }
 
         .header {
@@ -114,76 +169,76 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* Timeline Grid */
         .timeline {
             display: grid;
             grid-template-columns: 80px 1fr;
-            gap: 15px;
+            gap: 12px;
             flex: 1;
         }
 
         .time-label {
             color: var(--text-muted);
             text-align: right;
-            padding-top: 15px;
-            font-size: 0.9rem;
-            border-right: 2px solid rgba(255, 255, 255, 0.05);
-            padding-right: 15px;
+            padding-top: 18px;
+            font-size: 0.95rem;
+            border-right: 2px solid rgba(0, 240, 255, 0.1);
+            padding-right: 20px;
+            font-weight: bold;
         }
 
         .slot {
             background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
             min-height: 60px;
-            padding: 15px;
-            transition: all 0.2s;
+            padding: 15px 20px;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
         }
+
+        .slot::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 4px;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .slot.type-work::before { background: var(--accent-cyan); box-shadow: 0 0 10px var(--accent-cyan); }
+        .slot.type-eat::before { background: #ffaa00; box-shadow: 0 0 10px #ffaa00; }
+        .slot.type-rest::before { background: var(--accent-purple); box-shadow: 0 0 10px var(--accent-purple); }
 
         .slot:hover {
             background: rgba(255, 255, 255, 0.05);
+            transform: translateX(5px);
         }
 
         .task {
             font-size: 1rem;
             font-weight: 500;
+            letter-spacing: 0.5px;
         }
 
-        /* Task Types */
-        .type-work { border-left: 4px solid var(--accent-cyan); }
-        .type-eat { border-left: 4px solid #ffaa00; background: rgba(255, 170, 0, 0.05); }
-        .type-rest { border-left: 4px solid var(--accent-purple); background: rgba(138, 43, 226, 0.05); }
-        
-        .status-msg {
-            color: #10b981;
-            font-size: 0.85rem;
-            margin-top: 10px;
-            height: 20px;
-        }
-
-        /* Modal for adding custom tasks */
-        .add-task-container {
-            margin-top: 20px;
-            background: rgba(0,0,0,0.2);
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px dashed rgba(0, 240, 255, 0.3);
-        }
-        .add-task-container input {
-            width: 100%;
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.2);
-            color: white;
-            padding: 10px;
-            margin-bottom: 10px;
+        /* Status Toast */
+        #statusMsg {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--accent-cyan);
+            color: var(--bg-color);
+            padding: 10px 20px;
             border-radius: 5px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 100;
         }
 
     </style>
@@ -192,55 +247,61 @@
 
     <!-- Panel Lateral -->
     <div class="sidebar">
-        <div class="logo">O.S. Calendar</div>
+        <div class="logo">Neural Calendar</div>
         
-        <button id="btnVoice" onclick="startDictation()">
-            🎤 Añadir por Voz
-        </button>
+        <!-- Sistema Avanzado de Dictado -->
+        <div class="dictation-box">
+            <h4>
+                <div class="pulse-indicator" id="pulseIndicator"></div>
+                Procesador de Voz IA
+            </h4>
+            <textarea id="liveTranscript" placeholder="Ej: 'Programa reunión a las 3 de la tarde y luego entrenar a las 6...'"></textarea>
+            <button class="btn-record" id="btnRecord" onclick="toggleDictation()">
+                🎤 Iniciar Escucha
+            </button>
+            <button class="btn-process" onclick="processNaturalLanguage()">
+                🧠 Procesar y Organizar
+            </button>
+        </div>
         
-        <div class="file-upload-wrapper">
-            <button>📁 Cargar Archivo (.TXT)</button>
-            <input type="file" id="fileUpload" accept=".txt,.json" onchange="handleFileUpload(event)">
+        <!-- Carga de archivo -->
+        <div style="position: relative;">
+            <button>📁 Transvasar Archivo TXT</button>
+            <input type="file" style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer;" accept=".txt" onchange="handleFileUpload(event)">
         </div>
 
         <button class="btn-purple" onclick="generatePerfectRoutine()">
             ⚡ Generar Rutina Óptima (24h)
         </button>
-
-        <div class="status-msg" id="statusMsg"></div>
-
-        <div class="add-task-container">
-            <h4 style="margin-bottom: 10px; color: var(--accent-cyan); font-size: 0.9rem;">Entrada Manual / Voz</h4>
-            <input type="text" id="manualTask" placeholder="Ej: 14:00 Reunión">
-            <button onclick="addManualTask()" style="width: 100%; padding: 8px;">Añadir</button>
-        </div>
         
-        <div style="margin-top: auto; font-size: 0.8rem; color: var(--text-muted);">
-            <p><strong>Info de Rendimiento:</strong></p>
-            <p>Para estar activo toda la semana, el sistema programa 8h de sueño y 3 comidas estratégicas. Respétalas.</p>
+        <div style="margin-top: auto; font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">
+            <p><strong>¿Cómo hablarle?</strong></p>
+            <p>Puedes ser natural. Ej: <i>"Agrega comer a las dos de la tarde y leer a las veinte horas".</i></p>
         </div>
     </div>
 
     <!-- Calendario Principal -->
     <div class="main-content">
         <div class="header">
-            <h2>Mi agenda diaria: <span id="currentDate" style="color: var(--accent-cyan);"></span></h2>
-            <button onclick="clearCalendar()" style="border: 1px solid #ef4444; color: #ef4444;">Limpiar Agenda</button>
+            <h2>Agenda Cuántica: <span id="currentDate" style="color: var(--accent-cyan);"></span></h2>
+            <button onclick="clearCalendar()" style="width: auto; border-color: #ef4444; color: #ef4444;">Vaciar</button>
         </div>
         
         <div class="timeline" id="timelineGrid">
-            <!-- Las horas se generan por JavaScript -->
+            <!-- Grid dinámico -->
         </div>
     </div>
 
+    <div id="statusMsg"></div>
+
     <script>
-        // Set current date
+        // Configurar fecha
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById('currentDate').innerText = new Date().toLocaleDateString('es-ES', options).toUpperCase();
 
-        // Inicializar Grid de 24 horas
         const timelineGrid = document.getElementById('timelineGrid');
         
+        // Inicializar Grid
         function initGrid() {
             timelineGrid.innerHTML = '';
             for (let i = 0; i < 24; i++) {
@@ -248,7 +309,7 @@
                 timelineGrid.innerHTML += `
                     <div class="time-label">${hour}</div>
                     <div class="slot" id="slot-${i}">
-                        <span class="task" style="color: var(--text-muted)">-- Libre --</span>
+                        <span class="task" style="color: var(--text-muted)">-- Escaneando... --</span>
                     </div>
                 `;
             }
@@ -258,10 +319,10 @@
         function showStatus(msg) {
             const status = document.getElementById('statusMsg');
             status.innerText = msg;
-            setTimeout(() => status.innerText = '', 3000);
+            status.style.opacity = '1';
+            setTimeout(() => status.style.opacity = '0', 3000);
         }
 
-        // 1. Añadir Tarea al DOM
         function addTaskToSlot(hour, taskText, typeClass = 'type-work') {
             const slot = document.getElementById(`slot-${hour}`);
             if (slot) {
@@ -270,122 +331,204 @@
             }
         }
 
-        // 2. Dictado por Voz (Web Speech API)
-        function startDictation() {
-            if (window.hasOwnProperty('webkitSpeechRecognition')) {
-                const recognition = new webkitSpeechRecognition();
-                recognition.continuous = false;
-                recognition.interimResults = false;
-                recognition.lang = "es-ES";
-                
-                showStatus("Escuchando... Habla ahora.");
-                recognition.start();
+        // ==========================================
+        // SISTEMA DE RECONOCIMIENTO DE VOZ CONTINUO
+        // ==========================================
+        let recognition;
+        let isRecording = false;
+        let finalTranscript = '';
 
-                recognition.onresult = function(e) {
-                    const transcript = e.results[0][0].transcript;
-                    document.getElementById('manualTask').value = transcript;
-                    showStatus("Texto capturado por voz.");
-                    recognition.stop();
-                };
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRec();
+            recognition.continuous = true; // ESCUCHA CONTINUA
+            recognition.interimResults = true; // MUESTRA MIENTRAS HABLAS
+            recognition.lang = 'es-ES';
 
-                recognition.onerror = function(e) {
-                    showStatus("Error en el micrófono.");
-                    recognition.stop();
-                };
-            } else {
-                alert("Tu navegador no soporta el dictado por voz. Usa Google Chrome.");
-            }
-        }
-
-        // 3. Añadir tarea manual o dictada
-        function addManualTask() {
-            const input = document.getElementById('manualTask').value;
-            // Parseo básico: busca un número al principio para la hora (Ej: "14 reunión" o "14:00 reunión")
-            const match = input.match(/(\d{1,2})(:00)?\s+(.*)/);
-            if (match) {
-                let hour = parseInt(match[1]);
-                let task = match[3];
-                if(hour >= 0 && hour < 24) {
-                    addTaskToSlot(hour, task, 'type-work');
-                    document.getElementById('manualTask').value = '';
-                    showStatus("Tarea añadida.");
+            recognition.onresult = (event) => {
+                let interimTranscript = '';
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) {
+                        finalTranscript += event.results[i][0].transcript + ' ';
+                    } else {
+                        interimTranscript += event.results[i][0].transcript;
+                    }
                 }
+                document.getElementById('liveTranscript').value = finalTranscript + interimTranscript;
+            };
+
+            recognition.onerror = (event) => {
+                console.error("Error de voz: ", event.error);
+                if(event.error === 'not-allowed') {
+                    alert("Por favor, permite el acceso al micrófono en el navegador.");
+                    stopDictation();
+                }
+            };
+            
+            recognition.onend = () => {
+                // Si se detiene por silencio, y seguimos en modo grabación, lo reiniciamos
+                if (isRecording) {
+                    recognition.start();
+                }
+            };
+        } else {
+            alert("Tu navegador no soporta IA de voz. Usa Google Chrome, Edge o Safari moderno.");
+        }
+
+        function toggleDictation() {
+            if (!recognition) return;
+            if (isRecording) {
+                stopDictation();
             } else {
-                alert("Formato incorrecto. Escribe la hora y la tarea. Ej: '14 Reunion con equipo'");
+                startDictation();
             }
         }
 
-        // 4. Leer archivo de texto (.txt)
+        function startDictation() {
+            isRecording = true;
+            finalTranscript = '';
+            document.getElementById('liveTranscript').value = '';
+            document.getElementById('pulseIndicator').classList.add('active');
+            document.getElementById('btnRecord').innerText = '⏹ Detener Escucha';
+            document.getElementById('btnRecord').classList.add('recording');
+            recognition.start();
+            showStatus("Escuchando de forma continua...");
+        }
+
+        function stopDictation() {
+            isRecording = false;
+            document.getElementById('pulseIndicator').classList.remove('active');
+            document.getElementById('btnRecord').innerText = '🎤 Iniciar Escucha';
+            document.getElementById('btnRecord').classList.remove('recording');
+            recognition.stop();
+        }
+
+        // ==========================================
+        // PROCESADOR DE LENGUAJE NATURAL (CRONOMETRADO INTELIGENTE)
+        // ==========================================
+        function processNaturalLanguage() {
+            let text = document.getElementById('liveTranscript').value.toLowerCase();
+            if (!text) {
+                showStatus("No hay texto para procesar.");
+                return;
+            }
+
+            // Diccionario para convertir texto a números
+            const numberMap = {
+                "una": 1, "uno": 1, "dos": 2, "tres": 3, "cuatro": 4, "cinco": 5, 
+                "seis": 6, "siete": 7, "ocho": 8, "nueve": 9, "diez": 10, 
+                "once": 11, "doce": 12, "trece": 13, "catorce": 14, "quince": 15,
+                "dieciseis": 16, "diecisiete": 17, "dieciocho": 18, "diecinueve": 19,
+                "veinte": 20, "veintiuno": 21, "veintidos": 22, "veintitres": 23, "veinticuatro": 24
+            };
+
+            // 1. Reemplazar palabras de números por dígitos para facilitar extracción
+            for (const [word, digit] of Object.entries(numberMap)) {
+                const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                text = text.replace(regex, digit);
+            }
+
+            // 2. Extraer fragmentos divididos por " y ", " luego ", " despues "
+            const chunks = text.split(/\by\b|\bluego\b|\bdespues\b|\bademas\b/);
+            
+            let tasksAdded = 0;
+
+            chunks.forEach(chunk => {
+                // Buscar patrón de hora: "a las X", "a la X", "para las X" + "de la tarde/mañana"
+                const timeRegex = /(?:a las|a la|para las|a) (\d{1,2})(?:\s?(?:de la tarde|de la mañana|de la noche|pm|am|hrs|horas))?/i;
+                const match = chunk.match(timeRegex);
+
+                if (match) {
+                    let hour = parseInt(match[1]);
+                    
+                    // Ajuste inteligente (Cronometrado Relativo PM/AM)
+                    if (chunk.includes("tarde") || chunk.includes("noche") || chunk.includes("pm")) {
+                        if (hour < 12) hour += 12; // "3 de la tarde" -> 15
+                    } else if (chunk.includes("mañana") || chunk.includes("am")) {
+                        if (hour === 12) hour = 0; // "12 am" -> 0
+                    } else {
+                        // Si no especifica (Ej: "reunión a las 3"), asumimos tarde por lógica corporativa
+                        if (hour >= 1 && hour <= 7) hour += 12; 
+                    }
+
+                    // Limpiar el texto para dejar solo la tarea
+                    let taskText = chunk.replace(timeRegex, '').trim();
+                    // Capitalizar primera letra
+                    taskText = taskText.charAt(0).toUpperCase() + taskText.slice(1);
+                    
+                    if (!taskText) taskText = "Evento programado";
+
+                    if (hour >= 0 && hour < 24) {
+                        // Colorcoding automático según palabras clave
+                        let type = 'type-work';
+                        if(taskText.toLowerCase().match(/comer|almuerzo|desayuno|cena|café/)) type = 'type-eat';
+                        if(taskText.toLowerCase().match(/dormir|descansar|leer|ocio|entrenar/)) type = 'type-rest';
+
+                        addTaskToSlot(hour, `🧠 ${taskText}`, type);
+                        tasksAdded++;
+                    }
+                }
+            });
+
+            if (tasksAdded > 0) {
+                showStatus(`¡IA procesada! ${tasksAdded} tareas agregadas.`);
+                document.getElementById('liveTranscript').value = '';
+            } else {
+                showStatus("No detecté ninguna hora clara. Usa 'a las [hora]'.");
+            }
+        }
+
+        // ==========================================
+        // LECTURA DE ARCHIVOS
+        // ==========================================
         function handleFileUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
             reader.onload = function(e) {
-                const lines = e.target.result.split('\n');
-                lines.forEach(line => {
-                    // Espera formato: "14:00 - Tarea"
-                    const match = line.match(/(\d{1,2}):\d{2}\s*-\s*(.*)/);
-                    if (match) {
-                        addTaskToSlot(parseInt(match[1]), match[2]);
-                    }
-                });
-                showStatus("Archivo transvasado con éxito.");
+                // Volcar el texto del archivo en el transcript y procesarlo con IA
+                document.getElementById('liveTranscript').value = e.target.result;
+                processNaturalLanguage();
+                showStatus("Archivo procesado por IA.");
             };
             reader.readAsText(file);
         }
 
         function clearCalendar() {
             initGrid();
-            showStatus("Agenda limpiada.");
+            showStatus("Memoria limpiada.");
         }
 
-        // 5. El Algoritmo de Rutina de Alto Rendimiento
+        // ==========================================
+        // RUTINA OPTIMA
+        // ==========================================
         function generatePerfectRoutine() {
             initGrid();
             const routine = [
-                // Descanso Biológico (8 horas)
-                {h: 22, t: "💤 Inicio de Descanso Profundo", c: "type-rest"},
-                {h: 23, t: "💤 Sueño Reparador", c: "type-rest"},
-                {h: 0, t: "💤 Sueño Reparador", c: "type-rest"},
-                {h: 1, t: "💤 Sueño Reparador", c: "type-rest"},
-                {h: 2, t: "💤 Sueño Reparador", c: "type-rest"},
-                {h: 3, t: "💤 Sueño Reparador", c: "type-rest"},
-                {h: 4, t: "💤 Sueño Reparador", c: "type-rest"},
-                {h: 5, t: "💤 Sueño Reparador", c: "type-rest"},
-                
-                // Mañana - Activación
-                {h: 6, t: "🏃‍♂️ Ejercicio / Activación Cardiovascular", c: "type-work"},
-                {h: 7, t: "🍳 Desayuno (Proteínas y Grasas saludables) + Ducha", c: "type-eat"},
-                
-                // Trabajo Profundo - Bloque 1
-                {h: 8, t: "🧠 Trabajo Profundo (Enfoque máximo - Sin distracciones)", c: "type-work"},
-                {h: 9, t: "🧠 Trabajo Profundo", c: "type-work"},
-                {h: 10, t: "☕ Descanso Activo (20 min) / Trabajo ligero", c: "type-work"},
-                {h: 11, t: "🧠 Trabajo Profundo", c: "type-work"},
-                
-                // Medio día - Recarga
-                {h: 12, t: "🥗 Almuerzo (Evitar exceso de carbohidratos para no dar sueño)", c: "type-eat"},
-                {h: 13, t: "🚶‍♂️ Paseo ligero / Siesta corta (20 min max)", c: "type-rest"},
-                
-                // Trabajo Bloque 2
+                {h: 22, t: "💤 Descanso Profundo", c: "type-rest"}, {h: 23, t: "💤 Sueño", c: "type-rest"},
+                {h: 0, t: "💤 Sueño", c: "type-rest"}, {h: 1, t: "💤 Sueño", c: "type-rest"},
+                {h: 2, t: "💤 Sueño", c: "type-rest"}, {h: 3, t: "💤 Sueño", c: "type-rest"},
+                {h: 4, t: "💤 Sueño", c: "type-rest"}, {h: 5, t: "💤 Sueño", c: "type-rest"},
+                {h: 6, t: "🏃‍♂️ Activación Cardiovascular", c: "type-work"},
+                {h: 7, t: "🍳 Desayuno Estratégico", c: "type-eat"},
+                {h: 8, t: "🧠 Enfoque Profundo (Bloque 1)", c: "type-work"},
+                {h: 9, t: "🧠 Enfoque Profundo", c: "type-work"},
+                {h: 10, t: "☕ Descanso 20m / Trabajo ligero", c: "type-work"},
+                {h: 11, t: "🧠 Enfoque Profundo (Bloque 2)", c: "type-work"},
+                {h: 12, t: "🥗 Almuerzo Ligero (Sin carbohidratos pesados)", c: "type-eat"},
+                {h: 13, t: "🚶‍♂️ Paseo / Desconexión Neural", c: "type-rest"},
                 {h: 14, t: "💻 Reuniones / Trabajo Colaborativo", c: "type-work"},
-                {h: 15, t: "💻 Gestión de correos / Tareas secundarias", c: "type-work"},
-                {h: 16, t: "☕ Snack saludable + Descanso (20 min)", c: "type-eat"},
-                {h: 17, t: "🧠 Trabajo Profundo - Último sprint", c: "type-work"},
-                {h: 18, t: "📊 Planificación del día siguiente", c: "type-work"},
-                
-                // Noche - Desconexión
-                {h: 19, t: "🍽️ Cena Ligera", c: "type-eat"},
-                {h: 20, t: "📚 Ocio / Lectura / Desarrollo Personal", c: "type-rest"},
-                {h: 21, t: "📵 Apagar pantallas / Meditación / Relajación", c: "type-rest"}
+                {h: 15, t: "💻 Gestión / Emails", c: "type-work"},
+                {h: 16, t: "☕ Snack + Descanso", c: "type-eat"},
+                {h: 17, t: "🧠 Sprint Final de Trabajo", c: "type-work"},
+                {h: 18, t: "📊 Planificación de mañana", c: "type-work"},
+                {h: 19, t: "🍽️ Cena", c: "type-eat"},
+                {h: 20, t: "📚 Ocio / Desarrollo Personal", c: "type-rest"},
+                {h: 21, t: "📵 Apagar pantallas / Relajación", c: "type-rest"}
             ];
-
-            routine.forEach(item => {
-                addTaskToSlot(item.h, item.t, item.c);
-            });
-            
-            showStatus("Rutina de Alto Rendimiento Aplicada.");
+            routine.forEach(item => addTaskToSlot(item.h, item.t, item.c));
+            showStatus("Algoritmo de Alto Rendimiento Activado.");
         }
     </script>
 </body>
